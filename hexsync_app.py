@@ -55,8 +55,8 @@ UI_DIR = os.path.join(BUNDLE_DIR, "hexsync_ui")
 CONFIG_FILE = os.path.join(APP_DIR, "hexsync_config.json")
 DEFAULT_PORT = 5055
 
-# Thread-safe State
-state_lock = threading.Lock()
+# Thread-safe State (Re-entrant Lock)
+state_lock = threading.RLock()
 
 def load_config():
     default_config = {
