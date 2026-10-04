@@ -567,8 +567,29 @@ body.loading-active {
    -------------------------------------------------- */
 .geo-wrapper {
   display: flex;
-  gap: 1rem;
-  height: 330px;
+  gap: 1.25rem;
+  min-height: 520px;
+  height: auto;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
+}
+
+.thailand-map-leaflet-container {
+  flex: 1.25;
+  min-height: 500px;
+  height: 500px;
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  background: #070e1c;
+}
+
+#thailand-region-leaflet {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 500px;
 }
 
 .thailand-map-svg-container {
@@ -626,12 +647,13 @@ body.loading-active {
 }
 
 .region-ranking-list {
-  flex: 1;
+  flex: 0.95;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.45rem;
   overflow-y: auto;
-  padding-right: 0.2rem;
+  max-height: 500px;
+  padding-right: 0.35rem;
 }
 
 .region-rank-item {
