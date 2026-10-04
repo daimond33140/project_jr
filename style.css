@@ -458,6 +458,12 @@ body.loading-active {
 .col-span-4 { grid-column: span 4; }
 .col-span-12 { grid-column: span 12; }
 
+.card,
+#sec-kpis,
+.filter-ribbon {
+  scroll-margin-top: 5.5rem;
+}
+
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);

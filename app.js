@@ -1772,7 +1772,29 @@ function setupViewSwitcher() {
 
   const allSections = [secTrend, secGeo, secComp, secTiers, secTable];
 
-  function setActiveView(view) {
+  // Map each view key to its corresponding section element
+  const sectionTargetMap = {
+    "overview": secKpis,
+    "trend": secTrend,
+    "geo": secGeo,
+    "rank": secComp,
+    "table": secTable
+  };
+
+  // Section list for scrollspy tracking in chronological top-to-bottom order
+  const scrollspyList = [
+    { id: "sec-kpis", view: "overview" },
+    { id: "sec-trend", view: "trend" },
+    { id: "sec-geo", view: "geo" },
+    { id: "sec-comparison", view: "rank" },
+    { id: "sec-table", view: "table" }
+  ];
+
+  let currentActiveMode = "dual-compare"; // "dual-compare" | "dashboard"
+  let isProgrammaticScroll = false;
+  let scrollReleaseTimer = null;
+
+  function setDockActive(view) {
     dockButtons.forEach(b => {
       if (b.getAttribute("data-view") === view) {
         b.classList.add("active");
@@ -1780,9 +1802,12 @@ function setupViewSwitcher() {
         b.classList.remove("active");
       }
     });
+  }
 
+  function switchToView(view) {
     if (view === "dual-compare") {
-      // Show ONLY Thailand Dual Comparison Map; hide other sections
+      currentActiveMode = "dual-compare";
+      setDockActive("dual-compare");
       if (secDual) secDual.style.display = "flex";
       if (hudContainer) hudContainer.style.display = "none";
       secDual?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1790,68 +1815,87 @@ function setupViewSwitcher() {
       return;
     }
 
-    // Hide Dual Map Comparison when navigating to other sections via left dock
+    // Entering the unified dashboard mode: all sections are visible together
+    currentActiveMode = "dashboard";
     if (secDual) secDual.style.display = "none";
     if (hudContainer) hudContainer.style.display = "flex";
 
-    // Reset visibility & full-width
+    // Ensure all sections are visible together without hiding any
     allSections.forEach(s => {
       if (s) s.classList.remove("view-hidden", "view-full-width");
     });
     if (secKpis) secKpis.classList.remove("view-hidden");
 
-    if (view === "overview") {
-      if (hudTitle) hudTitle.textContent = "ภาพรวมตัวชี้วัดเศรษฐกิจท่องเที่ยวไทย (Overview KPIs)";
-      // Show all normally
-    } else if (view === "trend") {
-      if (hudTitle) hudTitle.textContent = "แนวโน้มรายได้การท่องเที่ยวรายเดือน 50 เดือน (CLO1: Time-Series Trends)";
-      allSections.forEach(s => s?.classList.add("view-hidden"));
-      secTrend?.classList.remove("view-hidden");
-      secTrend?.classList.add("view-full-width");
-    } else if (view === "geo") {
-      if (hudTitle) hudTitle.textContent = "แผนที่สถิติการท่องเที่ยว 5 ภูมิภาค (CLO1: Geographical Visualization)";
-      allSections.forEach(s => s?.classList.add("view-hidden"));
-      if (secKpis) secKpis.classList.add("view-hidden");
-      secGeo?.classList.remove("view-hidden");
-      secGeo?.classList.add("view-full-width");
-      setTimeout(() => {
-        if (regionLeafletMap) {
-          regionLeafletMap.invalidateSize();
-          regionLeafletMap.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
-        }
-      }, 150);
-    } else if (view === "rank") {
-      if (hudTitle) hudTitle.textContent = "เปรียบเทียบ 10 อันดับจังหวัด & การจัดกลุ่มเมือง (CLO1: Rankings & Tiers)";
-      allSections.forEach(s => s?.classList.add("view-hidden"));
-      secComp?.classList.remove("view-hidden");
-      secTiers?.classList.remove("view-hidden");
-    } else if (view === "table") {
-      if (hudTitle) hudTitle.textContent = "ฐานข้อมูลสถิติการท่องเที่ยว 77 จังหวัด (PLO4/PLO5: Official MOTS Dataset)";
-      allSections.forEach(s => s?.classList.add("view-hidden"));
-      secTable?.classList.remove("view-hidden");
-      secTable?.classList.add("view-full-width");
+    if (hudTitle) {
+      hudTitle.textContent = "แดชบอร์ดภาพรวมการท่องเที่ยวไทย (Unified Tourism Intelligence Dashboard)";
     }
 
-    // Smooth scroll to top of panel container
-    hudContainer?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Scroll directly to the requested section
+    const target = sectionTargetMap[view];
+    if (target) {
+      isProgrammaticScroll = true;
+      setDockActive(view);
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
 
-    // Instant chart resize
+      clearTimeout(scrollReleaseTimer);
+      scrollReleaseTimer = setTimeout(() => {
+        isProgrammaticScroll = false;
+      }, 850);
+    }
+
+    // Trigger chart & map resize smoothly
     setTimeout(() => {
       resizeAllCharts();
-    }, 70);
+      if (regionLeafletMap) {
+        regionLeafletMap.invalidateSize();
+        regionLeafletMap.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
+      }
+    }, 120);
   }
+
+  // Scrollspy: update active dock button as user scrolls down the combined dashboard
+  function onDashboardScroll() {
+    if (currentActiveMode !== "dashboard") return;
+    if (isProgrammaticScroll) return;
+    if (!hudContainer || hudContainer.style.display === "none") return;
+
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const windowHeight = window.innerHeight || 800;
+    // Probe point at 32% from the top of the viewport
+    const probePoint = scrollY + (windowHeight * 0.32);
+
+    let activeView = "overview";
+
+    for (let i = 0; i < scrollspyList.length; i++) {
+      const el = document.getElementById(scrollspyList[i].id);
+      if (el) {
+        const top = el.getBoundingClientRect().top + scrollY;
+        if (probePoint >= top) {
+          activeView = scrollspyList[i].view;
+        }
+      }
+    }
+
+    setDockActive(activeView);
+  }
+
+  window.addEventListener("scroll", () => {
+    if (currentActiveMode === "dashboard") {
+      window.requestAnimationFrame(onDashboardScroll);
+    }
+  }, { passive: true });
 
   // Left Dock button clicks
   dockButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const view = btn.getAttribute("data-view");
-      setActiveView(view);
+      switchToView(view);
     });
   });
 
   // Close HUD button -> return to dual-compare
   hudCloseBtn?.addEventListener("click", () => {
-    setActiveView("dual-compare");
+    switchToView("dual-compare");
   });
 
   // Left Dock Storytelling button
@@ -1865,7 +1909,7 @@ function setupViewSwitcher() {
   });
 
   // Default to dual-compare view: ONLY Thailand Map is displayed on load
-  setActiveView("dual-compare");
+  switchToView("dual-compare");
 }
 
 function resizeAllCharts() {

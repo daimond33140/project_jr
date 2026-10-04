@@ -27,9 +27,9 @@
   <script src="leaflet/leaflet.js"></script>
 
   <!-- Local 77-Province GeoJSON Data -->
-  <script src="thailand_geo.js?v=20261004_v6"></script>
+  <script src="thailand_geo.js?v=20261004_v7"></script>
 
-  <link rel="stylesheet" href="style.css?v=20261004_v6">
+  <link rel="stylesheet" href="style.css?v=20261004_v7">
 </head>
 
 <body class="loading-active">
@@ -377,10 +377,6 @@
           <i data-lucide="git-compare"></i>
           <span class="dock-tooltip">เปรียบเทียบ 2 แผนที่ (Dual Map Compare)</span>
         </button>
-        <button class="dock-btn" data-view="geo" id="dock-btn-geo">
-          <i data-lucide="map"></i>
-          <span class="dock-tooltip">แผนที่ 5 ภูมิภาค (Single Map & Regions)</span>
-        </button>
         <button class="dock-btn" data-view="overview" id="dock-btn-overview">
           <i data-lucide="layout-dashboard"></i>
           <span class="dock-tooltip">ภาพรวมตัวชี้วัด (Overview KPIs)</span>
@@ -388,6 +384,10 @@
         <button class="dock-btn" data-view="trend" id="dock-btn-trend">
           <i data-lucide="trending-up"></i>
           <span class="dock-tooltip">แนวโน้ม 50 เดือน (Time-Series)</span>
+        </button>
+        <button class="dock-btn" data-view="geo" id="dock-btn-geo">
+          <i data-lucide="map"></i>
+          <span class="dock-tooltip">แผนที่ 5 ภูมิภาค (5 Regions Geo Map)</span>
         </button>
         <button class="dock-btn" data-view="rank" id="dock-btn-rank">
           <i data-lucide="bar-chart-2"></i>
@@ -542,7 +542,7 @@
       <main class="dashboard-grid">
 
         <!-- 1. TRENDING & TIME-SERIES (CLO1) -->
-        <section class="card chart-box col-span-8" id="sec-trend" data-tilt>
+        <section class="card chart-box col-span-12" id="sec-trend" data-tilt>
           <div class="card-glare"></div>
           <div class="card-step-num">01</div>
           <div class="card-header">
@@ -567,7 +567,7 @@
         </section>
 
         <!-- 2. GEOGRAPHICAL VISUALIZATION (CLO1) -->
-        <section class="card chart-box col-span-4" id="sec-geo" data-tilt>
+        <section class="card chart-box col-span-12" id="sec-geo" data-tilt>
           <div class="card-glare"></div>
           <div class="card-step-num">02</div>
           <div class="card-header">
@@ -951,8 +951,8 @@
   </div>
 
   <!-- Application Logic & Data -->
-  <script src="data.js?v=20261004_v6"></script>
-  <script src="app.js?v=20261004_v6"></script>
+  <script src="data.js?v=20261004_v7"></script>
+  <script src="app.js?v=20261004_v7"></script>
 </body>
 
 </html>
