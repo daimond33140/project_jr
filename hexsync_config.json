@@ -1,0 +1,13 @@
+{
+  "active_project_id": "proj_default",
+  "projects": [
+    {
+      "id": "proj_default",
+      "name": "Thailand Tourism Dashboard",
+      "path": "C:\\project",
+      "github_url": "https://github.com/daimond33140/project_jr.git",
+      "branch": "main",
+      "debounce": 5
+    }
+  ]
+}
