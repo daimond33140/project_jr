@@ -1527,7 +1527,13 @@ function setupViewSwitcher() {
     setActiveView("overview");
   });
 
-  // Right Dock Storytelling button
+  // Toggle minimize/expand telemetry card
+  document.getElementById("btn-toggle-telemetry")?.addEventListener("click", () => {
+    const hudCard = document.getElementById("thailand-telemetry-hud");
+    hudCard?.classList.toggle("collapsed");
+  });
+
+  // Left Dock Storytelling button
   document.getElementById("dock-btn-story")?.addEventListener("click", () => {
     const modal = document.getElementById("storytelling-modal");
     if (modal) {
@@ -1537,8 +1543,8 @@ function setupViewSwitcher() {
     }
   });
 
-  // Set default view to Overview on load
-  setActiveView("overview");
+  // Default to 3D Orbit view so space globe is 100% visible and unblocked
+  setActiveView("orbit");
 }
 
 // ==========================================
