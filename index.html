@@ -488,23 +488,8 @@
         </div>
         
         <div class="geo-wrapper">
-          <div class="thailand-map-svg-container">
-            <svg id="thailand-svg" viewBox="0 0 500 700" class="thailand-svg">
-              <defs>
-                <radialGradient id="grad-pulse" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.8"/>
-                  <stop offset="100%" stop-color="#0055ff" stop-opacity="0.2"/>
-                </radialGradient>
-              </defs>
-              <g class="map-silhouette">
-                <path d="M 120,60 L 220,50 L 230,150 L 180,220 L 130,170 Z" class="region-shape north" data-region="north"/>
-                <path d="M 235,140 L 370,120 L 440,240 L 370,290 L 240,240 Z" class="region-shape east_northeast" data-region="east_northeast"/>
-                <path d="M 175,225 L 240,245 L 260,330 L 195,330 L 175,270 Z" class="region-shape central" data-region="central"/>
-                <path d="M 265,315 L 340,320 L 330,390 L 265,380 Z" class="region-shape east" data-region="east"/>
-                <path d="M 190,340 L 170,420 L 150,540 L 230,640 L 170,640 L 120,540 L 160,420 Z" class="region-shape south" data-region="south"/>
-              </g>
-              <g id="province-bubbles-layer"></g>
-            </svg>
+          <div class="thailand-map-leaflet-container" style="flex: 1; min-height: 520px; position: relative;">
+            <div id="thailand-region-leaflet" class="thailand-leaflet-map" style="width: 100%; height: 100%; min-height: 520px; border-radius: 12px; overflow: hidden; background: #070e1c;"></div>
           </div>
 
           <div class="region-ranking-list" id="region-ranking-list"></div>
