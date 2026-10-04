@@ -816,6 +816,26 @@ function setupEventListeners() {
   document.getElementById("export-btn")?.addEventListener("click", () => {
     exportToCsv();
   });
+
+  // F12 Keyboard Shortcut: Data Storytelling
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "F12" || e.keyCode === 123) {
+      e.preventDefault();
+      const modal = document.getElementById("storytelling-modal");
+      if (modal) {
+        if (modal.classList.contains("show")) {
+          modal.classList.remove("show");
+        } else {
+          modal.classList.add("show");
+          updateStorytellingModal(0);
+          if (window.lucide) window.lucide.createIcons();
+        }
+      }
+    }
+  });
+
+  // 144 FPS View Mode Switcher
+  setupViewSwitcher();
 }
 
 // 7. CSV EXPORT UTILITY (REAL MOTS DATA)
