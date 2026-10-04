@@ -135,56 +135,142 @@
       </div>
     </header>
 
-    <!-- NASA JPL EYES // 3D THAILAND TELEMETRY HUD (COMPACT FLOATING CORNER WIDGET) -->
-    <div class="thailand-telemetry-hud" id="thailand-telemetry-hud">
-      <div class="hud-glare"></div>
-      <div class="hud-top-row">
-        <div class="hud-badge-tag">
-          <span class="live-orbit-dot"></span>
-          <span>NASA EYES // TARGET ACQUIRED</span>
+    <!-- DUAL MAP YEAR-OVER-YEAR COMPARISON EXPLORER (เเสดงเเค่ประเทศไทย 2 ฝั่งเปรียบเทียบปี) -->
+    <section class="card dual-map-comparison-section" id="sec-dual-compare" data-tilt>
+      <div class="card-glare"></div>
+      
+      <!-- Comparison Header & Control Bar -->
+      <div class="compare-header-bar">
+        <div class="compare-title-group">
+          <div class="compare-badge-icon"><i data-lucide="git-compare"></i></div>
+          <div>
+            <h2 class="compare-main-title">ระบบเปรียบเทียบสถิติการท่องเที่ยวไทย 2 ฝั่ง (Dual Thailand Map Comparison)</h2>
+            <p class="compare-sub-title">เลือกปีเพื่อเปรียบเทียบความต่าง 77 จังหวัดและ 5 ภูมิภาคได้แบบคู่ขนาน (คลิกหรือชี้ที่จังหวัดเพื่อเจาะลึก)</p>
+          </div>
         </div>
-        <button id="btn-toggle-telemetry" class="btn-toggle-telemetry" title="ย่อ / ขยายข้อมูล Telemetry">
-          <i data-lucide="chevron-down" id="telemetry-chevron"></i>
-        </button>
+
+        <div class="compare-controls">
+          <div class="compare-select-wrap">
+            <span class="compare-tag tag-a">ปีหลัก (ฝั่งซ้าย):</span>
+            <select id="compare-year-a" class="compare-dropdown">
+              <option value="2019" selected>ปี 2562 (Pre-COVID Golden Year)</option>
+              <option value="2020">ปี 2563 (ช่วงวิกฤตระบาดระลอกแรก)</option>
+              <option value="2021">ปี 2564 (จุดต่ำสุด / Sandbox)</option>
+              <option value="2022">ปี 2565 (ฟื้นตัว Reopening)</option>
+              <option value="2023">ปี 2566 (ไตรมาสแรก)</option>
+            </select>
+          </div>
+
+          <div class="compare-vs-badge">VS</div>
+
+          <div class="compare-select-wrap">
+            <span class="compare-tag tag-b">ปีเปรียบเทียบ (ฝั่งขวา):</span>
+            <select id="compare-year-b" class="compare-dropdown">
+              <option value="2019">ปี 2562 (Pre-COVID Golden Year)</option>
+              <option value="2020">ปี 2563 (ช่วงวิกฤตระบาดระลอกแรก)</option>
+              <option value="2021">ปี 2564 (จุดต่ำสุด / Sandbox)</option>
+              <option value="2022" selected>ปี 2565 (ฟื้นตัว Reopening)</option>
+              <option value="2023">ปี 2566 (ไตรมาสแรก)</option>
+            </select>
+          </div>
+
+          <div class="compare-select-wrap">
+            <span class="compare-tag">ตัวชี้วัดที่แสดง:</span>
+            <select id="compare-metric-select" class="compare-dropdown">
+              <option value="revenue_all" selected>รายได้รวม (Total Revenue)</option>
+              <option value="no_tourist_all">จำนวนนักท่องเที่ยว (Tourists)</option>
+              <option value="revenue_foreign">รายได้จากต่างชาติ (Foreign Revenue)</option>
+              <option value="occupancy_rate">อัตราเข้าพักเฉลี่ย (Occupancy %)</option>
+            </select>
+          </div>
+        </div>
       </div>
 
-      <div class="hud-target-title">
-        <i data-lucide="crosshair" class="hud-crosshair-icon"></i>
-        <span>THAILAND (สยามประเทศ)</span>
-      </div>
-      <div class="hud-coords">
-        <span>LAT: 13.7563° N</span> • <span>LON: 100.5018° E</span>
+      <!-- Diff / Variance Telemetry Dashboard -->
+      <div class="compare-diff-strip" id="compare-diff-strip">
+        <div class="diff-card">
+          <span class="diff-lbl">ผลต่างรายได้รวมทั้งประเทศ</span>
+          <div class="diff-val-group">
+            <span class="diff-val" id="diff-rev-val">-฿1.64T</span>
+            <span class="diff-pct negative" id="diff-rev-pct">-60.2%</span>
+          </div>
+          <span class="diff-sub" id="diff-rev-sub">ปี 2562 (฿2.73T) &rarr; ปี 2565 (฿1.08T)</span>
+        </div>
+
+        <div class="diff-card">
+          <span class="diff-lbl">ผลต่างจำนวนนักท่องเที่ยว</span>
+          <div class="diff-val-group">
+            <span class="diff-val" id="diff-tour-val">-82.3M</span>
+            <span class="diff-pct negative" id="diff-tour-pct">-26.8%</span>
+          </div>
+          <span class="diff-sub" id="diff-tour-sub">ปี 2562 (307.1M) &rarr; ปี 2565 (224.8M คน)</span>
+        </div>
+
+        <div class="diff-card">
+          <span class="diff-lbl">ผลต่างอัตราเข้าพักโรงแรม</span>
+          <div class="diff-val-group">
+            <span class="diff-val" id="diff-occ-val">-15.4%</span>
+            <span class="diff-pct negative" id="diff-occ-pct">หดตัว</span>
+          </div>
+          <span class="diff-sub" id="diff-occ-sub">ปี 2562 (60.6%) &rarr; ปี 2565 (45.2%)</span>
+        </div>
+
+        <div class="diff-card">
+          <span class="diff-lbl">ผลต่างสัดส่วนต่างชาติ</span>
+          <div class="diff-val-group">
+            <span class="diff-val" id="diff-fshare-val">-19.5%</span>
+            <span class="diff-pct negative" id="diff-fshare-pct">ลดลง</span>
+          </div>
+          <span class="diff-sub" id="diff-fshare-sub">ปี 2562 (60.3%) &rarr; ปี 2565 (40.8%)</span>
+        </div>
       </div>
 
-      <div class="hud-collapsible-body" id="hud-collapsible-body">
-        <div class="hud-stats-grid">
-          <div class="hud-stat-item">
-            <span class="hud-lbl">สะสมรายได้รวม:</span>
-            <span class="hud-val">฿5.17T (5.17 ล้านล้าน)</span>
-          </div>
-          <div class="hud-stat-item">
-            <span class="hud-lbl">นักท่องเที่ยวสะสม:</span>
-            <span class="hud-val">742.0M คน (50 เดือน)</span>
-          </div>
-          <div class="hud-stat-item">
-            <span class="hud-lbl">ฮับท่องเที่ยวหลัก:</span>
-            <span class="hud-val">กทม. • ภูเก็ต • เชียงใหม่ • ชลบุรี</span>
-          </div>
-          <div class="hud-stat-item">
-            <span class="hud-lbl">ชุดข้อมูลทางการ:</span>
-            <span class="hud-val">30,800 แถว (กระทรวงการท่องเที่ยว)</span>
-          </div>
+      <!-- Live Hover Comparison Callout Box -->
+      <div class="compare-live-callout" id="compare-live-callout">
+        <div class="callout-province-badge">
+          <i data-lucide="mouse-pointer"></i>
+          <span id="callout-province-name">ชี้หรือคลิกที่จังหวัดใดก็ได้บนแผนที่เพื่อดูความต่างรายปี</span>
         </div>
-        <div class="hud-actions-row">
-          <button id="btn-focus-thailand" class="btn-hud-action active" title="รีเซ็ตมุมกล้องล็อกเป้าประเทศไทย">
-            <i data-lucide="crosshair"></i> ล็อกเป้าประเทศไทย
-          </button>
-          <button id="btn-open-overview" class="btn-hud-action" title="เปิดหน้าต่างข้อมูลสถิติ">
-            <i data-lucide="bar-chart-3"></i> เปิดข้อมูลสถิติ
-          </button>
+        <div class="callout-grid" id="callout-grid" style="display: none;">
+          <div class="callout-side a" id="callout-val-a">-</div>
+          <div class="callout-diff-badge" id="callout-diff-badge">-</div>
+          <div class="callout-side b" id="callout-val-b">-</div>
         </div>
       </div>
-    </div>
+
+      <!-- Dual Map Viewport Grid -->
+      <div class="dual-map-viewport-grid">
+        <!-- Map A (Left) -->
+        <div class="map-column" id="map-col-a">
+          <div class="map-column-header">
+            <div class="col-title-wrap">
+              <span class="col-badge tag-a">ฝั่ง A</span>
+              <h3 class="col-year-title" id="map-a-year-title">ประเทศไทย ปี 2562</h3>
+            </div>
+            <span class="col-stat-pill" id="map-a-stat-pill">รวม: ฿2.73T</span>
+          </div>
+          <div class="map-svg-wrap">
+            <svg id="thailand-svg-a" viewBox="0 0 500 700" class="thailand-compare-svg"></svg>
+          </div>
+          <div class="map-col-footer"><i data-lucide="info"></i> คลิกที่จุดจังหวัดเพื่อดูสถิติเจาะลึก</div>
+        </div>
+
+        <!-- Map B (Right) -->
+        <div class="map-column" id="map-col-b">
+          <div class="map-column-header">
+            <div class="col-title-wrap">
+              <span class="col-badge tag-b">ฝั่ง B</span>
+              <h3 class="col-year-title" id="map-b-year-title">ประเทศไทย ปี 2565</h3>
+            </div>
+            <span class="col-stat-pill" id="map-b-stat-pill">รวม: ฿1.08T</span>
+          </div>
+          <div class="map-svg-wrap">
+            <svg id="thailand-svg-b" viewBox="0 0 500 700" class="thailand-compare-svg"></svg>
+          </div>
+          <div class="map-col-footer"><i data-lucide="info"></i> ซิงค์การชี้และคลิกอัตโนมัติ 2 ฝั่ง</div>
+        </div>
+      </div>
+    </section>
 
     <!-- NASA HUD DOCK NAVIGATION (ย้ายมาซ้ายตามที่ผู้ใช้สั่ง) -->
     <aside class="nasa-hud-dock" id="nasa-hud-dock" aria-label="NASA Navigation Dock">
@@ -193,9 +279,13 @@
         <span class="dock-text">HUD DOCK</span>
       </div>
       <div class="dock-buttons">
-        <button class="dock-btn active" data-view="orbit" id="dock-btn-orbit">
-          <i data-lucide="orbit"></i>
-          <span class="dock-tooltip">3D Orbit สยามประเทศ (Full Space)</span>
+        <button class="dock-btn active" data-view="dual-compare" id="dock-btn-compare">
+          <i data-lucide="git-compare"></i>
+          <span class="dock-tooltip">เปรียบเทียบ 2 แผนที่ (Dual Map Compare)</span>
+        </button>
+        <button class="dock-btn" data-view="geo" id="dock-btn-geo">
+          <i data-lucide="map"></i>
+          <span class="dock-tooltip">แผนที่ 5 ภูมิภาค (Single Map & Regions)</span>
         </button>
         <button class="dock-btn" data-view="overview" id="dock-btn-overview">
           <i data-lucide="layout-dashboard"></i>
@@ -204,10 +294,6 @@
         <button class="dock-btn" data-view="trend" id="dock-btn-trend">
           <i data-lucide="trending-up"></i>
           <span class="dock-tooltip">แนวโน้ม 50 เดือน (Time-Series)</span>
-        </button>
-        <button class="dock-btn" data-view="geo" id="dock-btn-geo">
-          <i data-lucide="map"></i>
-          <span class="dock-tooltip">แผนที่ 5 ภูมิภาค (Geographical)</span>
         </button>
         <button class="dock-btn" data-view="rank" id="dock-btn-rank">
           <i data-lucide="bar-chart-2"></i>
@@ -237,9 +323,9 @@
           <span class="hud-panel-code">TELEMETRY // PANEL ACTIVE</span>
           <h2 class="hud-panel-title" id="hud-panel-active-title">ภาพรวมตัวชี้วัดเศรษฐกิจท่องเที่ยวไทย</h2>
         </div>
-        <button class="hud-close-btn" id="hud-panel-close-btn" title="ย่อหน้าต่างกลับสู่โหมด 3D Orbit">
-          <i data-lucide="minimize-2"></i>
-          <span>ย่อไปที่ 3D Orbit</span>
+        <button class="hud-close-btn" id="hud-panel-close-btn" title="กลับสู่โหมดเปรียบเทียบแผนที่">
+          <i data-lucide="git-compare"></i>
+          <span>ดูเปรียบเทียบ 2 แผนที่</span>
         </button>
       </div>
 
