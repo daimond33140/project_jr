@@ -1625,6 +1625,16 @@ function setupViewSwitcher() {
     });
     if (secKpis) secKpis.classList.remove("view-hidden");
 
+    if (view === "dual-compare") {
+      const secDual = document.getElementById("sec-dual-compare");
+      secDual?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => {
+        compareMapA?.invalidateSize();
+        compareMapB?.invalidateSize();
+      }, 150);
+      return;
+    }
+
     if (view === "overview") {
       if (hudTitle) hudTitle.textContent = "ภาพรวมตัวชี้วัดเศรษฐกิจท่องเที่ยวไทย (Overview KPIs)";
       // Show all normally
@@ -1638,6 +1648,10 @@ function setupViewSwitcher() {
       allSections.forEach(s => s?.classList.add("view-hidden"));
       secGeo?.classList.remove("view-hidden");
       secGeo?.classList.add("view-full-width");
+      setTimeout(() => {
+        regionLeafletMap?.invalidateSize();
+      }, 150);
+    }
     } else if (view === "rank") {
       if (hudTitle) hudTitle.textContent = "เปรียบเทียบ 10 อันดับจังหวัด & การจัดกลุ่มเมือง (CLO1: Rankings & Tiers)";
       allSections.forEach(s => s?.classList.add("view-hidden"));
