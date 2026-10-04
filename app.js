@@ -876,54 +876,18 @@ function initThreeJSBackground() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
-  // High-performance 3D Wireframe Plane (144 FPS Optimized)
-  const geom = new THREE.PlaneGeometry(80, 55, 28, 20);
+  // High-performance 3D Wireframe Plane (Clean // Zero Dots)
+  const geom = new THREE.PlaneGeometry(85, 60, 24, 18);
   const wireMaterial = new THREE.MeshBasicMaterial({
     color: 0x0284c7,
     wireframe: true,
     transparent: true,
-    opacity: 0.12
+    opacity: 0.08
   });
   const wireMesh = new THREE.Mesh(geom, wireMaterial);
   wireMesh.rotation.x = -Math.PI / 2.6;
   wireMesh.position.y = -6;
   scene.add(wireMesh);
-
-  // Glowing Particle Cloud
-  const pointsMaterial = new THREE.PointsMaterial({
-    color: 0x38bdf8,
-    size: 0.22,
-    transparent: true,
-    opacity: 0.8,
-    blending: THREE.AdditiveBlending
-  });
-  const pointsMesh = new THREE.Points(geom, pointsMaterial);
-  pointsMesh.rotation.x = -Math.PI / 2.6;
-  pointsMesh.position.y = -6;
-  scene.add(pointsMesh);
-
-  // Floating Geometric Accents
-  const icoGeom = new THREE.IcosahedronGeometry(3.5, 0);
-  const icoMat = new THREE.MeshBasicMaterial({
-    color: 0x818cf8,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.22
-  });
-  const icosahedron = new THREE.Mesh(icoGeom, icoMat);
-  icosahedron.position.set(22, 5, -8);
-  scene.add(icosahedron);
-
-  const octaGeom = new THREE.OctahedronGeometry(2.2, 0);
-  const octaMat = new THREE.MeshBasicMaterial({
-    color: 0x38bdf8,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.26
-  });
-  const octahedron = new THREE.Mesh(octaGeom, octaMat);
-  octahedron.position.set(-20, -2, -6);
-  scene.add(octahedron);
 
   // Smooth mouse coordinates
   let mouseX = 0;
@@ -949,22 +913,16 @@ function initThreeJSBackground() {
     }, 150);
   }, { passive: true });
 
-  // 144 FPS Hardware-Accelerated Render Loop
+  // 144 FPS Hardware-Accelerated Render Loop (Clean & Smooth)
   function animate() {
     requestAnimationFrame(animate);
 
-    // Pure GPU matrix rotation (0 CPU load)
-    wireMesh.rotation.z += 0.0006;
-    pointsMesh.rotation.z += 0.0006;
-
-    icosahedron.rotation.x += 0.005;
-    icosahedron.rotation.y += 0.007;
-    octahedron.rotation.y -= 0.006;
-    octahedron.rotation.z += 0.004;
+    // Pure GPU matrix rotation (0 CPU load, 0 square dots)
+    wireMesh.rotation.z += 0.0005;
 
     // Fluid mouse parallax
-    targetX += (mouseX * 3.2 - targetX) * 0.06;
-    targetY += (mouseY * 2.0 - targetY) * 0.06;
+    targetX += (mouseX * 3.0 - targetX) * 0.06;
+    targetY += (mouseY * 1.8 - targetY) * 0.06;
 
     camera.position.x = targetX;
     camera.position.y = -6 + targetY;
