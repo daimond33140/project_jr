@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thailand Tourism Intelligence | ข้อมูลจินตทัศน์สถิติการท่องเที่ยวไทย (01418325)</title>
+  
+  <!-- Google Fonts: Prompt & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Apache ECharts CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- TOP HEADER -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="brand-logo">
+          <i data-lucide="palmtree" class="logo-icon"></i>
+        </div>
+        <div class="brand-info">
+          <div class="course-badge">
+            <span>รหัสวิชา 01418325 ข้อมูลจินตทัศน์ (Data Visualization) • ผู้สอน: ผศ.ดร.จารุวัฒน์ ไพไกล</span>
+            <span class="badge-tag">📁 data/thailand_domestic_tourism_2019_2023_ver2.csv (30,800 แถว)</span>
+          </div>
+          <h1 class="project-title">Thailand Tourism Intelligence: กระดานข้อมูลจินตทัศน์สถิติการท่องเที่ยวไทย (2562 - 2566)</h1>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="btn btn-outline" title="สลับธีม สว่าง / มืด">
+          <i data-lucide="moon"></i>
+          <span id="theme-label">Dark Mode</span>
+        </button>
+        <button id="storytelling-btn" class="btn btn-primary">
+          <i data-lucide="book-open"></i>
+          <span>การเล่าเรื่องด้วยข้อมูล (Storytelling)</span>
+        </button>
+        <button id="rubric-btn" class="btn btn-secondary">
+          <i data-lucide="check-circle-2"></i>
+          <span>เกณฑ์คะแนน (CLOs)</span>
+        </button>
+        <button id="export-btn" class="btn btn-outline" title="ส่งออกรายงานข้อมูลจริง">
+          <i data-lucide="download"></i>
+          <span>Export CSV</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- FILTER & CONTROL RIBBON -->
+    <section class="filter-ribbon">
+      <div class="filter-group">
+        <label for="year-filter"><i data-lucide="calendar"></i> ช่วงปีที่วิเคราะห์:</label>
+        <select id="year-filter" class="form-select">
+          <option value="all">ข้อมูลรวมทั้งหมด (2562 - 2566 | 50 เดือน)</option>
+          <option value="2019">ปี 2562 (Pre-COVID Golden Year)</option>
+          <option value="2020">ปี 2563 (ช่วงวิกฤตระบาดระลอกแรก)</option>
+          <option value="2021">ปี 2564 (จุดต่ำสุด / Sandbox)</option>
+          <option value="2022">ปี 2565 (ฟื้นตัวเต็มรูปแบบ Reopening)</option>
+          <option value="2023">ปี 2566 (ไตรมาสแรก)</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="region-filter"><i data-lucide="map-pin"></i> ภูมิภาค:</label>
+        <select id="region-filter" class="form-select">
+          <option value="all">ทั่วประเทศ (ทุก 77 จังหวัด)</option>
+          <option value="central">ภาคกลาง</option>
+          <option value="north">ภาคเหนือ</option>
+          <option value="east_northeast">ภาคตะวันออกเฉียงเหนือ</option>
+          <option value="east">ภาคตะวันออก</option>
+          <option value="south">ภาคใต้</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="tier-filter"><i data-lucide="award"></i> กลุ่มเมืองท่องเที่ยว:</label>
+        <select id="tier-filter" class="form-select">
+          <option value="all">ทุกกลุ่มเมืองท่องเที่ยว</option>
+          <option value="Tier 1">Tier 1: ฮับหลักระดับโลก (กทม., ภูเก็ต, ชลบุรี, เชียงใหม่)</option>
+          <option value="Tier 2">Tier 2: ท่องเที่ยวระดับชาติ (ทะเล/ธรรมชาติ/ประวัติศาสตร์)</option>
+          <option value="Tier 3">Tier 3: เมืองรองน่าเที่ยว</option>
+        </select>
+      </div>
+
+      <div class="filter-actions">
+        <button id="reset-filter-btn" class="btn btn-text">
+          <i data-lucide="rotate-ccw"></i> รีเซ็ตตัวกรอง
+        </button>
+        <div class="active-filter-indicator">
+          <span class="live-dot"></span> แสดงผล: <span id="current-filter-label">ข้อมูลรวม 2562-2566 • ทั่วประเทศ</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI SUMMARY CARDS -->
+    <section class="kpi-grid">
+      <div class="kpi-card card-gradient-1">
+        <div class="kpi-header">
+          <span class="kpi-title">รายได้การท่องเที่ยวรวม (Total Revenue)</span>
+          <div class="kpi-icon"><i data-lucide="wallet"></i></div>
+        </div>
+        <div class="kpi-value" id="kpi-revenue">฿5.17T</div>
+        <div class="kpi-footer">
+          <span class="trend-badge positive"><i data-lucide="trending-up"></i> +349%</span>
+          <span class="kpi-subtext">การฟื้นตัวปี 2565 เทียบปี 2564</span>
+        </div>
+      </div>
+
+      <div class="kpi-card card-gradient-2">
+        <div class="kpi-header">
+          <span class="kpi-title">จำนวนนักท่องเที่ยวสะสม (Tourists)</span>
+          <div class="kpi-icon"><i data-lucide="users"></i></div>
+        </div>
+        <div class="kpi-value" id="kpi-tourists">742.0M</div>
+        <div class="kpi-footer">
+          <span class="trend-badge positive"><i data-lucide="user-check"></i> คนไทย 78%</span>
+          <span class="kpi-subtext">แรงขับเคลื่อนหลักคือตลาดในประเทศ</span>
+        </div>
+      </div>
+
+      <div class="kpi-card card-gradient-3">
+        <div class="kpi-header">
+          <span class="kpi-title">ค่าใช้จ่ายเฉลี่ยต่อคน (Spend/Head)</span>
+          <div class="kpi-icon"><i data-lucide="receipt"></i></div>
+        </div>
+        <div class="kpi-value" id="kpi-spend">฿6,972</div>
+        <div class="kpi-footer">
+          <span class="trend-badge neutral"><i data-lucide="compass"></i> ภูเก็ตสูงสุด</span>
+          <span class="kpi-subtext">เฉลี่ย 18,200 บ./คน ในภูเก็ต</span>
+        </div>
+      </div>
+
+      <div class="kpi-card card-gradient-4">
+        <div class="kpi-header">
+          <span class="kpi-title">สัดส่วนรายได้จากต่างชาติ (Foreign Share)</span>
+          <div class="kpi-icon"><i data-lucide="plane"></i></div>
+        </div>
+        <div class="kpi-value" id="kpi-foreign-share">47.3%</div>
+        <div class="kpi-footer">
+          <span class="trend-badge positive"><i data-lucide="arrow-up-right"></i> กำลังกลับมา</span>
+          <span class="kpi-subtext">ก่อนโควิดเคยสูงถึง 60.3%</span>
+        </div>
+      </div>
+
+      <div class="kpi-card card-gradient-5">
+        <div class="kpi-header">
+          <span class="kpi-title">อัตราการเข้าพักเฉลี่ย (Occupancy)</span>
+          <div class="kpi-icon"><i data-lucide="hotel"></i></div>
+        </div>
+        <div class="kpi-value" id="kpi-occupancy">44.8%</div>
+        <div class="kpi-footer">
+          <span class="trend-badge neutral"><i data-lucide="activity"></i> ฟื้นตัวต่อเนื่อง</span>
+          <span class="kpi-subtext">จาก 15.6% ในปี 2564 สู่ 45.2%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD MAIN GRID -->
+    <main class="dashboard-grid">
+      
+      <!-- 1. TRENDING & TIME-SERIES (แนวโน้ม/ช่วงเวลา - CLO1) -->
+      <section class="card chart-box col-span-8">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="clo-pill">CLO: การแสดงภาพข้อมูลช่วงเวลาและแนวโน้ม (Trending & Time-Series)</span>
+            <h2 class="card-title"><i data-lucide="trending-up"></i> แนวโน้มรายได้การท่องเที่ยวรายเดือน (คนไทย vs ต่างชาติ) และอัตราเข้าพัก</h2>
+          </div>
+          <div class="chart-legend-hint">
+            <span class="legend-dot blue"></span> รายได้คนไทย
+            <span class="legend-dot orange"></span> รายได้ต่างชาติ
+            <span class="legend-dot green"></span> อัตราเข้าพัก (%)
+          </div>
+        </div>
+        <div class="chart-container" id="trend-chart"></div>
+        <div class="card-insight-footer">
+          <i data-lucide="info"></i>
+          <span><strong>Insight ข้อมูลจริง:</strong> จุดดิ่งลึกที่สุดเกิดขึ้นใน <strong>เม.ย. 2563 (ล็อกดาวน์)</strong> และเริ่มฟื้นตัวชัดเจนหลังเปิดประเทศปลายปี 2565 โดยตลาดคนไทยทำหน้าที่พยุงเศรษฐกิจตลอดช่วงวิกฤต</span>
+        </div>
+      </section>
+
+      <!-- 2. GEOGRAPHICAL VISUALIZATION (แผนที่ภูมิศาสตร์ - CLO1) -->
+      <section class="card chart-box col-span-4">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="clo-pill">CLO: การแสดงภาพข้อมูลแบบภูมิทัศน์ (Geographical)</span>
+            <h2 class="card-title"><i data-lucide="map"></i> แผนที่รายได้การท่องเที่ยว 5 ภูมิภาคและจังหวัดสำคัญ</h2>
+          </div>
+          <span class="interactive-tip"><i data-lucide="mouse-pointer-click"></i> คลิกที่ภูมิภาค/จังหวัดเพื่อกรอง</span>
+        </div>
+        
+        <div class="geo-wrapper">
+          <!-- Interactive Thailand Map SVG with clickable regions -->
+          <div class="thailand-map-svg-container">
+            <svg id="thailand-svg" viewBox="0 0 500 700" class="thailand-svg">
+              <defs>
+                <radialGradient id="grad-pulse" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.8"/>
+                  <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.2"/>
+                </radialGradient>
+              </defs>
+              <!-- Map outline decorative paths -->
+              <g class="map-silhouette">
+                <!-- North outline -->
+                <path d="M 120,60 L 220,50 L 230,150 L 180,220 L 130,170 Z" class="region-shape north" data-region="north"/>
+                <!-- Northeast outline -->
+                <path d="M 235,140 L 370,120 L 440,240 L 370,290 L 240,240 Z" class="region-shape east_northeast" data-region="east_northeast"/>
+                <!-- Central outline -->
+                <path d="M 175,225 L 240,245 L 260,330 L 195,330 L 175,270 Z" class="region-shape central" data-region="central"/>
+                <!-- East outline -->
+                <path d="M 265,315 L 340,320 L 330,390 L 265,380 Z" class="region-shape east" data-region="east"/>
+                <!-- South outline -->
+                <path d="M 190,340 L 170,420 L 150,540 L 230,640 L 170,640 L 120,540 L 160,420 Z" class="region-shape south" data-region="south"/>
+              </g>
+
+              <!-- Dynamic Province Bubbles inserted via JS -->
+              <g id="province-bubbles-layer"></g>
+            </svg>
+          </div>
+
+          <div class="region-ranking-list" id="region-ranking-list">
+            <!-- Dynamic Region Cards will be inserted here -->
+          </div>
+        </div>
+
+        <div class="card-insight-footer">
+          <i data-lucide="info"></i>
+          <span><strong>Insight ข้อมูลจริง:</strong> <strong>ภาคกลาง (รวม กทม.) และภาคใต้</strong> ครองรายได้รวมกันเกิน 66% ของทั้งประเทศ ขณะที่ภาคอีสานมีสัดส่วนรายได้ 9.6%</span>
+        </div>
+      </section>
+
+      <!-- 3. COMPARISON (การเปรียบเทียบ - CLO1) -->
+      <section class="card chart-box col-span-6">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="clo-pill">CLO: การนำเสนอเชิงเปรียบเทียบข้อมูล (Comparison)</span>
+            <h2 class="card-title"><i data-lucide="layers"></i> เปรียบเทียบรายได้ 10 จังหวัดสูงสุด (คนไทย vs ต่างชาติ)</h2>
+          </div>
+        </div>
+        <div class="chart-container" id="category-chart"></div>
+        <div class="card-insight-footer">
+          <i data-lucide="info"></i>
+          <span><strong>Insight ข้อมูลจริง:</strong> <strong>ภูเก็ต</strong> มีการพึ่งพารายได้จากต่างชาติสูงถึง 82% ขณะที่ <strong>เชียงใหม่และประจวบคีรีขันธ์</strong> มีสัดส่วนคนไทยค้ำจุนมากกว่า 65%</span>
+        </div>
+      </section>
+
+      <!-- 4. CLASSIFICATION & SEGMENTATION (การจัดกลุ่มข้อมูล - CLO1) -->
+      <section class="card chart-box col-span-6">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="clo-pill">CLO: การนำเสนอแบบกลุ่มข้อมูล (Classification / Tiers)</span>
+            <h2 class="card-title"><i data-lucide="pie-chart"></i> การจัดกลุ่มตามศักยภาพเมืองท่องเที่ยว (Tiers) และการฟื้นตัว</h2>
+          </div>
+        </div>
+        <div class="dual-chart-row">
+          <div class="chart-sub-box" id="rfm-chart"></div>
+          <div class="chart-sub-box" id="fulfillment-chart"></div>
+        </div>
+        <div class="card-insight-footer">
+          <i data-lucide="info"></i>
+          <span><strong>Insight ข้อมูลจริง:</strong> เมืองหลัก 4 จังหวัด (Tier 1) กวาดรายได้สะสมกว่า <strong>70.4%</strong> ของประเทศ สะท้อนความจำเป็นในการผลักดันการท่องเที่ยวเมืองรอง (Tier 3)</span>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- DATA EXPLORER & DETAILED TABLE -->
+    <section class="card data-table-section">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="clo-pill">PLO4 / PLO5: ชุดข้อมูลจริง 77 จังหวัด (กระทรวงการท่องเที่ยวและกีฬา)</span>
+          <h2 class="card-title"><i data-lucide="database"></i> ตารางแจกแจงสถิติการท่องเที่ยวรายจังหวัด (77 จังหวัด)</h2>
+        </div>
+        <div class="table-search-box">
+          <i data-lucide="search"></i>
+          <input type="text" id="table-search-input" placeholder="ค้นหาจังหวัด เช่น เชียงใหม่, ภูเก็ต..." class="table-search-input">
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="modern-table" id="provinces-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>จังหวัด</th>
+              <th>ภูมิภาค</th>
+              <th>กลุ่มเมือง (Tier)</th>
+              <th>รายได้รวม (ล้านบาท)</th>
+              <th>สัดส่วนต่างชาติ</th>
+              <th>จำนวนนักท่องเที่ยว (คน)</th>
+              <th>ใช้จ่ายเฉลี่ย (บาท/คน)</th>
+              <th>อัตราเข้าพัก (%)</th>
+              <th>ส่วนแบ่งรายได้</th>
+            </tr>
+          </thead>
+          <tbody id="provinces-table-body">
+            <!-- Dynamic rows -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <p><strong>01418325 ข้อมูลจินตทัศน์ (Data Visualization)</strong> ภาควิชาวิทยาการคอมพิวเตอร์และสารสนเทศ</p>
+        <p class="sub-text">อาจารย์ผู้สอน: ผศ.ดร.จารุวัฒน์ ไพไกล | แหล่งข้อมูล: กระทรวงการท่องเที่ยวและกีฬา (MOTS) ไฟล์ thailand_domestic_tourism_2019_2023_ver2.csv</p>
+      </div>
+      <div class="footer-right">
+        <span class="status-indicator">● ข้อมูลเชื่อมต่อแล้ว (77 จังหวัด 50 เดือน)</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- MODAL: DATA STORYTELLING (การเล่าเรื่องด้วยข้อมูล) -->
+  <div class="modal-backdrop" id="storytelling-modal">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge"><i data-lucide="sparkles"></i></div>
+          <div>
+            <h3 class="modal-title" id="story-title">การเล่าเรื่องด้วยข้อมูล (Data Storytelling Walkthrough)</h3>
+            <p class="modal-subtitle" id="story-subtitle">การวิเคราะห์วิกฤต การฟื้นตัว และข้อเสนอแนะเชิงนโยบายจากข้อมูลจริง</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="story-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="story-stepper" id="story-stepper">
+          <!-- Step badges inserted dynamically -->
+        </div>
+
+        <div class="story-content-panel">
+          <div class="story-metric-callout">
+            <span class="metric-number" id="story-highlight-metric">5.17 Trillion THB</span>
+            <span class="metric-caption" id="story-highlight-label">มูลค่ารายได้การท่องเที่ยวสะสม</span>
+          </div>
+
+          <div class="story-narrative" id="story-narrative-text">
+            <!-- Narrative points -->
+          </div>
+
+          <div class="story-recommendation-box">
+            <div class="rec-icon"><i data-lucide="lightbulb"></i></div>
+            <div class="rec-content">
+              <h4>ข้อเสนอแนะเชิงกลยุทธ์ (Prescriptive Recommendations):</h4>
+              <p id="story-rec-text">ข้อเสนอแนะเชิงนโยบายเพื่อการเติบโตอย่างยั่งยืน...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="story-prev-btn" class="btn btn-secondary"><i data-lucide="chevron-left"></i> ย้อนกลับ</button>
+        <div class="step-indicator" id="story-page-indicator">บทที่ 1 จาก 4</div>
+        <button id="story-next-btn" class="btn btn-primary">ถัดไป <i data-lucide="chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RUBRIC & CLO MAPPING (เกณฑ์การตรวจของอาจารย์ ผศ.ดร.จารุวัฒน์ ไพไกล) -->
+  <div class="modal-backdrop" id="rubric-modal">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge"><i data-lucide="award"></i></div>
+          <div>
+            <h3 class="modal-title">ประมวลการสอนและการแมปหลักสูตร (CLOs & PLOs Alignment)</h3>
+            <p class="modal-subtitle">รหัสวิชา 01418325 ข้อมูลจินตทัศน์ • ผู้สอน: ผศ.ดร.จารุวัฒน์ ไพไกล (ภาควิชาวิทยาการคอมพิวเตอร์และสารสนเทศ)</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="rubric-close-btn">&times;</button>
+      </div>
+      <div class="modal-body rubric-body">
+        
+        <!-- SECTION 1: คำอธิบายรายวิชา 8 ด้าน -->
+        <div class="rubric-section-box">
+          <h4 class="rubric-section-title"><i data-lucide="file-text"></i> 1. ความสอดคล้องตามคำอธิบายรายวิชา (Course Description - ครบถ้วน 8 ด้าน)</h4>
+          <div class="course-topics-grid">
+            <div class="topic-tag verified"><i data-lucide="check"></i> 1. หลักการข้อมูลจินตทัศน์ (Visual Encodings)</div>
+            <div class="topic-tag verified"><i data-lucide="check"></i> 2. แหล่งที่มาของข้อมูล (MOTS CSV 30,800 แถว)</div>
+            <div class="topic-tag verified"><i data-lucide="check"></i> 3. การเชื่อมโยงข้อมูล (Dynamic Cross-Filtering)</div>
+            <div class="topic-tag verified"><i data-lucide="check"></i> 4. การแสดงภาพข้อมูลช่วงเวลา (50 เดือน)</div>
+            <div class="topic-tag verified"><i data-lucide="check"></i> 5. การแสดงภาพข้อมูลแนวโน้ม (Trending Lines)</div>
+            <div class="topic-tag verified"><i data-lucide="check"></i> 6. การแสดงภาพข้อมูลแบบภูมิทัศน์ (SVG Map)</div>
+            <div class="topic-tag verified"><i data-lucide="check"></i> 7. การบอกเล่าเรื่องด้วยข้อมูล (Data Storytelling)</div>
+            <div class="topic-tag verified"><i data-lucide="check"></i> 8. กระดานข้อมูล (Executive Dashboard)</div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: ตารางแมป CLOs, PLOs และ Bloom's Taxonomy ตามประมวลการสอน -->
+        <div class="rubric-section-box">
+          <h4 class="rubric-section-title"><i data-lucide="table"></i> 2. ตารางผลลัพธ์การเรียนรู้ (CLOs & PLOs Mapping Matrix)</h4>
+          <div class="table-responsive">
+            <table class="modern-table rubric-matrix-table">
+              <thead>
+                <tr>
+                  <th style="width: 38%;">CLOs (ผลลัพธ์การเรียนรู้รายวิชา)</th>
+                  <th style="width: 32%;">PLOs (ผลลัพธ์การเรียนรู้หลักสูตร)</th>
+                  <th style="width: 18%;">Bloom's Taxonomy</th>
+                  <th style="width: 12%;">สถานะระบบ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>1. เข้าใจและเรียนรู้ผ่านเครื่องมือ (Tools) ในการวิเคราะห์และนำเสนอ:</strong>
+                    <ul style="margin: 0.35rem 0 0 1rem; padding: 0; font-size: 0.76rem; color: var(--text-secondary);">
+                      <li><strong>Trending:</strong> Dual-axis Line & Area Chart (50 เดือน)</li>
+                      <li><strong>Comparison:</strong> Stacked Bar Chart 10 จังหวัด (คนไทย vs ต่างชาติ)</li>
+                      <li><strong>Classification:</strong> Rose Chart จัดกลุ่ม Tier 1-3 และ 5 ภูมิภาค</li>
+                      <li><strong>Geographical:</strong> Interactive SVG Thailand Map</li>
+                      <li><strong>Data Storytelling:</strong> Guided Storytelling Walkthrough 4 บท</li>
+                    </ul>
+                  </td>
+                  <td>
+                    <strong>PLO4:</strong> สามารถพัฒนาระบบดิจิทัลเพื่อใช้ในการแก้ปัญหาที่กำหนดตามหลักการในการพัฒนาระบบได้<br><br>
+                    <strong>PLO5:</strong> สามารถค้นคว้าหาความรู้ใหม่ เพื่อการเรียนรู้และพัฒนาวิชาชีพของตนเอง
+                  </td>
+                  <td>
+                    <span class="bloom-badge">Articulation</span><br>
+                    <small style="color: var(--text-muted);">(Psychomotor)</small><br><br>
+                    <span class="bloom-badge">Applying</span><br>
+                    <small style="color: var(--text-muted);">(Cognitive)</small>
+                  </td>
+                  <td style="text-align: center;">
+                    <span class="status-badge-verified">
+                      <i data-lucide="check-circle-2"></i> ครบ 100%
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SECTION 3: สรุปหลักฐานเชิงประจักษ์ (Empirical Evidence) -->
+        <div class="rubric-section-box">
+          <h4 class="rubric-section-title"><i data-lucide="database"></i> 3. ชุดข้อมูลจริงและการประมวลผล (Data Pipeline)</h4>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+            ระบบเชื่อมต่อชุดข้อมูลจริงจาก <strong>กระทรวงการท่องเที่ยวและกีฬา (MOTS)</strong> ไฟล์ <code>data/thailand_domestic_tourism_2019_2023_ver2.csv</code> ขนาด <strong>30,800 ระเบียน</strong> ครอบคลุม 77 จังหวัด รวม 50 เดือน มูลค่าสะสม <strong>5.17 ล้านล้านบาท</strong> โดยมีสคริปต์ <code>process_data.py</code> รองรับการตรวจสอบและสร้างข้อมูลซ้ำ (Reproducible Pipeline)
+          </p>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <span style="font-size: 0.78rem; color: var(--text-muted);">โครงงานวิชา 01418325 ภาควิชาวิทยาการคอมพิวเตอร์และสารสนเทศ</span>
+        <button id="rubric-ok-btn" class="btn btn-primary">ปิดหน้าต่างเกณฑ์การประเมิน</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
