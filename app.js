@@ -1175,7 +1175,7 @@ function initDualMapComparison() {
     }
   });
 
-  function updateDualMaps() {
+  async function updateDualMaps() {
     const yearA = yearASel ? yearASel.value : "2019";
     const yearB = yearBSel ? yearBSel.value : "2022";
     const metric = metricSel ? metricSel.value : "revenue_all";
