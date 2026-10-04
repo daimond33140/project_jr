@@ -2,7 +2,6 @@
 // THAILAND DOMESTIC TOURISM OFFICIAL DATASET (2019 - 2023)
 // แหล่งที่มา: กระทรวงการท่องเที่ยวและกีฬา (Ministry of Tourism and Sports - MOTS)
 // ข้อมูลจริง 77 จังหวัด รวม 50 เดือน (มกราคม 2562 - กุมภาพันธ์ 2566)
-// สำหรับวิชา 01418325 ข้อมูลจินตทัศน์ (Data Visualization)
 // ==========================================
 
 const RAW_DATA = {
