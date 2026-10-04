@@ -917,7 +917,7 @@ function initThreeJSBackground() {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 0, 22);
+  camera.position.set(0, 0, 25);
 
   const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
@@ -928,302 +928,12 @@ function initThreeJSBackground() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // 8.1 PROCEDURAL HIGH-RES NASA EARTH TEXTURE WITH THAILAND HIGHLIGHTED
-  function createEarthTexture() {
-    const texCanvas = document.createElement("canvas");
-    texCanvas.width = 2048;
-    texCanvas.height = 1024;
-    const ctx = texCanvas.getContext("2d");
-
-    // Deep Cosmic Ocean
-    const oceanGrad = ctx.createLinearGradient(0, 0, 0, 1024);
-    oceanGrad.addColorStop(0, "#020716");
-    oceanGrad.addColorStop(0.5, "#04112c");
-    oceanGrad.addColorStop(1, "#020716");
-    ctx.fillStyle = oceanGrad;
-    ctx.fillRect(0, 0, 2048, 1024);
-
-    // Subtle Bathymetric Depth Lines
-    ctx.strokeStyle = "rgba(0, 180, 255, 0.05)";
-    ctx.lineWidth = 1;
-    for (let y = 80; y < 1024; y += 75) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.bezierCurveTo(512, y + 25, 1024, y - 25, 2048, y);
-      ctx.stroke();
-    }
-
-    // Latitude & Longitude Graticule Lines (NASA HUD Grid)
-    ctx.strokeStyle = "rgba(0, 240, 255, 0.07)";
-    ctx.lineWidth = 1;
-    for (let lon = 0; lon <= 2048; lon += 128) {
-      ctx.beginPath();
-      ctx.moveTo(lon, 0);
-      ctx.lineTo(lon, 1024);
-      ctx.stroke();
-    }
-    for (let lat = 0; lat <= 1024; lat += 128) {
-      ctx.beginPath();
-      ctx.moveTo(0, lat);
-      ctx.lineTo(2048, lat);
-      ctx.stroke();
-    }
-
-    // Equator & Prime Meridian Emphasis
-    ctx.strokeStyle = "rgba(0, 240, 255, 0.15)";
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(0, 512); // Equator
-    ctx.lineTo(2048, 512);
-    ctx.stroke();
-
-    // Helper: Map Lat/Lon to Canvas X/Y
-    // lon: -180 to +180 -> x: 0 to 2048
-    // lat: +90 to -90 -> y: 0 to 1024
-    function mapCoords(lon, lat) {
-      return {
-        x: ((lon + 180) / 360) * 2048,
-        y: ((90 - lat) / 180) * 1024
-      };
-    }
-
-    // World Continents (Stylized NASA Vector Landmasses)
-    ctx.fillStyle = "#0c1f38";
-    ctx.strokeStyle = "rgba(56, 189, 248, 0.28)";
-    ctx.lineWidth = 1.5;
-
-    function drawPoly(coords, fill = true) {
-      if (coords.length < 3) return;
-      ctx.beginPath();
-      const p0 = mapCoords(coords[0][0], coords[0][1]);
-      ctx.moveTo(p0.x, p0.y);
-      for (let i = 1; i < coords.length; i++) {
-        const p = mapCoords(coords[i][0], coords[i][1]);
-        ctx.lineTo(p.x, p.y);
-      }
-      ctx.closePath();
-      if (fill) ctx.fill();
-      ctx.stroke();
-    }
-
-    // Eurasia & Indochina Landmass
-    drawPoly([
-      [-10, 36], [0, 52], [30, 70], [80, 72], [140, 72], [170, 65],
-      [140, 35], [120, 25], [110, 20], [105, 10], [100, 2], [95, 15],
-      [80, 12], [70, 25], [60, 22], [50, 28], [40, 15], [35, 32],
-      [25, 35], [15, 40], [0, 42], [-5, 36]
-    ]);
-
-    // Africa
-    drawPoly([
-      [-15, 30], [30, 32], [50, 12], [42, -10], [30, -32], [18, -34],
-      [12, -15], [0, 5], [-15, 12], [-18, 20]
-    ]);
-
-    // Americas
-    drawPoly([
-      [-160, 70], [-100, 72], [-60, 60], [-75, 35], [-80, 25], [-100, 20],
-      [-120, 35], [-130, 50], [-160, 60]
-    ]);
-    drawPoly([
-      [-80, 10], [-50, 0], [-35, -5], [-40, -22], [-65, -55], [-75, -50],
-      [-70, -20], [-80, 0]
-    ]);
-
-    // Australia
-    drawPoly([
-      [115, -20], [140, -12], [152, -25], [148, -38], [130, -38], [115, -34]
-    ]);
-
-    // ==========================================
-    // THAILAND SPECIAL ILLUMINATION & TELEMETRY BEACON
-    // Coordinates: Lat 5.6° - 20.5° N, Lon 97.3° - 105.7° E
-    // ==========================================
-    // Thailand High-Resolution Contour Polygon
-    const thaiPolygon = [
-      [99.8, 20.4], [100.5, 20.1], [101.2, 19.6], [101.0, 18.5], [101.8, 17.5],
-      [102.8, 17.8], [104.5, 17.5], [105.5, 15.5], [105.2, 14.3], [103.0, 14.4],
-      [102.5, 12.5], [101.8, 12.6], [100.9, 13.3], [100.5, 13.5], [100.0, 13.2],
-      [99.9, 11.8], [99.2, 10.0], [100.2, 7.2], [101.2, 6.5], [102.1, 6.2],
-      [101.0, 5.8], [100.1, 6.5], [99.5, 7.5], [98.5, 8.2], [98.6, 9.8],
-      [99.0, 11.2], [99.2, 12.5], [98.8, 14.0], [98.2, 15.2], [97.5, 18.0],
-      [98.5, 19.8], [99.8, 20.4]
-    ];
-
-    // Thailand Luminous Ambient Glow
-    const thaiCenter = mapCoords(100.5, 14.5);
-    const radGlow = ctx.createRadialGradient(thaiCenter.x, thaiCenter.y, 5, thaiCenter.x, thaiCenter.y, 65);
-    radGlow.addColorStop(0, "rgba(0, 240, 255, 0.85)");
-    radGlow.addColorStop(0.35, "rgba(16, 185, 129, 0.6)");
-    radGlow.addColorStop(0.7, "rgba(0, 180, 255, 0.25)");
-    radGlow.addColorStop(1, "rgba(0, 240, 255, 0)");
-    ctx.fillStyle = radGlow;
-    ctx.beginPath();
-    ctx.arc(thaiCenter.x, thaiCenter.y, 65, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Fill Thailand territory in vibrant emerald-cyan
-    ctx.fillStyle = "rgba(0, 240, 255, 0.55)";
-    ctx.strokeStyle = "#00f0ff";
-    ctx.lineWidth = 2.5;
-    drawPoly(thaiPolygon, true);
-
-    // Pulsing Radar Rings over Bangkok
-    const bkk = mapCoords(100.5, 13.75);
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(bkk.x, bkk.y, 14, 0, Math.PI * 2);
-    ctx.stroke();
-
-    ctx.strokeStyle = "rgba(0, 240, 255, 0.6)";
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.arc(bkk.x, bkk.y, 28, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Hotspot City Lights in Thailand
-    const thaiCities = [
-      { name: "BANGKOK", lon: 100.5, lat: 13.75, r: 4 },
-      { name: "PHUKET", lon: 98.39, lat: 7.88, r: 3 },
-      { name: "CHIANG MAI", lon: 98.98, lat: 18.79, r: 3 },
-      { name: "PATTAYA", lon: 100.88, lat: 12.92, r: 2.5 },
-      { name: "SAMUI", lon: 99.98, lat: 9.53, r: 2.5 }
-    ];
-
-    thaiCities.forEach(city => {
-      const p = mapCoords(city.lon, city.lat);
-      ctx.fillStyle = "#ffffff";
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, city.r, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "rgba(0, 240, 255, 0.9)";
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, city.r + 3, 0, Math.PI * 2);
-      ctx.stroke();
-    });
-
-    const tex = new THREE.CanvasTexture(texCanvas);
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.ClampToEdgeWrapping;
-    return tex;
-  }
-
-  // 8.2 SCENE OBJECTS: EARTH GROUP
-  const earthGroup = new THREE.Group();
-  scene.add(earthGroup);
-
-  const EARTH_RADIUS = 7.0;
-
-  // Earth Globe Mesh
-  const earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 64, 64);
-  const earthMat = new THREE.MeshPhongMaterial({
-    map: createEarthTexture(),
-    bumpScale: 0.05,
-    specular: new THREE.Color(0x0284c7),
-    shininess: 12
-  });
-  const earthMesh = new THREE.Mesh(earthGeo, earthMat);
-  earthGroup.add(earthMesh);
-
-  // Atmospheric Fresnel Rim Glow Sphere
-  const atmoGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.035, 48, 48);
-  const atmoMat = new THREE.ShaderMaterial({
-    uniforms: {},
-    vertexShader: `
-      varying vec3 vNormal;
-      void main() {
-        vNormal = normalize(normalMatrix * normal);
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
-    fragmentShader: `
-      varying vec3 vNormal;
-      void main() {
-        float intensity = pow(0.68 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
-        gl_FragColor = vec4(0.0, 0.94, 1.0, 1.0) * intensity * 1.4;
-      }
-    `,
-    blending: THREE.AdditiveBlending,
-    side: THREE.BackSide,
-    transparent: true
-  });
-  const atmoMesh = new THREE.Mesh(atmoGeo, atmoMat);
-  earthGroup.add(atmoMesh);
-
-  // Helper: Convert Lat/Lon to 3D Vector3 on Sphere
-  function latLonToVec3(lat, lon, r) {
-    const phi = (90 - lat) * (Math.PI / 180);
-    const theta = (lon + 180) * (Math.PI / 180);
-    return new THREE.Vector3(
-      -(r * Math.sin(phi) * Math.cos(theta)),
-      r * Math.cos(phi),
-      r * Math.sin(phi) * Math.sin(theta)
-    );
-  }
-
-  // 8.3 THAILAND 3D BEACON & RADAR RINGS IN ORBIT
-  const bkkVec = latLonToVec3(13.75, 100.5, EARTH_RADIUS);
-  const bkkNorm = bkkVec.clone().normalize();
-
-  // Vertical Laser Beacon shooting from Bangkok into orbit
-  const beaconLength = 3.6;
-  const beaconGeo = new THREE.CylinderGeometry(0.04, 0.12, beaconLength, 16);
-  beaconGeo.translate(0, beaconLength / 2, 0);
-  const beaconMat = new THREE.MeshBasicMaterial({
-    color: 0x00f0ff,
-    transparent: true,
-    opacity: 0.85
-  });
-  const beaconMesh = new THREE.Mesh(beaconGeo, beaconMat);
-  beaconMesh.position.copy(bkkVec);
-  beaconMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), bkkNorm);
-  earthGroup.add(beaconMesh);
-
-  // Concentric Radar Target Rings at Thailand
-  const ringGeo1 = new THREE.RingGeometry(0.25, 0.32, 32);
-  const ringMat1 = new THREE.MeshBasicMaterial({ color: 0x00f0ff, side: THREE.DoubleSide, transparent: true, opacity: 0.9 });
-  const ringMesh1 = new THREE.Mesh(ringGeo1, ringMat1);
-  ringMesh1.position.copy(bkkVec.clone().add(bkkNorm.clone().multiplyScalar(0.08)));
-  ringMesh1.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), bkkNorm);
-  earthGroup.add(ringMesh1);
-
-  const ringGeo2 = new THREE.RingGeometry(0.55, 0.62, 32);
-  const ringMat2 = new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide, transparent: true, opacity: 0.6 });
-  const ringMesh2 = new THREE.Mesh(ringGeo2, ringMat2);
-  ringMesh2.position.copy(bkkVec.clone().add(bkkNorm.clone().multiplyScalar(0.12)));
-  ringMesh2.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), bkkNorm);
-  earthGroup.add(ringMesh2);
-
-  // Planetary Orbit Trajectory Rings (NASA Eyes Aesthetic)
-  const orbitGroup = new THREE.Group();
-  scene.add(orbitGroup);
-
-  const orbitCurve1 = new THREE.EllipseCurve(0, 0, 11.5, 11.5, 0, 2 * Math.PI, false, 0);
-  const orbitPts1 = orbitCurve1.getPoints(90);
-  const orbitGeo1 = new THREE.BufferGeometry().setFromPoints(orbitPts1);
-  const orbitMat1 = new THREE.LineBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.18 });
-  const orbitLine1 = new THREE.Line(orbitGeo1, orbitMat1);
-  orbitLine1.rotation.x = Math.PI / 2.8;
-  orbitLine1.rotation.y = -Math.PI / 6;
-  orbitGroup.add(orbitLine1);
-
-  const orbitCurve2 = new THREE.EllipseCurve(0, 0, 14.8, 14.8, 0, 2 * Math.PI, false, 0);
-  const orbitPts2 = orbitCurve2.getPoints(120);
-  const orbitGeo2 = new THREE.BufferGeometry().setFromPoints(orbitPts2);
-  const orbitMat2 = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.12 });
-  const orbitLine2 = new THREE.Line(orbitGeo2, orbitMat2);
-  orbitLine2.rotation.x = -Math.PI / 3.2;
-  orbitLine2.rotation.y = Math.PI / 5;
-  orbitGroup.add(orbitLine2);
-
-  // 8.4 STARFIELD (SMOOTH ROUND STARS // NO SQUARE DOTS)
+  // Starfield: Subtle, smooth twinkling cosmic particle background
   const starGeo = new THREE.BufferGeometry();
-  const starCount = 380;
+  const starCount = 350;
   const starPos = new Float32Array(starCount * 3);
   for (let i = 0; i < starCount * 3; i += 3) {
-    const r = 80 + Math.random() * 80;
+    const r = 35 + Math.random() * 75;
     const theta = Math.random() * Math.PI * 2;
     const phi = Math.acos(Math.random() * 2 - 1);
     starPos[i] = r * Math.sin(phi) * Math.cos(theta);
@@ -1232,21 +942,20 @@ function initThreeJSBackground() {
   }
   starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
 
-  // Soft circle sprite canvas for stars
   const starCanvas = document.createElement("canvas");
   starCanvas.width = 32;
   starCanvas.height = 32;
   const sCtx = starCanvas.getContext("2d");
   const sGrad = sCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
   sGrad.addColorStop(0, "rgba(255, 255, 255, 1)");
-  sGrad.addColorStop(0.3, "rgba(147, 197, 253, 0.8)");
+  sGrad.addColorStop(0.35, "rgba(0, 240, 255, 0.75)");
   sGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
   sCtx.fillStyle = sGrad;
   sCtx.fillRect(0, 0, 32, 32);
   const starTex = new THREE.CanvasTexture(starCanvas);
 
   const starMat = new THREE.PointsMaterial({
-    size: 1.8,
+    size: 2.0,
     map: starTex,
     transparent: true,
     blending: THREE.AdditiveBlending,
@@ -1255,115 +964,25 @@ function initThreeJSBackground() {
   const starField = new THREE.Points(starGeo, starMat);
   scene.add(starField);
 
-  // 8.5 LIGHTING (SUNLIGHT IN SPACE)
-  const ambientLight = new THREE.AmbientLight(0x1e293b, 1.2);
+  // Subtle ambient light
+  const ambientLight = new THREE.AmbientLight(0x0f172a, 1.2);
   scene.add(ambientLight);
-
-  const sunLight = new THREE.DirectionalLight(0xffffff, 2.4);
-  sunLight.position.set(25, 12, 20);
-  scene.add(sunLight);
-
-  // 8.6 INITIAL ORIENTATION: LOCK DIRECTLY ONTO THAILAND
-  // Thailand coordinates: Lat 13.75° N, Lon 100.5° E
-  const targetRotation = {
-    x: 0.12,
-    y: -Math.PI * 0.52
-  };
-  earthGroup.rotation.x = targetRotation.x;
-  earthGroup.rotation.y = targetRotation.y;
-
-  // 8.7 ORBIT CONTROLS (MOUSE DRAG TO ROTATE & WHEEL TO ZOOM)
-  let isDragging = false;
-  let previousMousePos = { x: 0, y: 0 };
-  let cameraTargetZ = 22;
-  let autoRotate = true;
-
-  canvas.addEventListener("pointerdown", (e) => {
-    isDragging = true;
-    autoRotate = false;
-    previousMousePos = { x: e.clientX, y: e.clientY };
-  });
-
-  window.addEventListener("pointermove", (e) => {
-    if (!isDragging) return;
-    const deltaX = e.clientX - previousMousePos.x;
-    const deltaY = e.clientY - previousMousePos.y;
-
-    targetRotation.y += deltaX * 0.005;
-    targetRotation.x = Math.max(-Math.PI / 2.3, Math.min(Math.PI / 2.3, targetRotation.x + deltaY * 0.005));
-
-    previousMousePos = { x: e.clientX, y: e.clientY };
-  });
-
-  window.addEventListener("pointerup", () => {
-    isDragging = false;
-  });
-
-  window.addEventListener("wheel", (e) => {
-    cameraTargetZ = Math.max(12, Math.min(32, cameraTargetZ + e.deltaY * 0.015));
-  }, { passive: true });
-
-  // Focus on Thailand function
-  window.focusThailand = function() {
-    targetRotation.x = 0.12;
-    targetRotation.y = -Math.PI * 0.52;
-    cameraTargetZ = 18;
-    autoRotate = false;
-  };
-
-  // Window Resize
-  let resizeTimeout = null;
-  window.addEventListener("resize", () => {
-    if (resizeTimeout) clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      resizeAllCharts();
-    }, 120);
-  }, { passive: true });
-
-  // 8.8 144 FPS RENDER LOOP
-  let clock = new THREE.Clock();
 
   function animate() {
     requestAnimationFrame(animate);
-    const delta = clock.getDelta();
-    const time = clock.getElapsedTime();
-
-    // Gentle auto-idle drift when user is not dragging
-    if (autoRotate && !isDragging) {
-      targetRotation.y += 0.0012;
-    }
-
-    // Smooth inertia interpolation
-    earthGroup.rotation.x += (targetRotation.x - earthGroup.rotation.x) * 0.08;
-    earthGroup.rotation.y += (targetRotation.y - earthGroup.rotation.y) * 0.08;
-
-    // Smooth camera zoom
-    camera.position.z += (cameraTargetZ - camera.position.z) * 0.08;
-
-    // Radar rings pulsating scale
-    const pulse1 = 1 + Math.sin(time * 3.5) * 0.12;
-    ringMesh1.scale.set(pulse1, pulse1, pulse1);
-    const pulse2 = 1 + Math.cos(time * 3.0) * 0.15;
-    ringMesh2.scale.set(pulse2, pulse2, pulse2);
-
-    // Subtle starfield & orbital drift
-    orbitGroup.rotation.z += 0.0004;
-    starField.rotation.y += 0.0001;
-
+    starField.rotation.y += 0.0003;
+    starField.rotation.x += 0.00015;
     renderer.render(scene, camera);
   }
-
   requestAnimationFrame(animate);
-}
 
-// ==========================================
-// 9. PRELOADER & STREAMING BAR (HEXSYNCTH PRESENTATION)
-// ==========================================
-let preloaderTimer = null;
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  });
+}
 
 function runPreloader() {
   const preloader = document.getElementById("hex-preloader");
@@ -1438,41 +1057,10 @@ function runPreloader() {
 // 10. 3D CARD PERSPECTIVE TILT & DYNAMIC GLARE
 // ==========================================
 function init3DCardTilt() {
-  const tiltCards = document.querySelectorAll("[data-tilt], .kpi-card, .chart-card, .stat-summary-card, .table-card");
-
-  tiltCards.forEach(card => {
-    // Ensure glare overlay exists
-    if (!card.querySelector(".card-glare")) {
-      const glare = document.createElement("div");
-      glare.className = "card-glare";
-      card.appendChild(glare);
-    }
-
-    card.addEventListener("mousemove", (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      // Restrict tilt angle to 5.5 degrees for elegant subtle perspective
-      const rotX = -((y - centerY) / centerY) * 5.5;
-      const rotY = ((x - centerX) / centerX) * 5.5;
-
-      card.style.transform = `perspective(1100px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateZ(8px)`;
-      card.style.setProperty("--mouse-x", `${x}px`);
-      card.style.setProperty("--mouse-y", `${y}px`);
-    });
-
-    card.addEventListener("mouseleave", () => {
-      card.style.transform = "perspective(1100px) rotateX(0deg) rotateY(0deg) translateZ(0px)";
-    });
-  });
+  // 3D tilt and mouse glare disabled as requested:
+  // Card hover is now a subtle smooth scale/zoom via CSS without tilt distortion.
 }
 
-// ==========================================
-// 11. NEON CURSOR INITIALIZER (HARDWARE-ACCELERATED)
-// ==========================================
 function initCustomCursor() {
   // Cursor is rendered via native GPU-accelerated SVG in CSS for instant 144Hz+ response
 }
@@ -1480,6 +1068,523 @@ function initCustomCursor() {
 // ==========================================
 // 12. NASA RIGHT DOCK & HUD PANEL SWITCHER (144 FPS)
 // ==========================================
+
+// ==========================================
+// 14. DUAL THAILAND MAP COMPARISON (GOOGLE MAPS / LEAFLET STYLE)
+// ==========================================
+let compareMapA = null;
+let compareMapB = null;
+let geoLayerA = null;
+let geoLayerB = null;
+let provinceLayersA = {};
+let provinceLayersB = {};
+let pmodalChartInstance = null;
+
+function initDualMapComparison() {
+  const containerA = document.getElementById("thailand-leaflet-a");
+  const containerB = document.getElementById("thailand-leaflet-b");
+  if (!containerA || !containerB || typeof L === "undefined") return;
+
+  const yearASel = document.getElementById("compare-year-a");
+  const yearBSel = document.getElementById("compare-year-b");
+  const metricSel = document.getElementById("compare-metric-select");
+
+  // Initialize Map A
+  if (!compareMapA) {
+    compareMapA = L.map('thailand-leaflet-a', {
+      center: [13.2, 101.0],
+      zoom: 6,
+      minZoom: 5,
+      maxZoom: 12,
+      zoomControl: true,
+      attributionControl: false
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      subdomains: 'abcd'
+    }).addTo(compareMapA);
+  }
+
+  // Initialize Map B
+  if (!compareMapB) {
+    compareMapB = L.map('thailand-leaflet-b', {
+      center: [13.2, 101.0],
+      zoom: 6,
+      minZoom: 5,
+      maxZoom: 12,
+      zoomControl: true,
+      attributionControl: false
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      subdomains: 'abcd'
+    }).addTo(compareMapB);
+  }
+
+  // Synchronized panning & zooming between Map A and Map B
+  let isSyncing = false;
+  compareMapA.on('move', () => {
+    if (!isSyncing && compareMapB) {
+      isSyncing = true;
+      compareMapB.setView(compareMapA.getCenter(), compareMapA.getZoom(), { animate: false });
+      isSyncing = false;
+    }
+  });
+
+  compareMapB.on('move', () => {
+    if (!isSyncing && compareMapA) {
+      isSyncing = true;
+      compareMapA.setView(compareMapB.getCenter(), compareMapB.getZoom(), { animate: false });
+      isSyncing = false;
+    }
+  });
+
+  function updateDualMaps() {
+    const yearA = yearASel ? yearASel.value : "2019";
+    const yearB = yearBSel ? yearBSel.value : "2022";
+    const metric = metricSel ? metricSel.value : "revenue_all";
+
+    updateNationalDiffTelemetry(yearA, yearB);
+    renderChoropleth(compareMapA, yearA, metric, "A");
+    renderChoropleth(compareMapB, yearB, metric, "B");
+  }
+
+  function getMetricColor(val, metric) {
+    if (metric === "revenue_all") {
+      if (val >= 40e9) return "#f59e0b"; // Gold / Amber
+      if (val >= 10e9) return "#00f0ff"; // Vibrant Cyan
+      if (val >= 3e9) return "#0284c7";  // Sky Blue
+      if (val >= 1e9) return "#2563eb";  // Royal Blue
+      return "#1e293b";                   // Dark Slate
+    } else if (metric === "no_tourist_all") {
+      if (val >= 4e6) return "#10b981";  // Emerald Green
+      if (val >= 1.5e6) return "#14b8a6"; // Mint
+      if (val >= 6e5) return "#0284c7";   // Sky Blue
+      return "#1e293b";
+    } else if (metric === "revenue_foreign") {
+      if (val >= 20e9) return "#f43f5e"; // Rose Red
+      if (val >= 4e9) return "#ec4899";  // Magenta
+      if (val >= 5e8) return "#a855f7";  // Purple
+      return "#1e293b";
+    } else if (metric === "occupancy_rate") {
+      if (val >= 65) return "#10b981";
+      if (val >= 45) return "#00f0ff";
+      if (val >= 25) return "#f59e0b";
+      return "#ef4444";
+    }
+    return "#00f0ff";
+  }
+
+  function formatMetricVal(val, metric) {
+    if (metric === "revenue_all" || metric === "revenue_foreign") {
+      return formatCurrency(val || 0);
+    } else if (metric === "no_tourist_all") {
+      return formatNumber(val || 0) + " คน";
+    } else if (metric === "occupancy_rate") {
+      return (Number(val) || 0).toFixed(1) + "%";
+    }
+    return val;
+  }
+
+  function renderChoropleth(mapInstance, year, metric, side) {
+    const geoData = window.THAILAND_GEOJSON;
+    if (!geoData) return;
+
+    if (side === "A" && geoLayerA) mapInstance.removeLayer(geoLayerA);
+    if (side === "B" && geoLayerB) mapInstance.removeLayer(geoLayerB);
+
+    const layerStore = side === "A" ? provinceLayersA : provinceLayersB;
+    for (let k in layerStore) delete layerStore[k];
+
+    const layer = L.geoJSON(geoData, {
+      style: function(feature) {
+        const thName = feature.properties.th_name || feature.properties.name;
+        const pYear = RAW_DATA.yearlyProvinceData[thName]?.[year] || {};
+        const val = pYear[metric] || 0;
+        const fillColor = getMetricColor(val, metric);
+
+        return {
+          fillColor: fillColor,
+          fillOpacity: 0.65,
+          color: "rgba(0, 240, 255, 0.4)",
+          weight: 1.2,
+          dashArray: ""
+        };
+      },
+      onEachFeature: function(feature, pLayer) {
+        const thName = feature.properties.th_name || feature.properties.name;
+        const regName = feature.properties.region_name || "";
+        layerStore[thName] = pLayer;
+
+        const pYear = RAW_DATA.yearlyProvinceData[thName]?.[year] || {};
+        const val = pYear[metric] || 0;
+        const yearThai = year === "2019" ? "2562" : year === "2020" ? "2563" : year === "2021" ? "2564" : year === "2562" ? "2565" : year === "2563" ? "2566" : year;
+
+        pLayer.bindTooltip(`
+          <div style="font-weight:700; color:#00f0ff;">${thName} (${regName})</div>
+          <div style="font-size:0.75rem; color:#94a3b8;">ปี ${yearThai}</div>
+          <div style="font-size:0.8rem; font-weight:700; color:#ffffff; margin-top:3px;">${formatMetricVal(val, metric)}</div>
+        `, {
+          className: 'thailand-map-tooltip',
+          sticky: true,
+          direction: 'top'
+        });
+
+        pLayer.on({
+          mouseover: function() {
+            highlightSynchronized(thName);
+          },
+          mouseout: function() {
+            resetSynchronized();
+          },
+          click: function() {
+            openProvinceDetailModal(thName);
+          }
+        });
+      }
+    }).addTo(mapInstance);
+
+    if (side === "A") geoLayerA = layer;
+    if (side === "B") geoLayerB = layer;
+
+    setTimeout(() => {
+      mapInstance.invalidateSize();
+    }, 70);
+  }
+
+  function highlightSynchronized(thName) {
+    const yearA = yearASel ? yearASel.value : "2019";
+    const yearB = yearBSel ? yearBSel.value : "2022";
+    const metric = metricSel ? metricSel.value : "revenue_all";
+
+    const layerA = provinceLayersA[thName];
+    const layerB = provinceLayersB[thName];
+
+    if (layerA) {
+      layerA.setStyle({ weight: 3.5, color: "#ffffff", fillOpacity: 0.95 });
+      layerA.bringToFront();
+    }
+    if (layerB) {
+      layerB.setStyle({ weight: 3.5, color: "#ffffff", fillOpacity: 0.95 });
+      layerB.bringToFront();
+    }
+
+    // Update live comparison callout box
+    const calloutName = document.getElementById("callout-province-name");
+    const calloutGrid = document.getElementById("callout-grid");
+    const calloutValA = document.getElementById("callout-val-a");
+    const calloutValB = document.getElementById("callout-val-b");
+    const calloutDiff = document.getElementById("callout-diff-badge");
+
+    const dataA = RAW_DATA.yearlyProvinceData[thName]?.[yearA] || {};
+    const dataB = RAW_DATA.yearlyProvinceData[thName]?.[yearB] || {};
+
+    const valA = dataA[metric] || 0;
+    const valB = dataB[metric] || 0;
+    const diff = valB - valA;
+    const pct = valA > 0 ? ((diff / valA) * 100).toFixed(1) : 0;
+
+    const yAThai = yearA === "2019" ? "2562" : yearA === "2020" ? "2563" : yearA === "2021" ? "2564" : yearA === "2022" ? "2565" : "2566";
+    const yBThai = yearB === "2019" ? "2562" : yearB === "2020" ? "2563" : yearB === "2021" ? "2564" : yearB === "2022" ? "2565" : "2566";
+
+    if (calloutName) calloutName.textContent = `จังหวัด${thName}`;
+    if (calloutValA) calloutValA.innerHTML = `ปี ${yAThai}: <strong>${formatMetricVal(valA, metric)}</strong>`;
+    if (calloutValB) calloutValB.innerHTML = `ปี ${yBThai}: <strong>${formatMetricVal(valB, metric)}</strong>`;
+
+    if (calloutDiff) {
+      const isPositive = diff >= 0;
+      calloutDiff.className = `callout-diff-badge ${isPositive ? "positive" : "negative"}`;
+      calloutDiff.textContent = `${isPositive ? "+" : ""}${formatMetricVal(diff, metric)} (${isPositive ? "+" : ""}${pct}%)`;
+    }
+
+    if (calloutGrid) calloutGrid.style.display = "flex";
+  }
+
+  function resetSynchronized() {
+    const yearA = yearASel ? yearASel.value : "2019";
+    const yearB = yearBSel ? yearBSel.value : "2022";
+    const metric = metricSel ? metricSel.value : "revenue_all";
+
+    if (geoLayerA) geoLayerA.resetStyle();
+    if (geoLayerB) geoLayerB.resetStyle();
+
+    const calloutName = document.getElementById("callout-province-name");
+    const calloutGrid = document.getElementById("callout-grid");
+    if (calloutName) calloutName.textContent = "ชี้หรือคลิกที่จังหวัดใดก็ได้บนแผนที่เพื่อดูความต่างรายปี";
+    if (calloutGrid) calloutGrid.style.display = "none";
+  }
+
+  function updateNationalDiffTelemetry(yearA, yearB) {
+    const sumA = RAW_DATA.yearlySummary.find(s => s.year === yearA) || {};
+    const sumB = RAW_DATA.yearlySummary.find(s => s.year === yearB) || {};
+
+    const revDiff = (sumB.revenue_all || 0) - (sumA.revenue_all || 0);
+    const revPct = sumA.revenue_all > 0 ? ((revDiff / sumA.revenue_all) * 100).toFixed(1) : 0;
+
+    const tourDiff = (sumB.no_tourist_all || 0) - (sumA.no_tourist_all || 0);
+    const tourPct = sumA.no_tourist_all > 0 ? ((tourDiff / sumA.no_tourist_all) * 100).toFixed(1) : 0;
+
+    const occDiff = ((sumB.occupancy_rate || 0) - (sumA.occupancy_rate || 0)).toFixed(1);
+
+    const fshareA = sumA.revenue_all > 0 ? ((sumA.revenue_foreign / sumA.revenue_all) * 100).toFixed(1) : 0;
+    const fshareB = sumB.revenue_all > 0 ? ((sumB.revenue_foreign / sumB.revenue_all) * 100).toFixed(1) : 0;
+    const fshareDiff = (fshareB - fshareA).toFixed(1);
+
+    // Update Telemetry Elements
+    const diffRevVal = document.getElementById("diff-rev-val");
+    const diffRevPct = document.getElementById("diff-rev-pct");
+    const diffRevSub = document.getElementById("diff-rev-sub");
+
+    const diffTourVal = document.getElementById("diff-tour-val");
+    const diffTourPct = document.getElementById("diff-tour-pct");
+    const diffTourSub = document.getElementById("diff-tour-sub");
+
+    const diffOccVal = document.getElementById("diff-occ-val");
+    const diffOccPct = document.getElementById("diff-occ-pct");
+    const diffOccSub = document.getElementById("diff-occ-sub");
+
+    const diffFshareVal = document.getElementById("diff-fshare-val");
+    const diffFsharePct = document.getElementById("diff-fshare-pct");
+    const diffFshareSub = document.getElementById("diff-fshare-sub");
+
+    if (diffRevVal) diffRevVal.textContent = (revDiff >= 0 ? "+" : "") + formatShortCurrency(revDiff);
+    if (diffRevPct) {
+      diffRevPct.textContent = `${revDiff >= 0 ? "+" : ""}${revPct}%`;
+      diffRevPct.className = `diff-pct ${revDiff >= 0 ? "positive" : "negative"}`;
+    }
+    if (diffRevSub) diffRevSub.textContent = `ปี ${sumA.year_thai} (${formatShortCurrency(sumA.revenue_all)}) → ปี ${sumB.year_thai} (${formatShortCurrency(sumB.revenue_all)})`;
+
+    if (diffTourVal) diffTourVal.textContent = (tourDiff >= 0 ? "+" : "") + formatNumber(tourDiff) + " คน";
+    if (diffTourPct) {
+      diffTourPct.textContent = `${tourDiff >= 0 ? "+" : ""}${tourPct}%`;
+      diffTourPct.className = `diff-pct ${tourDiff >= 0 ? "positive" : "negative"}`;
+    }
+    if (diffTourSub) diffTourSub.textContent = `ปี ${sumA.year_thai} (${formatNumber(sumA.no_tourist_all)}) → ปี ${sumB.year_thai} (${formatNumber(sumB.no_tourist_all)} คน)`;
+
+    if (diffOccVal) diffOccVal.textContent = `${occDiff >= 0 ? "+" : ""}${occDiff}%`;
+    if (diffOccPct) {
+      diffOccPct.textContent = occDiff >= 0 ? "ขยายตัว" : "หดตัว";
+      diffOccPct.className = `diff-pct ${occDiff >= 0 ? "positive" : "negative"}`;
+    }
+    if (diffOccSub) diffOccSub.textContent = `ปี ${sumA.year_thai} (${sumA.occupancy_rate}%) → ปี ${sumB.year_thai} (${sumB.occupancy_rate}%)`;
+
+    if (diffFshareVal) diffFshareVal.textContent = `${fshareDiff >= 0 ? "+" : ""}${fshareDiff}%`;
+    if (diffFsharePct) {
+      diffFsharePct.textContent = fshareDiff >= 0 ? "เพิ่มขึ้น" : "ลดลง";
+      diffFsharePct.className = `diff-pct ${fshareDiff >= 0 ? "positive" : "negative"}`;
+    }
+    if (diffFshareSub) diffFshareSub.textContent = `ปี ${sumA.year_thai} (${fshareA}%) → ปี ${sumB.year_thai} (${fshareB}%)`;
+
+    // Map Column Titles
+    const mapAYearTitle = document.getElementById("map-a-year-title");
+    const mapAStatPill = document.getElementById("map-a-stat-pill");
+    const mapBYearTitle = document.getElementById("map-b-year-title");
+    const mapBStatPill = document.getElementById("map-b-stat-pill");
+
+    if (mapAYearTitle) mapAYearTitle.textContent = `ประเทศไทย ปี ${sumA.year_thai}`;
+    if (mapAStatPill) mapAStatPill.textContent = `รวม: ${formatShortCurrency(sumA.revenue_all)}`;
+    if (mapBYearTitle) mapBYearTitle.textContent = `ประเทศไทย ปี ${sumB.year_thai}`;
+    if (mapBStatPill) mapBStatPill.textContent = `รวม: ${formatShortCurrency(sumB.revenue_all)}`;
+  }
+
+  yearASel?.addEventListener("change", updateDualMaps);
+  yearBSel?.addEventListener("change", updateDualMaps);
+  metricSel?.addEventListener("change", updateDualMaps);
+
+  // Initial update
+  updateDualMaps();
+}
+
+// ==========================================
+// 15. PROVINCE DETAIL INSPECTION MODAL
+// ==========================================
+function openProvinceDetailModal(provinceName) {
+  const modal = document.getElementById("province-detail-modal");
+  if (!modal) return;
+
+  const prov = RAW_DATA.provinces.find(p => p.name === provinceName) || {};
+  const provYearly = RAW_DATA.yearlyProvinceData[provinceName] || {};
+
+  const yearASel = document.getElementById("compare-year-a");
+  const yearBSel = document.getElementById("compare-year-b");
+  const yearA = yearASel ? yearASel.value : "2019";
+  const yearB = yearBSel ? yearBSel.value : "2022";
+  const yAThai = yearA === "2019" ? "2562" : yearA === "2020" ? "2563" : yearA === "2021" ? "2564" : yearA === "2022" ? "2565" : "2566";
+  const yBThai = yearB === "2019" ? "2562" : yearB === "2020" ? "2563" : yearB === "2021" ? "2564" : yearB === "2022" ? "2565" : "2566";
+
+  const pDataA = provYearly[yearA] || {};
+  const pDataB = provYearly[yearB] || {};
+
+  // Title & Subtitle
+  const pTitle = document.getElementById("pmodal-title");
+  const pSub = document.getElementById("pmodal-subtitle");
+  if (pTitle) pTitle.textContent = `จังหวัด${provinceName} (${prov.name_en || provinceName})`;
+  if (pSub) pSub.textContent = `${prov.region_name || "ภูมิภาค"} • ${prov.tier_name || prov.tier || "เมืองท่องเที่ยว"}`;
+
+  // Comparison Banner
+  const pYrALbl = document.getElementById("pmodal-yr-a-lbl");
+  const pYrAVal = document.getElementById("pmodal-yr-a-val");
+  const pYrBLbl = document.getElementById("pmodal-yr-b-lbl");
+  const pYrBVal = document.getElementById("pmodal-yr-b-val");
+  const pDiffBadge = document.getElementById("pmodal-diff-badge");
+
+  if (pYrALbl) pYrALbl.textContent = `ปี ${yAThai}`;
+  if (pYrAVal) pYrAVal.textContent = formatCurrency(pDataA.revenue_all || 0);
+  if (pYrBLbl) pYrBLbl.textContent = `ปี ${yBThai}`;
+  if (pYrBVal) pYrBVal.textContent = formatCurrency(pDataB.revenue_all || 0);
+
+  const diffRev = (pDataB.revenue_all || 0) - (pDataA.revenue_all || 0);
+  const diffPct = pDataA.revenue_all > 0 ? ((diffRev / pDataA.revenue_all) * 100).toFixed(1) : 0;
+
+  if (pDiffBadge) {
+    pDiffBadge.className = `pdiff-badge ${diffRev >= 0 ? "positive" : "negative"}`;
+    pDiffBadge.textContent = `${diffRev >= 0 ? "+" : ""}${formatCurrency(diffRev)} (${diffRev >= 0 ? "+" : ""}${diffPct}%)`;
+  }
+
+  // 4 Provincial KPI Stat Cards
+  const pRevAll = document.getElementById("pmodal-rev-all");
+  const pRevShare = document.getElementById("pmodal-rev-share");
+  const pFShare = document.getElementById("pmodal-foreign-share");
+  const pTourists = document.getElementById("pmodal-tourists");
+  const pSpend = document.getElementById("pmodal-spend");
+  const pOcc = document.getElementById("pmodal-occupancy");
+
+  if (pRevAll) pRevAll.textContent = formatCurrency(prov.revenue_all || 0);
+  if (pRevShare) pRevShare.textContent = `ส่วนแบ่งรายได้ประเทศ ${(prov.revenue_share || 0).toFixed(2)}%`;
+  if (pFShare) pFShare.textContent = `${(prov.foreign_share || 0).toFixed(1)}%`;
+  if (pTourists) pTourists.textContent = formatNumber(prov.no_tourist_all || 0) + " คน";
+  if (pSpend) pSpend.textContent = "฿" + Number(prov.spend_per_head || 0).toLocaleString() + " /คน";
+  if (pOcc) pOcc.textContent = `อัตราเข้าพักเฉลี่ย ${(prov.occupancy_rate || 0).toFixed(1)}%`;
+
+  // Render 5-Year Trend Chart
+  renderProvince5YrChart(provinceName);
+
+  modal.classList.add("show");
+}
+
+function renderProvince5YrChart(provinceName) {
+  const chartDom = document.getElementById("province-5yr-chart");
+  if (!chartDom) return;
+
+  if (!pmodalChartInstance) {
+    pmodalChartInstance = echarts.init(chartDom);
+  }
+
+  const provYearly = RAW_DATA.yearlyProvinceData[provinceName] || {};
+  const years = ["2019", "2020", "2021", "2022", "2023"];
+  const xLabels = ["ปี 2562", "ปี 2563", "ปี 2564", "ปี 2565", "ปี 2566"];
+
+  const thaiRev = years.map(y => (provYearly[y]?.revenue_thai || 0) / 1e6);
+  const foreignRev = years.map(y => (provYearly[y]?.revenue_foreign || 0) / 1e6);
+  const occRates = years.map(y => provYearly[y]?.occupancy_rate || 0);
+
+  const c = getChartColors();
+
+  const option = {
+    backgroundColor: "transparent",
+    tooltip: {
+      trigger: "axis",
+      backgroundColor: c.tooltipBg,
+      borderColor: c.tooltipBorder,
+      borderWidth: 1,
+      textStyle: { color: c.tooltipText },
+      formatter: function(params) {
+        let res = `<div style="font-weight:700; color:#00f0ff;">${params[0].name}</div>`;
+        params.forEach(p => {
+          if (p.seriesName === "อัตราเข้าพัก") {
+            res += `<div style="color:${p.color};">${p.seriesName}: <strong>${p.value}%</strong></div>`;
+          } else {
+            res += `<div style="color:${p.color};">${p.seriesName}: <strong>฿${p.value.toFixed(1)} ล้าน</strong></div>`;
+          }
+        });
+        return res;
+      }
+    },
+    grid: {
+      left: "4%",
+      right: "5%",
+      top: "15%",
+      bottom: "10%",
+      containLabel: true
+    },
+    legend: {
+      data: ["รายได้คนไทย", "รายได้ต่างชาติ", "อัตราเข้าพัก"],
+      textStyle: { color: c.textColor },
+      top: "2%"
+    },
+    xAxis: {
+      type: "category",
+      data: xLabels,
+      axisLabel: { color: c.textColor },
+      axisLine: { lineStyle: { color: c.axisLine } }
+    },
+    yAxis: [
+      {
+        type: "value",
+        name: "รายได้ (ล้านบาท)",
+        nameTextStyle: { color: c.textColor },
+        axisLabel: { color: c.textColor, formatter: "{value}M" },
+        splitLine: { lineStyle: { color: c.splitLine } }
+      },
+      {
+        type: "value",
+        name: "อัตราเข้าพัก (%)",
+        nameTextStyle: { color: c.textColor },
+        min: 0,
+        max: 100,
+        axisLabel: { color: c.textColor, formatter: "{value}%" },
+        splitLine: { show: false }
+      }
+    ],
+    series: [
+      {
+        name: "รายได้คนไทย",
+        type: "bar",
+        data: thaiRev,
+        itemStyle: { color: "#38bdf8", borderRadius: [4, 4, 0, 0] }
+      },
+      {
+        name: "รายได้ต่างชาติ",
+        type: "bar",
+        data: foreignRev,
+        itemStyle: { color: "#f59e0b", borderRadius: [4, 4, 0, 0] }
+      },
+      {
+        name: "อัตราเข้าพัก",
+        type: "line",
+        yAxisIndex: 1,
+        data: occRates,
+        smooth: true,
+        symbol: "circle",
+        symbolSize: 8,
+        itemStyle: { color: "#00f0ff" },
+        lineStyle: { width: 3, color: "#00f0ff" }
+      }
+    ]
+  };
+
+  pmodalChartInstance.setOption(option);
+  setTimeout(() => {
+    pmodalChartInstance.resize();
+  }, 100);
+}
+
+// Modal Close Listeners
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("province-detail-modal");
+  document.getElementById("pmodal-close-btn")?.addEventListener("click", () => {
+    modal?.classList.remove("show");
+  });
+  document.getElementById("pmodal-close-bottom-btn")?.addEventListener("click", () => {
+    modal?.classList.remove("show");
+  });
+  modal?.addEventListener("click", (e) => {
+    if (e.target === modal) modal.classList.remove("show");
+  });
+});
+
 function setupViewSwitcher() {
   const dockButtons = document.querySelectorAll(".dock-btn[data-view]");
   const hudContainer = document.getElementById("nasa-hud-panel-container");
@@ -1564,12 +1669,12 @@ function setupViewSwitcher() {
 
   // Minimize HUD to 3D Orbit
   hudCloseBtn?.addEventListener("click", () => {
-    setActiveView("orbit");
+    setActiveView("dual-compare");
   });
 
   // Telemetry HUD card buttons
   document.getElementById("btn-focus-thailand")?.addEventListener("click", () => {
-    setActiveView("orbit");
+    setActiveView("dual-compare");
     if (window.focusThailand) window.focusThailand();
   });
 
@@ -1594,7 +1699,7 @@ function setupViewSwitcher() {
   });
 
   // Default to 3D Orbit view so space globe is 100% visible and unblocked
-  setActiveView("orbit");
+  setActiveView("dual-compare");
 }
 
 // ==========================================
