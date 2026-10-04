@@ -517,23 +517,23 @@ def main():
             continue
 
     if not server:
-        print("❌ ไม่สามารถเปิด Local Server ได้")
+        safe_print("❌ ไม่สามารถเปิด Local Server ได้")
         sys.exit(1)
 
     with state_lock:
         app_state["port"] = port
 
     app_url = f"http://127.0.0.1:{port}"
-    print("=" * 65)
-    print(f" 🚀 HexSyncTH Multi-Project Engine — Online: {app_url}")
-    print("=" * 65)
+    safe_print("=" * 65)
+    safe_print(f" 🚀 HexSyncTH Multi-Project Engine — Online: {app_url}")
+    safe_print("=" * 65)
 
     threading.Timer(0.8, lambda: open_app_window(app_url)).start()
 
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\n🛑 ปิดโปรแกรม HexSyncTH เรียบร้อยแล้ว")
+        safe_print("\n🛑 ปิดโปรแกรม HexSyncTH เรียบร้อยแล้ว")
         server.server_close()
 
 if __name__ == "__main__":
