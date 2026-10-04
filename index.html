@@ -135,99 +135,59 @@
       </div>
     </header>
 
-    <!-- FILTER & CONTROL RIBBON -->
-    <section class="filter-ribbon" data-tilt>
-      <div class="filter-group">
-        <label for="year-filter"><i data-lucide="calendar"></i> ช่วงปีที่วิเคราะห์:</label>
-        <select id="year-filter" class="form-select">
-          <option value="all">ข้อมูลรวมทั้งหมด (2562 - 2566 | 50 เดือน)</option>
-          <option value="2019">ปี 2562 (Pre-COVID Golden Year)</option>
-          <option value="2020">ปี 2563 (ช่วงวิกฤตระบาดระลอกแรก)</option>
-          <option value="2021">ปี 2564 (จุดต่ำสุด / Sandbox)</option>
-          <option value="2022">ปี 2565 (ฟื้นตัวเต็มรูปแบบ Reopening)</option>
-          <option value="2023">ปี 2566 (ไตรมาสแรก)</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label for="region-filter"><i data-lucide="map-pin"></i> ภูมิภาค:</label>
-        <select id="region-filter" class="form-select">
-          <option value="all">ทั่วประเทศ (ทุก 77 จังหวัด)</option>
-          <option value="central">ภาคกลาง</option>
-          <option value="north">ภาคเหนือ</option>
-          <option value="east_northeast">ภาคตะวันออกเฉียงเหนือ</option>
-          <option value="east">ภาคตะวันออก</option>
-          <option value="south">ภาคใต้</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label for="tier-filter"><i data-lucide="award"></i> กลุ่มเมืองท่องเที่ยว:</label>
-        <select id="tier-filter" class="form-select">
-          <option value="all">ทุกกลุ่มเมืองท่องเที่ยว</option>
-          <option value="Tier 1">Tier 1: ฮับหลักระดับโลก (กทม., ภูเก็ต, ชลบุรี, เชียงใหม่)</option>
-          <option value="Tier 2">Tier 2: ท่องเที่ยวระดับชาติ (ทะเล/ธรรมชาติ/ประวัติศาสตร์)</option>
-          <option value="Tier 3">Tier 3: เมืองรองน่าเที่ยว</option>
-        </select>
-      </div>
-
-      <div class="filter-actions">
-        <button id="reset-filter-btn" class="btn btn-text">
-          <i data-lucide="rotate-ccw"></i> รีเซ็ตตัวกรอง
-        </button>
-        <div class="active-filter-indicator">
-          <span class="live-dot"></span> แสดงผล: <span id="current-filter-label">ข้อมูลรวม 2562-2566 • ทั่วประเทศ</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- NASA JPL EYES // 3D THAILAND TELEMETRY HUD OVERLAY -->
+    <!-- NASA JPL EYES // 3D THAILAND TELEMETRY HUD (COMPACT FLOATING CORNER WIDGET) -->
     <div class="thailand-telemetry-hud" id="thailand-telemetry-hud">
       <div class="hud-glare"></div>
-      <div class="hud-badge-tag">
-        <span class="live-orbit-dot"></span>
-        <span>NASA / JPL EYES ARCHITECTURE // TARGET ACQUIRED</span>
+      <div class="hud-top-row">
+        <div class="hud-badge-tag">
+          <span class="live-orbit-dot"></span>
+          <span>NASA EYES // TARGET ACQUIRED</span>
+        </div>
+        <button id="btn-toggle-telemetry" class="btn-toggle-telemetry" title="ย่อ / ขยายข้อมูล Telemetry">
+          <i data-lucide="chevron-down" id="telemetry-chevron"></i>
+        </button>
       </div>
+
       <div class="hud-target-title">
         <i data-lucide="crosshair" class="hud-crosshair-icon"></i>
         <span>THAILAND (สยามประเทศ)</span>
       </div>
       <div class="hud-coords">
-        <span>LAT: 13.7563° N</span> • <span>LON: 100.5018° E</span> • <span>ALT: 420 KM</span>
+        <span>LAT: 13.7563° N</span> • <span>LON: 100.5018° E</span>
       </div>
-      <div class="hud-stats-grid">
-        <div class="hud-stat-item">
-          <span class="hud-lbl">สะสมรายได้รวม:</span>
-          <span class="hud-val">฿5.17T (5.17 ล้านล้าน)</span>
+
+      <div class="hud-collapsible-body" id="hud-collapsible-body">
+        <div class="hud-stats-grid">
+          <div class="hud-stat-item">
+            <span class="hud-lbl">สะสมรายได้รวม:</span>
+            <span class="hud-val">฿5.17T (5.17 ล้านล้าน)</span>
+          </div>
+          <div class="hud-stat-item">
+            <span class="hud-lbl">นักท่องเที่ยวสะสม:</span>
+            <span class="hud-val">742.0M คน (50 เดือน)</span>
+          </div>
+          <div class="hud-stat-item">
+            <span class="hud-lbl">ฮับท่องเที่ยวหลัก:</span>
+            <span class="hud-val">กทม. • ภูเก็ต • เชียงใหม่ • ชลบุรี</span>
+          </div>
+          <div class="hud-stat-item">
+            <span class="hud-lbl">ชุดข้อมูลทางการ:</span>
+            <span class="hud-val">30,800 แถว (กระทรวงการท่องเที่ยว)</span>
+          </div>
         </div>
-        <div class="hud-stat-item">
-          <span class="hud-lbl">นักท่องเที่ยวสะสม:</span>
-          <span class="hud-val">742.0M คน (50 เดือน)</span>
+        <div class="hud-actions-row">
+          <button id="btn-focus-thailand" class="btn-hud-action active" title="รีเซ็ตมุมกล้องล็อกเป้าประเทศไทย">
+            <i data-lucide="crosshair"></i> ล็อกเป้าประเทศไทย
+          </button>
+          <button id="btn-open-overview" class="btn-hud-action" title="เปิดหน้าต่างข้อมูลสถิติ">
+            <i data-lucide="bar-chart-3"></i> เปิดข้อมูลสถิติ
+          </button>
         </div>
-        <div class="hud-stat-item">
-          <span class="hud-lbl">ฮับท่องเที่ยวหลัก:</span>
-          <span class="hud-val">กทม. • ภูเก็ต • เชียงใหม่ • ชลบุรี</span>
-        </div>
-        <div class="hud-stat-item">
-          <span class="hud-lbl">ชุดข้อมูลทางการ:</span>
-          <span class="hud-val">30,800 แถว (กระทรวงการท่องเที่ยว)</span>
-        </div>
-      </div>
-      <div class="hud-actions-row">
-        <button id="btn-focus-thailand" class="btn-hud-action active" title="รีเซ็ตมุมกล้องล็อกเป้าประเทศไทย">
-          <i data-lucide="crosshair"></i> ล็อกเป้าประเทศไทย
-        </button>
-        <button id="btn-open-overview" class="btn-hud-action" title="เปิดหน้าต่างข้อมูลสถิติ">
-          <i data-lucide="bar-chart-3"></i> เปิดข้อมูลสถิติ
-        </button>
-      </div>
-      <div class="hud-orbit-hint">
-        <i data-lucide="compass"></i> คลิกค้างลากเมาส์หมุนโลก 3D • เลื่อนลูกกลิ้งซูมเข้า-ออก
       </div>
     </div>
 
-    <!-- NASA RIGHT DOCK NAVIGATION (เอาปุ่มไว้ขวาตามสไตล์ NASA EYES) -->
-    <aside class="nasa-right-dock" id="nasa-right-dock" aria-label="NASA Navigation Dock">
+    <!-- NASA HUD DOCK NAVIGATION (ย้ายมาซ้ายตามที่ผู้ใช้สั่ง) -->
+    <aside class="nasa-hud-dock" id="nasa-hud-dock" aria-label="NASA Navigation Dock">
       <div class="dock-header-label">
         <span class="dock-dot"></span>
         <span class="dock-text">HUD DOCK</span>
@@ -282,6 +242,52 @@
           <span>ย่อไปที่ 3D Orbit</span>
         </button>
       </div>
+
+      <!-- FILTER & CONTROL RIBBON (MOVED INSIDE HUD PANEL SO IT DOES NOT BLOCK 3D GLOBE) -->
+      <section class="filter-ribbon" data-tilt>
+        <div class="filter-group">
+          <label for="year-filter"><i data-lucide="calendar"></i> ช่วงปีที่วิเคราะห์:</label>
+          <select id="year-filter" class="form-select">
+            <option value="all">ข้อมูลรวมทั้งหมด (2562 - 2566 | 50 เดือน)</option>
+            <option value="2019">ปี 2562 (Pre-COVID Golden Year)</option>
+            <option value="2020">ปี 2563 (ช่วงวิกฤตระบาดระลอกแรก)</option>
+            <option value="2021">ปี 2564 (จุดต่ำสุด / Sandbox)</option>
+            <option value="2022">ปี 2565 (ฟื้นตัวเต็มรูปแบบ Reopening)</option>
+            <option value="2023">ปี 2566 (ไตรมาสแรก)</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="region-filter"><i data-lucide="map-pin"></i> ภูมิภาค:</label>
+          <select id="region-filter" class="form-select">
+            <option value="all">ทั่วประเทศ (ทุก 77 จังหวัด)</option>
+            <option value="central">ภาคกลาง</option>
+            <option value="north">ภาคเหนือ</option>
+            <option value="east_northeast">ภาคตะวันออกเฉียงเหนือ</option>
+            <option value="east">ภาคตะวันออก</option>
+            <option value="south">ภาคใต้</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="tier-filter"><i data-lucide="award"></i> กลุ่มเมืองท่องเที่ยว:</label>
+          <select id="tier-filter" class="form-select">
+            <option value="all">ทุกกลุ่มเมืองท่องเที่ยว</option>
+            <option value="Tier 1">Tier 1: ฮับหลักระดับโลก (กทม., ภูเก็ต, ชลบุรี, เชียงใหม่)</option>
+            <option value="Tier 2">Tier 2: ท่องเที่ยวระดับชาติ (ทะเล/ธรรมชาติ/ประวัติศาสตร์)</option>
+            <option value="Tier 3">Tier 3: เมืองรองน่าเที่ยว</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button id="reset-filter-btn" class="btn btn-text">
+            <i data-lucide="rotate-ccw"></i> รีเซ็ตตัวกรอง
+          </button>
+          <div class="active-filter-indicator">
+            <span class="live-dot"></span> แสดงผล: <span id="current-filter-label">ข้อมูลรวม 2562-2566 • ทั่วประเทศ</span>
+          </div>
+        </div>
+      </section>
 
     <!-- KPI SUMMARY CARDS (3D TILT WITH COUNTERS) -->
     <section class="kpi-grid" id="sec-kpis">
