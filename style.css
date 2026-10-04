@@ -1387,15 +1387,15 @@ button, a, select, input, [role="button"], .switcher-btn, .kpi-card, .btn, .map-
 }
 
 .preloader-title {
-  font-family: 'Syne', 'Outfit', sans-serif;
-  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  font-family: 'Outfit', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-size: clamp(2.6rem, 5.8vw, 4.4rem);
   font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 35%, #38bdf8 70%, #a855f7 100%);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 35%, #38bdf8 70%, #818cf8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 50px rgba(56, 189, 248, 0.35);
+  text-shadow: 0 0 40px rgba(56, 189, 248, 0.4);
 }
 
 .preloader-subtitle {
