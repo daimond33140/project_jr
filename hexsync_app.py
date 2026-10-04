@@ -21,6 +21,7 @@ import sys
 import uuid
 import webbrowser
 import concurrent.futures
+import re
 
 # Ensure stdout and stderr are safely handled in PyInstaller windowed mode
 if sys.stdout is None:
