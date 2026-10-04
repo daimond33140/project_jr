@@ -864,43 +864,46 @@ function initThreeJSBackground() {
   if (!canvas || typeof THREE === "undefined") return;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, -9, 24);
+  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, -6, 22);
 
-  const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+  const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    alpha: true,
+    antialias: false,
+    powerPreference: "high-performance"
+  });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
-  // 3D Terrain Wave Plane
-  const geom = new THREE.PlaneGeometry(75, 50, 52, 40);
-
-  // Wireframe Mesh
+  // High-performance 3D Wireframe Plane (144 FPS Optimized)
+  const geom = new THREE.PlaneGeometry(80, 55, 28, 20);
   const wireMaterial = new THREE.MeshBasicMaterial({
     color: 0x0284c7,
     wireframe: true,
     transparent: true,
-    opacity: 0.14
+    opacity: 0.12
   });
   const wireMesh = new THREE.Mesh(geom, wireMaterial);
-  wireMesh.rotation.x = -Math.PI / 2.5;
+  wireMesh.rotation.x = -Math.PI / 2.6;
   wireMesh.position.y = -6;
   scene.add(wireMesh);
 
-  // Particle Vertices (Points)
+  // Glowing Particle Cloud
   const pointsMaterial = new THREE.PointsMaterial({
     color: 0x38bdf8,
-    size: 0.18,
+    size: 0.22,
     transparent: true,
-    opacity: 0.85,
+    opacity: 0.8,
     blending: THREE.AdditiveBlending
   });
   const pointsMesh = new THREE.Points(geom, pointsMaterial);
-  pointsMesh.rotation.x = -Math.PI / 2.5;
+  pointsMesh.rotation.x = -Math.PI / 2.6;
   pointsMesh.position.y = -6;
   scene.add(pointsMesh);
 
-  // Floating 3D Geometric Accents
-  const icoGeom = new THREE.IcosahedronGeometry(3.6, 1);
+  // Floating Geometric Accents
+  const icoGeom = new THREE.IcosahedronGeometry(3.5, 0);
   const icoMat = new THREE.MeshBasicMaterial({
     color: 0x818cf8,
     wireframe: true,
@@ -908,21 +911,21 @@ function initThreeJSBackground() {
     opacity: 0.22
   });
   const icosahedron = new THREE.Mesh(icoGeom, icoMat);
-  icosahedron.position.set(24, 6, -8);
+  icosahedron.position.set(22, 5, -8);
   scene.add(icosahedron);
 
-  const octaGeom = new THREE.OctahedronGeometry(2.4, 0);
+  const octaGeom = new THREE.OctahedronGeometry(2.2, 0);
   const octaMat = new THREE.MeshBasicMaterial({
     color: 0x38bdf8,
     wireframe: true,
     transparent: true,
-    opacity: 0.28
+    opacity: 0.26
   });
   const octahedron = new THREE.Mesh(octaGeom, octaMat);
-  octahedron.position.set(-22, -2, -6);
+  octahedron.position.set(-20, -2, -6);
   scene.add(octahedron);
 
-  // Mouse Parallax coordinates
+  // Smooth mouse coordinates
   let mouseX = 0;
   let mouseY = 0;
   let targetX = 0;
@@ -931,53 +934,46 @@ function initThreeJSBackground() {
   window.addEventListener("mousemove", (e) => {
     mouseX = (e.clientX / window.innerWidth) * 2 - 1;
     mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-  });
+  }, { passive: true });
 
-  // Window Resize
+  // Window Resize Debounce
+  let resizeTimeout = null;
   window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    resizeAllCharts();
-  });
+    if (resizeTimeout) clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      resizeAllCharts();
+    }, 150);
+  }, { passive: true });
 
-  // Animation Loop
-  const clock = new THREE.Clock();
-
+  // 144 FPS Hardware-Accelerated Render Loop
   function animate() {
     requestAnimationFrame(animate);
-    const elapsedTime = clock.getElapsedTime();
 
-    // Undulate wave vertices dynamically
-    const p = geom.attributes.position;
-    for (let i = 0; i < p.count; i++) {
-      const u = p.getX(i);
-      const v = p.getY(i);
-      const wave1 = Math.sin(u * 0.18 + elapsedTime * 1.1) * Math.cos(v * 0.22 + elapsedTime * 0.85) * 2.2;
-      const wave2 = Math.sin(u * 0.07 + v * 0.09 + elapsedTime * 1.4) * 1.1;
-      p.setZ(i, wave1 + wave2);
-    }
-    p.needsUpdate = true;
+    // Pure GPU matrix rotation (0 CPU load)
+    wireMesh.rotation.z += 0.0006;
+    pointsMesh.rotation.z += 0.0006;
 
-    // Rotate geometric shapes
-    icosahedron.rotation.x = elapsedTime * 0.18;
-    icosahedron.rotation.y = elapsedTime * 0.25;
-    octahedron.rotation.y = -elapsedTime * 0.22;
-    octahedron.rotation.z = elapsedTime * 0.14;
+    icosahedron.rotation.x += 0.005;
+    icosahedron.rotation.y += 0.007;
+    octahedron.rotation.y -= 0.006;
+    octahedron.rotation.z += 0.004;
 
-    // Smooth camera mouse parallax
-    targetX += (mouseX * 3.5 - targetX) * 0.04;
-    targetY += (mouseY * 2.2 - targetY) * 0.04;
+    // Fluid mouse parallax
+    targetX += (mouseX * 3.2 - targetX) * 0.06;
+    targetY += (mouseY * 2.0 - targetY) * 0.06;
 
     camera.position.x = targetX;
-    camera.position.y = -9 + targetY;
+    camera.position.y = -6 + targetY;
     camera.lookAt(0, 0, 0);
 
     renderer.render(scene, camera);
   }
 
-  animate();
+  requestAnimationFrame(animate);
 }
 
 // ==========================================
