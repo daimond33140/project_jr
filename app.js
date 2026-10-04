@@ -1651,7 +1651,6 @@ function setupViewSwitcher() {
       setTimeout(() => {
         regionLeafletMap?.invalidateSize();
       }, 150);
-    }
     } else if (view === "rank") {
       if (hudTitle) hudTitle.textContent = "เปรียบเทียบ 10 อันดับจังหวัด & การจัดกลุ่มเมือง (CLO1: Rankings & Tiers)";
       allSections.forEach(s => s?.classList.add("view-hidden"));
