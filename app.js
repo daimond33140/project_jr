@@ -1070,45 +1070,29 @@ function init3DCardTilt() {
 }
 
 // ==========================================
-// 11. CUSTOM MAGNETIC CURSOR ENGINE
+// 11. CLEAN GLOWING MOUSE AURA (NON-CLUTTERED)
 // ==========================================
 function initCustomCursor() {
-  const dot = document.getElementById("custom-cursor-dot");
-  const ring = document.getElementById("custom-cursor-ring");
-  if (!dot || !ring) return;
+  const glow = document.getElementById("cursor-glow");
+  if (!glow) return;
 
-  let mouseX = -100;
-  let mouseY = -100;
-  let ringX = -100;
-  let ringY = -100;
+  let mouseX = -500;
+  let mouseY = -500;
+  let glowX = -500;
+  let glowY = -500;
 
   window.addEventListener("mousemove", (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
   });
 
-  function renderCursor() {
-    ringX += (mouseX - ringX) * 0.16;
-    ringY += (mouseY - ringY) * 0.16;
-    ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
-    requestAnimationFrame(renderCursor);
+  function renderCursorGlow() {
+    glowX += (mouseX - glowX) * 0.15;
+    glowY += (mouseY - glowY) * 0.15;
+    glow.style.transform = `translate(${glowX}px, ${glowY}px)`;
+    requestAnimationFrame(renderCursorGlow);
   }
-  requestAnimationFrame(renderCursor);
-
-  // Magnetic hover states on buttons, links, cards, filters
-  const hoverTargets = "button, a, select, input, .kpi-card, .btn, .map-region-btn, tr, .topic-tag, .btn-replay-intro, .btn-intro-replay";
-  document.addEventListener("mouseover", (e) => {
-    if (e.target.closest(hoverTargets)) {
-      ring.classList.add("active");
-    }
-  });
-
-  document.addEventListener("mouseout", (e) => {
-    if (e.target.closest(hoverTargets)) {
-      ring.classList.remove("active");
-    }
-  });
+  requestAnimationFrame(renderCursorGlow);
 }
 
 // ==========================================
