@@ -15,10 +15,23 @@
   <div class="scanlines"></div>
   <div class="vignette"></div>
 
+  <!-- Top Draggable App Bar (Frameless Desktop Titlebar) -->
+  <div class="custom-titlebar" pywebview-drag-region>
+    <div class="titlebar-drag-area">
+      <span class="cyber-pulse-dot"></span>
+      <span class="titlebar-app-name">HEXSYNC·TH // CYBERPUNK GIT ENGINE [STANDALONE]</span>
+    </div>
+    <div class="window-controls">
+      <button id="winMinBtn" class="win-btn win-min" title="ย่อหน้าต่าง (Minimize)">─</button>
+      <button id="winMaxBtn" class="win-btn win-max" title="ขยายเต็มจอ / ย่อกลับ (Maximize)">▢</button>
+      <button id="winCloseBtn" class="win-btn win-close" title="ปิดโปรแกรม (Close)">✕</button>
+    </div>
+  </div>
+
   <!-- Main Container -->
   <div class="app-layout">
     <!-- Header -->
-    <header class="cyber-header">
+    <header class="cyber-header" pywebview-drag-region>
       <div class="brand">
         <div class="brand-icon">
           <svg viewBox="0 0 100 100" class="hex-svg">
@@ -39,6 +52,12 @@
           <span class="selector-icon">📁</span>
           <select id="projectQuickSelect" class="cyber-select" title="เลือกโปรเจกต์ที่ต้องการ Sync"></select>
         </div>
+
+        <!-- GitHub Repos Explorer Button -->
+        <button id="openGithubExplorerBtn" class="cyber-glow-btn github-btn" title="ตรวจสอบและเลือกโปรเจกต์บน GitHub">
+          <span class="btn-icon">🐙</span>
+          <span>GITHUB REPOS</span>
+        </button>
 
         <button id="openConfigBtn" class="cyber-glow-btn" title="ตั้งค่าโปรเจกต์และ GitHub">
           <span class="btn-icon">⚙️</span>
