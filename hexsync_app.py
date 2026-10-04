@@ -423,7 +423,14 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
                 clean_repo = proj["github_url"].replace(".git", "").split("github.com/")[-1]
 
             active_vercel = None
-            if clean_repo and "/" in clean_repo:
+            if proj.get("vercel_url"):
+                active_vercel = {
+                    "connected": True,
+                    "status": "LIVE",
+                    "url": proj["vercel_url"],
+                    "environment": "Production"
+                }
+            elif clean_repo and "/" in clean_repo:
                 parts = clean_repo.split("/")
                 active_vercel = check_repo_vercel(parts[0], parts[1])
 
