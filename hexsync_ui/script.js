@@ -1,5 +1,6 @@
 /* ========================================================
    HEXSYNC·TH AUTO SYNC — INTERACTIVE SCRIPT & CYBER ENGINE
+   MULTI-PROJECT & GITHUB CONFIGURATION
    ======================================================== */
 
 // --- 1. Sound Effects Synth (Web Audio API) ---
@@ -34,7 +35,6 @@ function playCyberSound(type) {
       osc.start(now);
       osc.stop(now + 0.08);
     } else if (type === 'sync') {
-      // Tech laser charge
       osc.type = 'sawtooth';
       osc.frequency.setValueAtTime(220, now);
       osc.frequency.exponentialRampToValueAtTime(880, now + 0.25);
@@ -43,16 +43,14 @@ function playCyberSound(type) {
       osc.start(now);
       osc.stop(now + 0.25);
     } else if (type === 'success') {
-      // Two-tone high chime
       osc.type = 'triangle';
-      osc.frequency.setValueAtTime(587.33, now); // D5
-      osc.frequency.setValueAtTime(880, now + 0.1); // A5
+      osc.frequency.setValueAtTime(587.33, now);
+      osc.frequency.setValueAtTime(880, now + 0.1);
       gain.gain.setValueAtTime(0.2, now);
       gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
       osc.start(now);
       osc.stop(now + 0.35);
     } else if (type === 'detect') {
-      // Alert pulse
       osc.type = 'square';
       osc.frequency.setValueAtTime(440, now);
       osc.frequency.setValueAtTime(330, now + 0.08);
@@ -62,7 +60,7 @@ function playCyberSound(type) {
       osc.stop(now + 0.15);
     }
   } catch (e) {
-    // Ignore audio context autoplay errors
+    // Ignore audio autoplay restrictions
   }
 }
 
@@ -118,7 +116,6 @@ for (let i = 0; i < 45; i++) {
   particles.push(new Particle());
 }
 
-// Hexagon Grid Drawing Helper
 function drawHexGrid() {
   const hexRadius = 45;
   const hexWidth = hexRadius * Math.sqrt(3);
@@ -150,11 +147,8 @@ function drawHexagon(cx, cy, r) {
 
 function animateCanvas() {
   ctx.clearRect(0, 0, width, height);
-
-  // Draw hex grid
   drawHexGrid();
 
-  // Draw moving scan laser
   scanY += 1.5;
   if (scanY > height) scanY = 0;
   const scanGrad = ctx.createLinearGradient(0, scanY - 30, 0, scanY);
@@ -163,7 +157,6 @@ function animateCanvas() {
   ctx.fillStyle = scanGrad;
   ctx.fillRect(0, scanY - 30, width, 30);
 
-  // Update particles
   particles.forEach(p => {
     p.update();
     p.draw();
@@ -173,16 +166,20 @@ function animateCanvas() {
 }
 animateCanvas();
 
-// --- 3. DOM Elements & State ---
-const repoNameDisplay = document.getElementById('repoNameDisplay');
-const branchDisplay = document.getElementById('branchDisplay');
+// --- 3. DOM Elements ---
+const projectQuickSelect = document.getElementById('projectQuickSelect');
+const openConfigBtn = document.getElementById('openConfigBtn');
 const sfxToggleBtn = document.getElementById('sfxToggleBtn');
 const sfxIcon = document.getElementById('sfxIcon');
+const activeProjectPathDisplay = document.getElementById('activeProjectPathDisplay');
+const activeRepoUrlDisplay = document.getElementById('activeRepoUrlDisplay');
+const branchDisplay = document.getElementById('branchDisplay');
 const systemStatePill = document.getElementById('systemStatePill');
 const systemStateText = document.getElementById('systemStateText');
 const orbStatusIcon = document.getElementById('orbStatusIcon');
 const cyberOrb = document.getElementById('cyberOrb');
 const debounceProgress = document.getElementById('debounceProgress');
+const debounceSecDisplay = document.getElementById('debounceSecDisplay');
 const pendingCount = document.getElementById('pendingCount');
 const totalSyncsCount = document.getElementById('totalSyncsCount');
 const lastSyncTime = document.getElementById('lastSyncTime');
@@ -190,6 +187,8 @@ const forceSyncBtn = document.getElementById('forceSyncBtn');
 const toggleWatchBtn = document.getElementById('toggleWatchBtn');
 const toggleWatchIcon = document.getElementById('toggleWatchIcon');
 const toggleWatchText = document.getElementById('toggleWatchText');
+const btnOpenGithub = document.getElementById('btnOpenGithub');
+const linkGithubText = document.getElementById('linkGithubText');
 const badgePendingMini = document.getElementById('badgePendingMini');
 const emptyFilesState = document.getElementById('emptyFilesState');
 const fileList = document.getElementById('fileList');
@@ -197,26 +196,38 @@ const terminalLogBody = document.getElementById('terminalLogBody');
 const clearLogsBtn = document.getElementById('clearLogsBtn');
 const portDisplay = document.getElementById('portDisplay');
 
+// Modal Elements
+const configModalOverlay = document.getElementById('configModalOverlay');
+const closeConfigBtn = document.getElementById('closeConfigBtn');
+const projectConfigForm = document.getElementById('projectConfigForm');
+const cfgProjectName = document.getElementById('cfgProjectName');
+const cfgProjectPath = document.getElementById('cfgProjectPath');
+const cfgGithubUrl = document.getElementById('cfgGithubUrl');
+const cfgBranch = document.getElementById('cfgBranch');
+const cfgDebounce = document.getElementById('cfgDebounce');
+const btnBrowseFolder = document.getElementById('btnBrowseFolder');
+const savedProjectsList = document.getElementById('savedProjectsList');
+
 let isWatching = true;
 let isSyncing = false;
 let previousPendingCount = 0;
 let lastRenderedLogCount = 0;
+let currentProjects = [];
+let activeProjectId = '';
 
-// SFX Toggle
+// --- 4. Event Listeners ---
 sfxToggleBtn.addEventListener('click', () => {
   soundEnabled = !soundEnabled;
   sfxIcon.textContent = soundEnabled ? '🔊' : '🔇';
   if (soundEnabled) playCyberSound('click');
 });
 
-// Force Sync Button
 forceSyncBtn.addEventListener('click', async () => {
   if (isSyncing) return;
   playCyberSound('sync');
   triggerSync();
 });
 
-// Toggle Watcher Button
 toggleWatchBtn.addEventListener('click', async () => {
   playCyberSound('click');
   try {
@@ -228,12 +239,107 @@ toggleWatchBtn.addEventListener('click', async () => {
   }
 });
 
-// Clear Logs Button
 clearLogsBtn.addEventListener('click', () => {
   playCyberSound('click');
   terminalLogBody.innerHTML = '';
   lastRenderedLogCount = 0;
 });
+
+// Modal Events
+openConfigBtn.addEventListener('click', () => {
+  playCyberSound('click');
+  configModalOverlay.classList.add('active');
+  fetchConfigDetails();
+});
+
+closeConfigBtn.addEventListener('click', () => {
+  playCyberSound('click');
+  configModalOverlay.classList.remove('active');
+});
+
+configModalOverlay.addEventListener('click', (e) => {
+  if (e.target === configModalOverlay) {
+    configModalOverlay.classList.remove('active');
+  }
+});
+
+// Browse Folder Button
+btnBrowseFolder.addEventListener('click', async () => {
+  playCyberSound('click');
+  try {
+    const res = await fetch('/api/browse_folder', { method: 'POST' });
+    const data = await res.json();
+    if (data.path) {
+      cfgProjectPath.value = data.path;
+      if (!cfgProjectName.value) {
+        const parts = data.path.replace(/\\/g, '/').split('/');
+        cfgProjectName.value = parts[parts.length - 1] || 'My Project';
+      }
+      if (data.detected_remote) {
+        cfgGithubUrl.value = data.detected_remote;
+      }
+    }
+  } catch (err) {
+    console.error('Browse failed:', err);
+  }
+});
+
+// Save Project Form
+projectConfigForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  playCyberSound('sync');
+
+  const payload = {
+    name: cfgProjectName.value.trim(),
+    path: cfgProjectPath.value.trim(),
+    github_url: cfgGithubUrl.value.trim(),
+    branch: cfgBranch.value.trim() || 'main',
+    debounce: parseInt(cfgDebounce.value) || 5
+  };
+
+  try {
+    const res = await fetch('/api/save_project', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if (result.success) {
+      playCyberSound('success');
+      configModalOverlay.classList.remove('active');
+      fetchStatus();
+    } else {
+      alert(result.error || 'Failed to save project');
+    }
+  } catch (err) {
+    console.error('Error saving project:', err);
+  }
+});
+
+// Project Selector Dropdown Change
+projectQuickSelect.addEventListener('change', async () => {
+  const selectedId = projectQuickSelect.value;
+  if (!selectedId) return;
+  playCyberSound('click');
+  switchProject(selectedId);
+});
+
+async function switchProject(projectId) {
+  try {
+    const res = await fetch('/api/switch_project', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ project_id: projectId })
+    });
+    const result = await res.json();
+    if (result.success) {
+      playCyberSound('success');
+      fetchStatus();
+    }
+  } catch (err) {
+    console.error('Failed to switch project:', err);
+  }
+}
 
 async function triggerSync() {
   setSyncingState(true);
@@ -284,60 +390,120 @@ function updateWatcherUI(watching) {
   }
 }
 
-// --- 4. Polling API Status ---
+// --- 5. Polling & Sync Status ---
 async function fetchStatus() {
   try {
     const res = await fetch('/api/status');
     const data = await res.json();
 
-    // Port display
-    if (data.port) {
-      portDisplay.textContent = data.port;
+    if (data.port) portDisplay.textContent = data.port;
+    if (data.active_path) activeProjectPathDisplay.textContent = data.active_path;
+    if (data.branch) branchDisplay.textContent = data.branch;
+    if (data.debounce_seconds) debounceSecDisplay.textContent = `${data.debounce_seconds}s`;
+
+    if (data.github_url) {
+      activeRepoUrlDisplay.textContent = data.repo_name || data.github_url;
+      activeRepoUrlDisplay.href = data.github_url;
+      btnOpenGithub.href = data.github_url;
+      linkGithubText.textContent = data.repo_name || data.github_url;
     }
 
-    // Repo and Branch
-    if (data.repo_name) {
-      repoNameDisplay.textContent = data.repo_name;
-    }
-    if (data.branch) {
-      branchDisplay.textContent = data.branch;
-    }
-
-    // Watching status
     if (!isSyncing) {
       updateWatcherUI(data.is_watching);
     }
 
-    // Metrics
     pendingCount.textContent = data.pending_count || 0;
     totalSyncsCount.textContent = data.total_syncs || 0;
     lastSyncTime.textContent = data.last_sync || '--:--:--';
     badgePendingMini.textContent = `${data.pending_count || 0} FILES`;
 
-    // Debounce progress bar
     if (data.debounce_percent !== undefined) {
       debounceProgress.style.width = `${data.debounce_percent}%`;
     }
 
-    // Sound if new changes detected
     if (data.pending_count > 0 && previousPendingCount === 0) {
       playCyberSound('detect');
     }
     previousPendingCount = data.pending_count;
 
-    // Render modified files
     renderFiles(data.pending_files || []);
 
-    // Render terminal logs
     if (data.logs && data.logs.length > lastRenderedLogCount) {
       renderLogs(data.logs);
       lastRenderedLogCount = data.logs.length;
+    }
+
+    // Projects list in quick select
+    if (data.projects) {
+      currentProjects = data.projects;
+      activeProjectId = data.active_project_id;
+      renderQuickSelect(data.projects, data.active_project_id);
     }
 
   } catch (err) {
     // Network or server starting
   }
 }
+
+function renderQuickSelect(projects, activeId) {
+  projectQuickSelect.innerHTML = projects.map(p => `
+    <option value="${escapeHtml(p.id)}" ${p.id === activeId ? 'selected' : ''}>
+      ${escapeHtml(p.name)} (${escapeHtml(p.branch)})
+    </option>
+  `).join('');
+}
+
+async function fetchConfigDetails() {
+  try {
+    const res = await fetch('/api/config');
+    const data = await res.json();
+    if (data.active_project) {
+      cfgProjectName.value = data.active_project.name || '';
+      cfgProjectPath.value = data.active_project.path || '';
+      cfgGithubUrl.value = data.active_project.github_url || '';
+      cfgBranch.value = data.active_project.branch || 'main';
+      cfgDebounce.value = data.active_project.debounce || 5;
+    }
+    renderSavedProjects(data.projects || [], data.active_project_id);
+  } catch (err) {
+    console.error('Failed to fetch config:', err);
+  }
+}
+
+function renderSavedProjects(projects, activeId) {
+  savedProjectsList.innerHTML = projects.map(p => `
+    <li class="saved-project-item ${p.id === activeId ? 'active' : ''}">
+      <div class="project-item-info">
+        <span class="project-item-name">${escapeHtml(p.name)} ${p.id === activeId ? '🟢 [CURRENT]' : ''}</span>
+        <span class="project-item-path">${escapeHtml(p.path)} ➔ ${escapeHtml(p.github_url || 'No remote')}</span>
+      </div>
+      <div class="project-item-actions">
+        ${p.id !== activeId ? `<button type="button" class="switch-btn" onclick="handleSwitchProject('${escapeHtml(p.id)}')">SWITCH</button>` : ''}
+        <button type="button" class="delete-btn" onclick="handleDeleteProject('${escapeHtml(p.id)}')">✕</button>
+      </div>
+    </li>
+  `).join('');
+}
+
+window.handleSwitchProject = (id) => {
+  switchProject(id);
+  configModalOverlay.classList.remove('active');
+};
+
+window.handleDeleteProject = async (id) => {
+  if (!confirm('ยืนยันลบโปรเจกต์นี้ออกจากรายการ?')) return;
+  try {
+    const res = await fetch('/api/delete_project', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ project_id: id })
+    });
+    fetchConfigDetails();
+    fetchStatus();
+  } catch (err) {
+    console.error('Delete project failed:', err);
+  }
+};
 
 function renderFiles(files) {
   if (files.length === 0) {
@@ -370,7 +536,6 @@ function renderLogs(logs) {
     `;
     terminalLogBody.appendChild(line);
   });
-  // Auto scroll to bottom
   terminalLogBody.scrollTop = terminalLogBody.scrollHeight;
 }
 
@@ -382,6 +547,5 @@ function escapeHtml(str) {
             .replace(/"/g, '&quot;');
 }
 
-// Initial Call and Interval Loop
 fetchStatus();
 setInterval(fetchStatus, 1500);
