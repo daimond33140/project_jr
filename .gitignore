@@ -16,3 +16,8 @@ Thumbs.db
 # Node
 node_modules/
 .vercel
+
+# PyInstaller
+build/
+dist/
+*.spec
