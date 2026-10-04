@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HexSyncTH Auto Sync — Next-Gen Git Deployment</title>
+  <title>HexSyncTH Auto Sync — Next-Gen Multi-Project Git Engine</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
@@ -29,21 +29,40 @@
         </div>
         <div class="brand-text">
           <div class="brand-title" data-text="HEXSYNC·TH">HEXSYNC·TH</div>
-          <div class="brand-subtitle">AUTO SYNC ENGINE // VERCEL PIPELINE</div>
+          <div class="brand-subtitle">MULTI-PROJECT AUTO SYNC // GITHUB & VERCEL</div>
         </div>
       </div>
 
       <div class="header-controls">
-        <div class="badge-repo">
-          <span class="repo-icon">⚡</span>
-          <span id="repoNameDisplay">daimond33140/project_jr</span>
-          <span class="branch-tag" id="branchDisplay">main</span>
+        <!-- Project Quick Selector -->
+        <div class="project-selector-wrapper">
+          <span class="selector-icon">📁</span>
+          <select id="projectQuickSelect" class="cyber-select" title="เลือกโปรเจกต์ที่ต้องการ Sync"></select>
         </div>
+
+        <button id="openConfigBtn" class="cyber-glow-btn" title="ตั้งค่าโปรเจกต์และ GitHub">
+          <span class="btn-icon">⚙️</span>
+          <span>CONFIG</span>
+        </button>
+
         <button id="sfxToggleBtn" class="cyber-icon-btn" title="เปิด/ปิดเสียงเอฟเฟกต์">
           <span id="sfxIcon">🔊</span>
         </button>
       </div>
     </header>
+
+    <!-- Project Path Bar -->
+    <div class="project-meta-strip">
+      <div class="meta-item">
+        <span class="meta-label">TARGET PATH:</span>
+        <span class="meta-value path-val" id="activeProjectPathDisplay">C:\project</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">REMOTE REPO:</span>
+        <a id="activeRepoUrlDisplay" href="#" target="_blank" class="meta-value link-val">--</a>
+        <span class="branch-tag" id="branchDisplay">main</span>
+      </div>
+    </div>
 
     <!-- Main Grid Dashboard -->
     <main class="dashboard-grid">
@@ -71,7 +90,7 @@
               <span id="systemStateText">ARMED & WATCHING</span>
             </div>
             <div class="countdown-hud" id="countdownHud">
-              <div class="hud-label">AUTO-PUSH DEBOUNCE</div>
+              <div class="hud-label">AUTO-PUSH DEBOUNCE (<span id="debounceSecDisplay">5s</span>)</div>
               <div class="hud-bar-bg"><div class="hud-bar-fill" id="debounceProgress"></div></div>
             </div>
           </div>
@@ -109,7 +128,7 @@
             <span class="btn-glitch-layer"></span>
             <span class="btn-icon">⚡</span>
             <span class="btn-text">FORCE PUSH NOW</span>
-            <span class="btn-subtext">PUSH CHANGES TO GITHUB & VERCEL</span>
+            <span class="btn-subtext">COMMIT & PUSH TO TARGET GITHUB</span>
           </button>
 
           <!-- Toggle Pause Button -->
@@ -121,11 +140,11 @@
 
         <!-- Links Grid -->
         <div class="links-grid">
-          <a href="https://github.com/daimond33140/project_jr" target="_blank" class="quick-link-box">
+          <a id="btnOpenGithub" href="#" target="_blank" class="quick-link-box">
             <span class="link-icon">📁</span>
             <div class="link-info">
-              <span class="link-title">GitHub Repo</span>
-              <span class="link-url">daimond33140/project_jr</span>
+              <span class="link-title">GitHub Repository</span>
+              <span class="link-url" id="linkGithubText">View Remote</span>
             </div>
             <span class="link-arrow">↗</span>
           </a>
@@ -183,10 +202,72 @@
     <footer class="cyber-footer">
       <div class="footer-status">
         <span class="status-indicator"></span>
-        <span>DAEMON LISTENING ON PORT <span id="portDisplay">--</span></span>
+        <span>DAEMON ENGINE ACTIVE // PORT <span id="portDisplay">--</span></span>
       </div>
-      <div class="footer-credit">HEXSYNC·TH // DESIGNED FOR LIGHTNING DEPLOYMENTS</div>
+      <div class="footer-credit">HEXSYNC·TH MULTI-PROJECT SYNC ENGINE</div>
     </footer>
+  </div>
+
+  <!-- Settings & Project Manager Modal -->
+  <div class="cyber-modal-overlay" id="configModalOverlay">
+    <div class="cyber-modal">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="cyber-tag">SETTINGS://TARGET</span>
+          <h3>PROJECT & GITHUB CONFIGURATION</h3>
+        </div>
+        <button id="closeConfigBtn" class="close-modal-btn">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="projectConfigForm">
+          <div class="form-group">
+            <label for="cfgProjectName">ชื่อโปรเจกต์ (Display Name):</label>
+            <input type="text" id="cfgProjectName" class="cyber-input" placeholder="เช่น Tourism Dashboard หรือ My NextJS App" required>
+          </div>
+
+          <div class="form-group">
+            <label for="cfgProjectPath">โฟลเดอร์โปรเจกต์ในเครื่อง (Project Folder):</label>
+            <div class="input-with-action">
+              <input type="text" id="cfgProjectPath" class="cyber-input" placeholder="C:\project หรือ D:\works\app" required>
+              <button type="button" id="btnBrowseFolder" class="cyber-btn-mini">📂 BROWSE</button>
+            </div>
+            <small class="form-hint">เลือกโฟลเดอร์ที่ต้องการให้โปรแกรมตรวจจับการเซฟไฟล์</small>
+          </div>
+
+          <div class="form-group">
+            <label for="cfgGithubUrl">GitHub Remote URL:</label>
+            <input type="text" id="cfgGithubUrl" class="cyber-input" placeholder="https://github.com/USERNAME/REPO.git" required>
+            <small class="form-hint">URL ของ GitHub Repo ที่ต้องการให้ Push ขึ้นไป (เช่น https://github.com/daimond33140/project_jr.git)</small>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="cfgBranch">Git Branch:</label>
+              <input type="text" id="cfgBranch" class="cyber-input" value="main" required>
+            </div>
+            <div class="form-group">
+              <label for="cfgDebounce">Debounce Delay (วินาที):</label>
+              <input type="number" id="cfgDebounce" class="cyber-input" value="5" min="2" max="60" required>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="submit" class="cyber-btn primary-red-btn save-btn">
+              <span>💾 SAVE & CONNECT PROJECT</span>
+            </button>
+          </div>
+        </form>
+
+        <hr class="modal-divider">
+
+        <!-- Saved Projects List -->
+        <div class="saved-projects-section">
+          <h4>SAVED PROJECTS (โปรเจกต์ที่บันทึกไว้)</h4>
+          <ul class="saved-projects-list" id="savedProjectsList"></ul>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
