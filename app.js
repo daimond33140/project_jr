@@ -397,10 +397,17 @@ function initTierChart() {
       extraCssText: "box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 8px;",
       textStyle: { color: c.tooltipText, fontFamily: "Prompt" },
       formatter: function(params) {
-        return `<div style="font-weight:600;color:${c.tooltipText}">${params.name}</div>
+        let subNote = "";
+        if (params.name.includes("Tier 1")) {
+          subNote = `<div style="font-size:0.75rem; color:#38bdf8; margin-top:4px; border-top:1px solid rgba(255,255,255,0.12); padding-top:4px;">
+            ✦ <strong>เมืองท่องเที่ยวหลัก (Global Hubs):</strong> กรุงเทพฯ, ภูเก็ต, ชลบุรี, เชียงใหม่ (รายได้รวม 66%)
+          </div>`;
+        }
+        return `<div style="font-weight:700; color:#00f0ff; margin-bottom:2px;">${params.name}</div>
           <div>รายได้รวม: <strong>${formatCurrency(params.value)}</strong> (${params.percent}%)</div>
           <div>จำนวนจังหวัด: <strong>${params.data.count} จังหวัด</strong></div>
-          <div>นักท่องเที่ยว: <strong>${formatNumber(params.data.tourists)} คน</strong></div>`;
+          <div>นักท่องเที่ยว: <strong>${formatNumber(params.data.tourists)} คน</strong></div>
+          ${subNote}`;
       }
     },
     series: [
@@ -501,6 +508,67 @@ function initRegionDonutChart() {
 let regionLeafletMap = null;
 let regionGeoLayer = null;
 
+const REGION_PALETTE = {
+  "central": "#00f0ff",        // ภาคกลาง: Cyan
+  "south": "#38bdf8",          // ภาคใต้: Sky Blue
+  "east_northeast": "#f59e0b", // ภาคตะวันออกเฉียงเหนือ: Amber Gold
+  "north": "#a855f7",          // ภาคเหนือ: Purple
+  "east": "#10b981"            // ภาคตะวันออก: Emerald Green
+};
+
+function updateRegionMapHighlight() {
+  if (!regionGeoLayer) return;
+  const selReg = currentFilter.region;
+
+  regionGeoLayer.eachLayer(layer => {
+    const regId = layer.feature?.properties?.region_id;
+    const isSelected = selReg === "all" || selReg === regId;
+    const baseColor = REGION_PALETTE[regId] || "#00f0ff";
+
+    if (selReg === "all") {
+      // Normal state: all regions lit with balanced opacity
+      layer.setStyle({
+        fillColor: baseColor,
+        fillOpacity: 0.65,
+        color: "rgba(255, 255, 255, 0.22)",
+        weight: 1.2
+      });
+    } else if (isSelected) {
+      // Selected region: brightly glowing neon!
+      layer.setStyle({
+        fillColor: baseColor,
+        fillOpacity: 0.94,
+        color: "#ffffff",
+        weight: 2.6
+      });
+      layer.bringToFront();
+    } else {
+      // Other regions: dimmed down dark
+      layer.setStyle({
+        fillColor: "#050b18",
+        fillOpacity: 0.16,
+        color: "rgba(255, 255, 255, 0.04)",
+        weight: 0.5
+      });
+    }
+  });
+
+  // Smoothly fit bounds to selected region
+  if (selReg !== "all" && regionLeafletMap) {
+    const bounds = L.latLngBounds([]);
+    regionGeoLayer.eachLayer(layer => {
+      if (layer.feature?.properties?.region_id === selReg) {
+        bounds.extend(layer.getBounds());
+      }
+    });
+    if (bounds.isValid()) {
+      regionLeafletMap.fitBounds(bounds, { padding: [30, 30], maxZoom: 8, animate: true });
+    }
+  } else if (regionLeafletMap) {
+    regionLeafletMap.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [15, 15], animate: true });
+  }
+}
+
 async function renderGeoMap() {
   const mapContainer = document.getElementById("thailand-region-leaflet");
   const rankingList = document.getElementById("region-ranking-list");
@@ -547,14 +615,6 @@ async function renderGeoMap() {
     }).addTo(regionLeafletMap);
   }
 
-  const regionColors = {
-    "central": "#00f0ff",
-    "south": "#38bdf8",
-    "east_northeast": "#f59e0b",
-    "north": "#a855f7",
-    "east": "#10b981"
-  };
-
   const geoData = await getThailandGeoJSON();
   if (!geoData) return;
 
@@ -566,12 +626,12 @@ async function renderGeoMap() {
     style: function(feature) {
       const regId = feature.properties.region_id;
       const isSelected = currentFilter.region === "all" || currentFilter.region === regId;
-      const baseColor = regionColors[regId] || "#00f0ff";
+      const baseColor = REGION_PALETTE[regId] || "#00f0ff";
       return {
-        fillColor: baseColor,
-        fillOpacity: isSelected ? 0.65 : 0.12,
-        color: isSelected ? baseColor : "#334155",
-        weight: isSelected ? 1.5 : 0.8,
+        fillColor: isSelected ? baseColor : "#050b18",
+        fillOpacity: isSelected ? (currentFilter.region === "all" ? 0.65 : 0.94) : 0.16,
+        color: isSelected ? (currentFilter.region === "all" ? "rgba(255,255,255,0.22)" : "#ffffff") : "rgba(255,255,255,0.04)",
+        weight: isSelected ? (currentFilter.region === "all" ? 1.2 : 2.6) : 0.5,
         dashArray: ""
       };
     },
@@ -597,12 +657,12 @@ async function renderGeoMap() {
           l.setStyle({
             weight: 3.5,
             color: "#ffffff",
-            fillOpacity: 0.9
+            fillOpacity: 0.95
           });
           l.bringToFront();
         },
         mouseout: function(e) {
-          regionGeoLayer.resetStyle(e.target);
+          updateRegionMapHighlight();
         },
         click: function() {
           openProvinceDetailModal(thName);
@@ -613,6 +673,7 @@ async function renderGeoMap() {
 
   setTimeout(() => {
     regionLeafletMap.invalidateSize();
+    updateRegionMapHighlight();
   }, 100);
 }
 
@@ -700,6 +761,7 @@ function applyFilters() {
   initTrendChart(filteredTrends);
   initTopProvincesComparisonChart(filteredProvinces);
   renderTable(filteredProvinces);
+  updateRegionMapHighlight();
 }
 
 // ==========================================
@@ -1757,6 +1819,24 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function setupViewSwitcher() {
+  // Left HUD Dock Collapsible & Expandable Logic
+  const dockEl = document.getElementById("nasa-hud-dock");
+  const collapseBtn = document.getElementById("dock-collapse-btn");
+  const expandTab = document.getElementById("dock-expand-tab");
+
+  collapseBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dockEl?.classList.add("is-collapsed");
+    document.body.classList.add("hud-is-collapsed");
+  });
+
+  expandTab?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dockEl?.classList.remove("is-collapsed");
+    document.body.classList.remove("hud-is-collapsed");
+    if (window.lucide) window.lucide.createIcons();
+  });
+
   const dockButtons = document.querySelectorAll(".dock-btn[data-view]");
   const hudContainer = document.getElementById("nasa-hud-panel-container");
   const hudTitle = document.getElementById("hud-panel-active-title");

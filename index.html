@@ -27,9 +27,9 @@
   <script src="leaflet/leaflet.js"></script>
 
   <!-- Local 77-Province GeoJSON Data -->
-  <script src="thailand_geo.js?v=20261004_v7"></script>
+  <script src="thailand_geo.js?v=20261004_v8"></script>
 
-  <link rel="stylesheet" href="style.css?v=20261004_v7">
+  <link rel="stylesheet" href="style.css?v=20261004_v8">
 </head>
 
 <body class="loading-active">
@@ -371,6 +371,9 @@
       <div class="dock-header-label">
         <span class="dock-dot"></span>
         <span class="dock-text">HUD DOCK</span>
+        <button class="dock-collapse-btn" id="dock-collapse-btn" title="พับเก็บแถบซ้าย (Hide Dock)">
+          <i data-lucide="chevron-left"></i>
+        </button>
       </div>
       <div class="dock-buttons">
         <button class="dock-btn active" data-view="dual-compare" id="dock-btn-compare">
@@ -398,16 +401,13 @@
           <span class="dock-tooltip">ฐานข้อมูล 77 จังหวัด (Database)</span>
         </button>
       </div>
-
-      <div class="dock-divider"></div>
-
-      <div class="dock-footer-buttons">
-        <button class="dock-btn special-btn" id="dock-btn-story" title="Data Storytelling Walkthrough (F12)">
-          <i data-lucide="sparkles"></i>
-          <span class="dock-tooltip">Data Storytelling (กด F12)</span>
-        </button>
-      </div>
     </aside>
+
+    <!-- Floating Re-open Tab when HUD Dock is collapsed -->
+    <button class="dock-expand-tab" id="dock-expand-tab" title="เปิดแถบเครื่องมือซ้าย (Expand HUD)">
+      <i data-lucide="chevron-right"></i>
+      <span>HUD</span>
+    </button>
 
     <!-- NASA HUD PANEL CONTAINER (SLIDE-IN DATA HUD OVERLAY) -->
     <div class="nasa-hud-panel-container" id="nasa-hud-panel-container" style="display: none;">
@@ -951,8 +951,8 @@
   </div>
 
   <!-- Application Logic & Data -->
-  <script src="data.js?v=20261004_v7"></script>
-  <script src="app.js?v=20261004_v7"></script>
+  <script src="data.js?v=20261004_v8"></script>
+  <script src="app.js?v=20261004_v8"></script>
 </body>
 
 </html>

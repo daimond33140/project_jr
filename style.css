@@ -1706,6 +1706,7 @@ button, a, select, input, [role="button"], .switcher-btn, .kpi-card, .btn, .map-
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   user-select: none;
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
 .dock-header-label {
@@ -1716,6 +1717,7 @@ button, a, select, input, [role="button"], .switcher-btn, .kpi-card, .btn, .map-
   padding-bottom: 0.35rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   width: 100%;
+  position: relative;
 }
 
 .dock-dot {
@@ -1735,18 +1737,95 @@ button, a, select, input, [role="button"], .switcher-btn, .kpi-card, .btn, .map-
   letter-spacing: 0.08em;
 }
 
-.dock-buttons, .dock-footer-buttons {
+.dock-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.55rem;
 }
 
+.nasa-hud-dock.is-collapsed {
+  transform: translateY(-50%) translateX(-140%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dock-collapse-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem;
+  border-radius: 4px;
+  margin-top: 0.2rem;
+  transition: color 0.2s, background 0.2s;
+}
+
+.dock-collapse-btn i {
+  width: 14px;
+  height: 14px;
+}
+
+.dock-collapse-btn:hover {
+  color: #00f0ff;
+  background: rgba(0, 240, 255, 0.15);
+}
+
+/* Floating Expand Tab (appears when dock is collapsed) */
+.dock-expand-tab {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 96;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(6, 12, 26, 0.94);
+  border: 1px solid rgba(0, 240, 255, 0.45);
+  border-left: none;
+  border-radius: 0 14px 14px 0;
+  padding: 0.75rem 0.4rem;
+  color: #00f0ff;
+  cursor: pointer;
+  box-shadow: 4px 0 20px rgba(0, 240, 255, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: background 0.2s, transform 0.2s, padding-right 0.2s;
+}
+
+.dock-expand-tab:hover {
+  background: rgba(0, 240, 255, 0.22);
+  padding-right: 0.6rem;
+}
+
+.dock-expand-tab i {
+  width: 15px;
+  height: 15px;
+}
+
+.dock-expand-tab span {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+body.hud-is-collapsed .dock-expand-tab {
+  display: flex !important;
+}
+
+/* Hide Storytelling button and footer divider */
+#dock-btn-story,
+.dock-footer-buttons,
 .dock-divider {
-  width: 24px;
-  height: 1px;
-  background: rgba(0, 240, 255, 0.2);
-  margin: 0.25rem 0;
+  display: none !important;
 }
 
 .dock-btn {

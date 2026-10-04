@@ -5181,7 +5181,7 @@ const RAW_DATA = {
     "no_tourist_all": 110311454,
     "occupancy_rate": 36.5,
     "share": "28.3%",
-    "provinces_count": 15,
+    "provinces_count": 14,
     "top_province": "ภูเก็ต"
   },
   {
@@ -6306,8 +6306,8 @@ const RAW_DATA = {
   {
     "name": "ศรีสะเกษ",
     "name_en": "Sisaket",
-    "region_id": "south",
-    "region_name": "ภาคใต้",
+    "region_id": "east_northeast",
+    "region_name": "ภาคตะวันออกเฉียงเหนือ",
     "revenue_all": 4861620000,
     "revenue_thai": 4786290000,
     "revenue_foreign": 75330000,
