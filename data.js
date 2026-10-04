@@ -6650,3 +6650,7 @@ const RAW_DATA = {
   }
 ]
 };
+
+if (typeof window !== "undefined") {
+  window.RAW_DATA = RAW_DATA;
+}
