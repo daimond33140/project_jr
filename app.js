@@ -816,11 +816,6 @@ function setupEventListeners() {
   document.getElementById("export-btn")?.addEventListener("click", () => {
     exportToCsv();
   });
-
-  // Replay Presentation Intro
-  document.getElementById("btn-replay-intro")?.addEventListener("click", () => {
-    replayPresentationIntro();
-  });
 }
 
 // 7. CSV EXPORT UTILITY (REAL MOTS DATA)
