@@ -773,6 +773,80 @@
     </div>
   </div>
 
+  <!-- MODAL: PROVINCE DETAIL INSPECTOR (เจาะลึกสถิติจังหวัดและเปรียบเทียบปี) -->
+  <div class="modal-backdrop" id="province-detail-modal">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge"><i data-lucide="map-pin"></i></div>
+          <div>
+            <h3 class="modal-title" id="pmodal-title">จังหวัดเชียงใหม่ (Chiang Mai)</h3>
+            <p class="modal-subtitle" id="pmodal-subtitle">ภาคเหนือ • Tier 1: ฮับหลักระดับโลก</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="pmodal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Live Comparison Callout Banner for selected 2 years -->
+        <div class="pmodal-diff-banner" id="pmodal-diff-banner">
+          <div class="pmodal-diff-item">
+            <span class="pdiff-lbl" id="pmodal-yr-a-lbl">ปี 2562</span>
+            <span class="pdiff-val" id="pmodal-yr-a-val">-</span>
+          </div>
+          <div class="pmodal-diff-center">
+            <span class="pdiff-tag" id="pmodal-diff-tag">ผลต่างความเปลี่ยนแปลง</span>
+            <span class="pdiff-badge" id="pmodal-diff-badge">-</span>
+          </div>
+          <div class="pmodal-diff-item">
+            <span class="pdiff-lbl" id="pmodal-yr-b-lbl">ปี 2565</span>
+            <span class="pdiff-val" id="pmodal-yr-b-val">-</span>
+          </div>
+        </div>
+
+        <!-- 4 Key Provincial Metrics Cards -->
+        <div class="pmodal-stats-grid">
+          <div class="pmodal-stat-card">
+            <span class="pstat-lbl">รายได้รวมสะสม (50 เดือน)</span>
+            <span class="pstat-val" id="pmodal-rev-all">-</span>
+            <span class="pstat-sub" id="pmodal-rev-share">ส่วนแบ่งรายได้ประเทศ -%</span>
+          </div>
+          <div class="pmodal-stat-card">
+            <span class="pstat-lbl">สัดส่วนรายได้จากต่างชาติ</span>
+            <span class="pstat-val" id="pmodal-foreign-share">-</span>
+            <span class="pstat-sub" id="pmodal-foreign-sub">รายได้ต่างชาติ vs คนไทย</span>
+          </div>
+          <div class="pmodal-stat-card">
+            <span class="pstat-lbl">จำนวนนักท่องเที่ยวสะสม</span>
+            <span class="pstat-val" id="pmodal-tourists">-</span>
+            <span class="pstat-sub" id="pmodal-tourists-sub">ผู้มาเยือนรวม 50 เดือน</span>
+          </div>
+          <div class="pmodal-stat-card">
+            <span class="pstat-lbl">ค่าใช้จ่ายเฉลี่ยต่อคน</span>
+            <span class="pstat-val" id="pmodal-spend">-</span>
+            <span class="pstat-sub" id="pmodal-occupancy">อัตราเข้าพักเฉลี่ย -%</span>
+          </div>
+        </div>
+
+        <!-- 5-Year Trend Chart for this Province -->
+        <div class="pmodal-chart-wrap">
+          <div class="pmodal-chart-header">
+            <h4><i data-lucide="trending-up"></i> แนวโน้มสถิติรายปี (2562 - 2566 | 5 ปีเต็ม)</h4>
+            <span class="chart-legend-hint">
+              <span class="legend-dot blue"></span> รายได้คนไทย
+              <span class="legend-dot orange"></span> รายได้ต่างชาติ
+            </span>
+          </div>
+          <div id="province-5yr-chart" style="width: 100%; height: 260px;"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="pmodal-close-bottom-btn">ปิดหน้าต่าง</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Application Logic & Data -->
   <script src="data.js"></script>
   <script src="app.js"></script>
