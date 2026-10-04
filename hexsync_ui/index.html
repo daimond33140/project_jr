@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HexSyncTH Auto Sync — Next-Gen Git Deployment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Animated Background Canvas -->
+  <canvas id="cyberCanvas"></canvas>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+
+  <!-- Main Container -->
+  <div class="app-layout">
+    <!-- Header -->
+    <header class="cyber-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 100 100" class="hex-svg">
+            <polygon points="50,5 90,27 90,73 50,95 10,73 10,27" class="hex-outer" />
+            <polygon points="50,18 78,34 78,66 50,82 22,66 22,34" class="hex-inner" />
+            <circle cx="50" cy="50" r="8" class="hex-core" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title" data-text="HEXSYNC·TH">HEXSYNC·TH</div>
+          <div class="brand-subtitle">AUTO SYNC ENGINE // VERCEL PIPELINE</div>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="badge-repo">
+          <span class="repo-icon">⚡</span>
+          <span id="repoNameDisplay">daimond33140/project_jr</span>
+          <span class="branch-tag" id="branchDisplay">main</span>
+        </div>
+        <button id="sfxToggleBtn" class="cyber-icon-btn" title="เปิด/ปิดเสียงเอฟเฟกต์">
+          <span id="sfxIcon">🔊</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Grid Dashboard -->
+    <main class="dashboard-grid">
+      <!-- Status Radar Card -->
+      <section class="cyber-card radar-card">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <span class="cyber-tag">SYS://CORE</span>
+          <h2>MONITORING STATUS</h2>
+        </div>
+
+        <div class="radar-visual-wrapper">
+          <div class="cyber-orb" id="cyberOrb">
+            <div class="orb-ring ring-1"></div>
+            <div class="orb-ring ring-2"></div>
+            <div class="orb-ring ring-3"></div>
+            <div class="orb-core">
+              <span id="orbStatusIcon">⚡</span>
+            </div>
+            <div class="radar-sweep"></div>
+          </div>
+          <div class="status-meta">
+            <div class="status-pill active" id="systemStatePill">
+              <span class="status-dot"></span>
+              <span id="systemStateText">ARMED & WATCHING</span>
+            </div>
+            <div class="countdown-hud" id="countdownHud">
+              <div class="hud-label">AUTO-PUSH DEBOUNCE</div>
+              <div class="hud-bar-bg"><div class="hud-bar-fill" id="debounceProgress"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-metric-strip">
+          <div class="metric-item">
+            <span class="metric-num" id="pendingCount">0</span>
+            <span class="metric-name">PENDING CHANGES</span>
+          </div>
+          <div class="metric-sep"></div>
+          <div class="metric-item">
+            <span class="metric-num" id="totalSyncsCount">0</span>
+            <span class="metric-name">TOTAL SYNCS</span>
+          </div>
+          <div class="metric-sep"></div>
+          <div class="metric-item">
+            <span class="metric-num" id="lastSyncTime">--:--:--</span>
+            <span class="metric-name">LAST PUSH TIME</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action & Controls Card -->
+      <section class="cyber-card actions-card">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <span class="cyber-tag">CTRL://OPS</span>
+          <h2>QUICK COMMANDS</h2>
+        </div>
+
+        <div class="actions-group">
+          <!-- Big Trigger Button -->
+          <button id="forceSyncBtn" class="cyber-btn primary-red-btn">
+            <span class="btn-glitch-layer"></span>
+            <span class="btn-icon">⚡</span>
+            <span class="btn-text">FORCE PUSH NOW</span>
+            <span class="btn-subtext">PUSH CHANGES TO GITHUB & VERCEL</span>
+          </button>
+
+          <!-- Toggle Pause Button -->
+          <button id="toggleWatchBtn" class="cyber-btn secondary-btn">
+            <span class="btn-icon" id="toggleWatchIcon">⏸</span>
+            <span id="toggleWatchText">PAUSE AUTO-SYNC</span>
+          </button>
+        </div>
+
+        <!-- Links Grid -->
+        <div class="links-grid">
+          <a href="https://github.com/daimond33140/project_jr" target="_blank" class="quick-link-box">
+            <span class="link-icon">📁</span>
+            <div class="link-info">
+              <span class="link-title">GitHub Repo</span>
+              <span class="link-url">daimond33140/project_jr</span>
+            </div>
+            <span class="link-arrow">↗</span>
+          </a>
+
+          <a href="https://vercel.com" target="_blank" class="quick-link-box">
+            <span class="link-icon">▲</span>
+            <div class="link-info">
+              <span class="link-title">Vercel Console</span>
+              <span class="link-url">Live Deployment</span>
+            </div>
+            <span class="link-arrow">↗</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Changed Files Preview -->
+      <section class="cyber-card pending-card">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <div class="header-left">
+            <span class="cyber-tag">IO://DETECT</span>
+            <h2>MODIFIED FILES</h2>
+          </div>
+          <span class="badge-mini" id="badgePendingMini">0 FILES</span>
+        </div>
+
+        <div class="file-list-container" id="fileListContainer">
+          <div class="empty-state" id="emptyFilesState">
+            <span class="empty-icon">🛡️</span>
+            <p>WORKING TREE IS CLEAN</p>
+            <small>ระบบกำลังตรวจจับทุกการกดบันทึกไฟล์ (Ctrl+S)...</small>
+          </div>
+          <ul class="file-list" id="fileList"></ul>
+        </div>
+      </section>
+
+      <!-- Terminal Live Logs -->
+      <section class="cyber-card console-card">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <div class="header-left">
+            <span class="cyber-tag">LOG://STREAM</span>
+            <h2>TERMINAL STREAM</h2>
+          </div>
+          <button id="clearLogsBtn" class="cyber-pill-btn">CLEAR LOGS</button>
+        </div>
+
+        <div class="terminal-body" id="terminalLogBody">
+          <!-- Dynamic Log Lines -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="cyber-footer">
+      <div class="footer-status">
+        <span class="status-indicator"></span>
+        <span>DAEMON LISTENING ON PORT <span id="portDisplay">--</span></span>
+      </div>
+      <div class="footer-credit">HEXSYNC·TH // DESIGNED FOR LIGHTNING DEPLOYMENTS</div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
