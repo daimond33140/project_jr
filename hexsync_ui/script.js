@@ -495,6 +495,7 @@ async function fetchConfigDetails() {
       cfgProjectName.value = data.active_project.name || '';
       cfgProjectPath.value = data.active_project.path || '';
       cfgGithubUrl.value = data.active_project.github_url || '';
+      if (cfgVercelUrl) cfgVercelUrl.value = data.active_project.vercel_url || '';
       cfgBranch.value = data.active_project.branch || 'main';
       cfgDebounce.value = data.active_project.debounce || 5;
     }
