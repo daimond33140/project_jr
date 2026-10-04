@@ -1012,6 +1012,7 @@ function runPreloader() {
     if (currentPercent >= 100) {
       clearInterval(preloaderTimer);
       if (actionsBox) actionsBox.classList.add("ready");
+      if (window.lucide) window.lucide.createIcons();
       if (statusText) statusText.textContent = "DATA READY // กรุณากดยืนยันเพื่อเข้าสู่การนำเสนอ (CLICK ENTER TO PROCEED)";
 
       // Do NOT auto dismiss - wait for user click confirmation
