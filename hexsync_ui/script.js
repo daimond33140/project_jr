@@ -547,5 +547,159 @@ function escapeHtml(str) {
             .replace(/"/g, '&quot;');
 }
 
+// --- Window Controls (Frameless PyWebView) ---
+const winMinBtn = document.getElementById('winMinBtn');
+const winMaxBtn = document.getElementById('winMaxBtn');
+const winCloseBtn = document.getElementById('winCloseBtn');
+
+if (winMinBtn) {
+  winMinBtn.addEventListener('click', () => {
+    playCyberSound('click');
+    if (window.pywebview && window.pywebview.api) {
+      window.pywebview.api.minimize();
+    }
+  });
+}
+
+if (winMaxBtn) {
+  winMaxBtn.addEventListener('click', () => {
+    playCyberSound('click');
+    if (window.pywebview && window.pywebview.api) {
+      window.pywebview.api.toggle_maximize();
+    }
+  });
+}
+
+if (winCloseBtn) {
+  winCloseBtn.addEventListener('click', () => {
+    playCyberSound('click');
+    if (window.pywebview && window.pywebview.api) {
+      window.pywebview.api.close();
+    } else {
+      window.close();
+    }
+  });
+}
+
+// --- GitHub Repo Explorer Modal ---
+const openGithubExplorerBtn = document.getElementById('openGithubExplorerBtn');
+const githubModalOverlay = document.getElementById('githubModalOverlay');
+const closeGithubModalBtn = document.getElementById('closeGithubModalBtn');
+const fetchReposBtn = document.getElementById('fetchReposBtn');
+const githubUsernameInput = document.getElementById('githubUsernameInput');
+const githubReposList = document.getElementById('githubReposList');
+const repoCountLabel = document.getElementById('repoCountLabel');
+
+if (openGithubExplorerBtn) {
+  openGithubExplorerBtn.addEventListener('click', () => {
+    playCyberSound('click');
+    githubModalOverlay.classList.add('active');
+    if (!githubReposList.querySelector('.repo-card')) {
+      fetchGithubRepos();
+    }
+  });
+}
+
+if (closeGithubModalBtn) {
+  closeGithubModalBtn.addEventListener('click', () => {
+    playCyberSound('click');
+    githubModalOverlay.classList.remove('active');
+  });
+}
+
+if (fetchReposBtn) {
+  fetchReposBtn.addEventListener('click', () => {
+    fetchGithubRepos();
+  });
+}
+
+if (githubUsernameInput) {
+  githubUsernameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      fetchGithubRepos();
+    }
+  });
+}
+
+async function fetchGithubRepos() {
+  const username = (githubUsernameInput.value || 'daimond33140').trim();
+  if (!username) return;
+
+  playCyberSound('click');
+  githubReposList.innerHTML = '<div class="empty-state">⏳ กำลังตรวจสอบ Repositories จาก GitHub...</div>';
+  repoCountLabel.textContent = 'กำลังตรวจสอบ...';
+
+  try {
+    const res = await fetch(`/api/github_repos?username=${encodeURIComponent(username)}`);
+    const data = await res.json();
+
+    if (!data.success || !data.repos || data.repos.length === 0) {
+      githubReposList.innerHTML = `<div class="empty-state">❌ ไม่พบ Repositories ในบัญชี "${escapeHtml(username)}"</div>`;
+      repoCountLabel.textContent = 'พบ 0 Repositories';
+      return;
+    }
+
+    playCyberSound('success');
+    repoCountLabel.textContent = `พบ ${data.repos.length} Repositories ใน @${data.username}`;
+
+    githubReposList.innerHTML = data.repos.map(r => {
+      const cloneUrl = r.clone_url || `https://github.com/${r.full_name}.git`;
+      const branch = r.default_branch || 'main';
+      return `
+        <div class="repo-card">
+          <div class="repo-top">
+            <div class="repo-name">
+              <span>📦</span>
+              <span>${escapeHtml(r.name)}</span>
+            </div>
+            <div class="repo-desc">${escapeHtml(r.description)}</div>
+          </div>
+
+          <div class="repo-meta">
+            <span class="repo-badge branch-badge">🌿 ${escapeHtml(branch)}</span>
+            <span class="repo-badge">💻 ${escapeHtml(r.language)}</span>
+            ${r.stars > 0 ? `<span class="repo-badge">⭐ ${r.stars}</span>` : ''}
+            <span class="repo-badge">🕒 ${escapeHtml(r.updated_at)}</span>
+          </div>
+
+          <div class="repo-card-actions">
+            <button class="repo-use-btn" onclick="selectRepoForActiveProject('${escapeHtml(cloneUrl)}', '${escapeHtml(branch)}', '${escapeHtml(r.name)}')">
+              <span>🔗 เชื่อมกับโปรเจกต์นี้</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error('Fetch github repos error:', err);
+    githubReposList.innerHTML = '<div class="empty-state">⚠️ ไม่สามารถเชื่อมต่อกับ GitHub ได้</div>';
+  }
+}
+
+window.selectRepoForActiveProject = async function(repoUrl, branch, repoName) {
+  playCyberSound('sync');
+  try {
+    const res = await fetch('/api/set_repo_for_project', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ repo_url: repoUrl, branch: branch })
+    });
+    const d = await res.json();
+    if (d.success) {
+      playCyberSound('success');
+      githubModalOverlay.classList.remove('active');
+      fetchStatus();
+    } else {
+      alert('ไม่สามารถเชื่อมต่อได้: ' + (d.error || 'Unknown error'));
+    }
+  } catch (err) {
+    console.error('Set repo error:', err);
+  }
+};
+
+document.addEventListener('contextmenu', e => e.preventDefault());
+
 fetchStatus();
 setInterval(fetchStatus, 1500);
+
