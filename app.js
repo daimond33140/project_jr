@@ -16,6 +16,7 @@ let currentFilter = {
 };
 
 let currentStoryStep = 0;
+let preloaderTimer = null;
 
 // Formatters
 const formatCurrency = (val) => {
