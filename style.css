@@ -1241,36 +1241,22 @@ button, a, select, input, [role="button"], .switcher-btn, .kpi-card, .btn, .map-
 
 [data-tilt] {
   position: relative;
-  transform-style: preserve-3d;
-  perspective: 1200px;
   will-change: transform;
-  transition: transform 0.18s cubic-bezier(0.2, 0, 0, 1), 
-              box-shadow 0.25s ease, 
-              border-color 0.25s ease;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.24s ease, 
+              border-color 0.24s ease;
 }
 
 [data-tilt]:hover {
-  border-color: rgba(56, 189, 248, 0.45) !important;
-  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.4), 
-              0 0 25px rgba(56, 189, 248, 0.12) !important;
+  transform: translateY(-4px) scale(1.008);
+  border-color: rgba(0, 240, 255, 0.45) !important;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6), 
+              0 0 25px rgba(0, 240, 255, 0.15) !important;
 }
 
-/* Specular Glare Reflection on Hover */
+/* Remove specular glare and mouse spotlights */
 .card-glare {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(circle 350px at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-              rgba(255, 255, 255, 0.12), 
-              transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 10;
-}
-
-[data-tilt]:hover .card-glare {
-  opacity: 1;
+  display: none !important;
 }
 
 /* 3D Depth on Child Elements */
