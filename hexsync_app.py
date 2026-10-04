@@ -554,6 +554,7 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
             p_name = req_data.get("name", "").strip()
             p_path = req_data.get("path", "").strip()
             p_github = req_data.get("github_url", "").strip()
+            p_vercel = req_data.get("vercel_url", "").strip()
             p_branch = req_data.get("branch", "main").strip()
             p_debounce = int(req_data.get("debounce", 5))
 
@@ -572,6 +573,8 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
                 if existing:
                     existing["name"] = p_name
                     existing["github_url"] = p_github
+                    if p_vercel:
+                        existing["vercel_url"] = p_vercel
                     existing["branch"] = p_branch
                     existing["debounce"] = p_debounce
                     active_id = existing["id"]
@@ -582,6 +585,7 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
                         "name": p_name,
                         "path": p_path,
                         "github_url": p_github,
+                        "vercel_url": p_vercel,
                         "branch": p_branch,
                         "debounce": p_debounce
                     }
