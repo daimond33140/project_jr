@@ -248,16 +248,16 @@ function initTrendChart(filteredTrends = null) {
         },
         markPoint: {
           symbol: "pin",
-          symbolSize: 50,
+          symbolSize: 52,
           data: [
             {
-              name: "จุดสูงสุดก่อนโควิด",
-              type: "max",
-              value: "฿193B",
+              name: "จุดสูงสุด",
+              coord: ["ม.ค. 63", 192991310000],
+              value: "จุดสูงสุด",
               itemStyle: { color: "#10b981" }
             },
             {
-              name: "จุดต่ำสุดล็อกดาวน์",
+              name: "จุดต่ำสุด",
               coord: ["เม.ย. 63", 260000000],
               value: "จุดต่ำสุด",
               itemStyle: { color: "#ef4444" }
@@ -269,14 +269,16 @@ function initTrendChart(filteredTrends = null) {
             fontSize: 9.5,
             fontWeight: "700",
             offset: [0, -3],
-            formatter: "{c}"
+            formatter: function(params) {
+              return params.data.name.includes("สูงสุด") ? "จุดสูงสุด" : "จุดต่ำสุด";
+            }
           },
           tooltip: {
             formatter: function(params) {
-              if (params.data.name === "จุดสูงสุดก่อนโควิด") {
-                return "<div style='font-weight:700;color:#10b981;'>หมุดสีเขียว: จุดสูงสุดก่อนโควิด (ม.ค. 63)</div><div>รายได้ท่องเที่ยวต่างชาติแตะระดับสูงสุด <strong>฿193 พันล้าน (192.99B)</strong></div>";
+              if (params.data.name.includes("สูงสุด")) {
+                return "<div style='font-weight:700;color:#10b981;'>หมุดสีเขียว: จุดสูงสุด (ม.ค. 63)</div><div>รายได้ท่องเที่ยวต่างชาติแตะระดับสูงสุด: <strong>฿193 พันล้าน</strong></div>";
               }
-              return "<div style='font-weight:700;color:#ef4444;'>หมุดสีแดง: จุดต่ำสุดช่วงล็อกดาวน์ (เม.ย. 63)</div><div>สั่งปิดน่านฟ้า/ล็อกดาวน์ทั่วประเทศ รายได้ต่างชาติดิ่งแตะจุดต่ำสุด <strong>฿260 ล้าน</strong></div>";
+              return "<div style='font-weight:700;color:#ef4444;'>หมุดสีแดง: จุดต่ำสุด (เม.ย. 63)</div><div>ช่วงวิกฤตล็อกดาวน์ รายได้ต่างชาติต่ำสุด: <strong>฿260 ล้าน</strong></div>";
             }
           }
         }
