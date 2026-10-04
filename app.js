@@ -1004,7 +1004,7 @@ function runPreloader() {
     { pct: 60, msg: "CALCULATING 50-MONTH PROVINCIAL TIER MATRICES..." },
     { pct: 85, msg: "CALIBRATING 5-REGION GEOGRAPHIC VISUALIZATIONS..." },
     { pct: 95, msg: "BUILDING INTERACTIVE DATA STORYTELLING PIPELINE..." },
-    { pct: 100, msg: "SYSTEM READY // HEXSYNCTH PRESENTATION ONLINE" }
+    { pct: 100, msg: "SYSTEM READY // G10 GROUP PRESENTATION ONLINE" }
   ];
 
   let currentPercent = 0;
