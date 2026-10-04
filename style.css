@@ -2689,3 +2689,8 @@ body.hud-is-collapsed .dock-expand-tab {
 .nasa-hud-panel-container.view-hidden {
   display: none !important;
 }
+
+/* Explicitly hide 01-04 card step numbers */
+.card-step-num {
+  display: none !important;
+}

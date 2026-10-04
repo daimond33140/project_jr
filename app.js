@@ -653,15 +653,17 @@ async function renderGeoMap() {
 
       layer.on({
         mouseover: function(e) {
+          if (regionLeafletMap) regionLeafletMap.closeTooltip();
           const l = e.target;
           l.setStyle({
-            weight: 3.5,
+            weight: 3.2,
             color: "#ffffff",
             fillOpacity: 0.95
           });
-          l.bringToFront();
         },
         mouseout: function(e) {
+          e.target.closeTooltip();
+          if (regionLeafletMap) regionLeafletMap.closeTooltip();
           updateRegionMapHighlight();
         },
         click: function() {
@@ -1444,7 +1446,8 @@ function initDualMapComparison() {
           mouseover: function() {
             highlightSynchronized(thName);
           },
-          mouseout: function() {
+          mouseout: function(e) {
+            e.target?.closeTooltip();
             resetSynchronized();
           },
           click: function() {
@@ -1463,6 +1466,9 @@ function initDualMapComparison() {
   }
 
   function highlightSynchronized(thName) {
+    if (compareMapA) compareMapA.closeTooltip();
+    if (compareMapB) compareMapB.closeTooltip();
+
     const yearA = yearASel ? yearASel.value : "2019";
     const monthA = monthASel ? monthASel.value : "all";
     const dayA = dayASel ? dayASel.value : "all";
@@ -1480,12 +1486,10 @@ function initDualMapComparison() {
     const layerB = provinceLayersB[thName];
 
     if (layerA) {
-      layerA.setStyle({ weight: 3.5, color: "#ffffff", fillOpacity: 0.95 });
-      layerA.bringToFront();
+      layerA.setStyle({ weight: 3.2, color: "#ffffff", fillOpacity: 0.95 });
     }
     if (layerB) {
-      layerB.setStyle({ weight: 3.5, color: "#ffffff", fillOpacity: 0.95 });
-      layerB.bringToFront();
+      layerB.setStyle({ weight: 3.2, color: "#ffffff", fillOpacity: 0.95 });
     }
 
     const calloutName = document.getElementById("callout-province-name");
@@ -1526,6 +1530,8 @@ function initDualMapComparison() {
   function resetSynchronized() {
     if (geoLayerA) geoLayerA.resetStyle();
     if (geoLayerB) geoLayerB.resetStyle();
+    if (compareMapA) compareMapA.closeTooltip();
+    if (compareMapB) compareMapB.closeTooltip();
 
     const calloutName = document.getElementById("callout-province-name");
     const calloutGrid = document.getElementById("callout-grid");
