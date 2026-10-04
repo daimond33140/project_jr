@@ -184,8 +184,38 @@
       </div>
     </section>
 
+    <!-- 144 FPS VIEW SELECTOR (SEPARATE VIEW BUTTONS // CLEAN & FAST) -->
+    <nav class="view-switcher-bar" id="view-switcher-bar" role="tablist">
+      <span class="switcher-label"><i data-lucide="layers"></i> เลือกมุมมอง:</span>
+      <div class="switcher-buttons">
+        <button class="switcher-btn active" data-view="all">
+          <i data-lucide="layout-grid"></i>
+          <span>แสดงทั้งหมด (All)</span>
+        </button>
+        <button class="switcher-btn" data-view="trend">
+          <i data-lucide="trending-up"></i>
+          <span>แนวโน้ม 50 เดือน</span>
+        </button>
+        <button class="switcher-btn" data-view="geo">
+          <i data-lucide="map"></i>
+          <span>แผนที่ 5 ภูมิภาค</span>
+        </button>
+        <button class="switcher-btn" data-view="rank">
+          <i data-lucide="bar-chart-2"></i>
+          <span>10 อันดับ & Tiers</span>
+        </button>
+        <button class="switcher-btn" data-view="table">
+          <i data-lucide="table"></i>
+          <span>ตาราง 77 จังหวัด</span>
+        </button>
+      </div>
+      <div class="f12-hint-badge" title="กดปุ่ม F12 บนคีย์บอร์ดเพื่อเปิดหน้าต่าง Storytelling">
+        <kbd>F12</kbd> <span>Storytelling</span>
+      </div>
+    </nav>
+
     <!-- KPI SUMMARY CARDS (3D TILT WITH COUNTERS) -->
-    <section class="kpi-grid">
+    <section class="kpi-grid" id="sec-kpis">
       <div class="kpi-card card-gradient-1" data-tilt>
         <div class="card-glare"></div>
         <div class="kpi-header">
