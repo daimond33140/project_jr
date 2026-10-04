@@ -81,7 +81,8 @@
       <!-- Action Button after 100% -->
       <div class="preloader-actions" id="preloader-actions">
         <button id="btn-enter-presentation" class="btn-enter-presentation" aria-label="Enter Presentation">
-          <span class="btn-text">ENTER 3D PRESENTATION</span>
+          <i data-lucide="sparkles" class="btn-icon-left"></i>
+          <span class="enter-btn-label">ยืนยันเข้าสู่การนำเสนอ (ENTER PRESENTATION)</span>
           <i data-lucide="arrow-right" class="btn-arrow"></i>
         </button>
       </div>
@@ -100,9 +101,8 @@
   <div class="ambient-glow glow-2"></div>
   <div class="architectural-grid"></div>
 
-  <!-- Custom Magnetic Cursor -->
-  <div id="custom-cursor-dot" class="cursor-dot"></div>
-  <div id="custom-cursor-ring" class="cursor-ring"></div>
+  <!-- Clean Glowing Cursor Aura (Non-cluttered) -->
+  <div id="cursor-glow" class="cursor-glow"></div>
 
   <!-- ========================================================
        3. MAIN APPLICATION CONTAINER
@@ -128,11 +128,6 @@
       </div>
       
       <div class="header-actions">
-        <!-- Replay Preloader Button -->
-        <button id="btn-replay-intro" class="btn btn-intro-replay" title="เปิดหน้าต่าง HexSyncTH Presentation Intro อีกครั้ง">
-          <i data-lucide="play-circle"></i>
-          <span>HexSyncTH Intro</span>
-        </button>
         <button id="theme-toggle-btn" class="btn btn-outline" title="สลับธีม มืด / สว่าง">
           <i data-lucide="sun" id="theme-icon"></i>
           <span id="theme-label">Light Mode</span>
