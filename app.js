@@ -1,6 +1,6 @@
 // ==========================================
 // APP LOGIC & VISUALIZATION ENGINE (REAL MOTS TOURISM DATASET)
-// สำหรับวิชา 01418325 ข้อมูลจินตทัศน์ (Data Visualization)
+// THAILAND TOURISM INTELLIGENCE (2562 - 2566)
 // ULTRA-CLEAN & DUAL THEME (LIGHT/DARK) READY
 // ==========================================
 
