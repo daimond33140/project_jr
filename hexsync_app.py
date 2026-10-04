@@ -175,12 +175,31 @@ def check_repo_vercel(owner, repo_name):
     if cache_key in _vercel_cache and (now - _vercel_cache_time.get(cache_key, 0)) < 60:
         return _vercel_cache[cache_key]
 
-    result = {
-        "connected": False,
-        "status": "NOT_CONNECTED",
-        "url": None,
-        "environment": None
-    }
+    # 1. Check if user configured custom vercel_url in project
+    for p in config_data.get("projects", []):
+        gh = p.get("github_url", "").lower()
+        if repo_name.lower() in gh and p.get("vercel_url"):
+            res = {"connected": True, "status": "LIVE", "url": p["vercel_url"], "environment": "Production"}
+            _vercel_cache[cache_key] = res
+            _vercel_cache_time[cache_key] = now
+            return res
+
+    clean_candidates = [
+        repo_name.lower().replace('_', ''),
+        re.sub(r'([a-z0-9])([A-Z])', r'\1-\2', repo_name).lower().replace('_', '-'),
+        repo_name.lower().replace('_', '-'),
+        repo_name.lower()
+    ]
+    seen = set()
+    uniq_candidates = []
+    for c in clean_candidates:
+        if c not in seen:
+            seen.add(c)
+            uniq_candidates.append(c)
+
+    has_deployments = False
+    first_dep = None
+    target_url = None
 
     try:
         url = f"https://api.github.com/repos/{owner}/{repo_name}/deployments?per_page=3"
@@ -188,9 +207,9 @@ def check_repo_vercel(owner, repo_name):
         with urllib.request.urlopen(req, timeout=3.0) as resp:
             deps = json.loads(resp.read().decode('utf-8'))
             if deps and isinstance(deps, list) and len(deps) > 0:
+                has_deployments = True
                 first_dep = deps[0]
                 dep_id = first_dep.get("id")
-                target_url = None
                 if dep_id:
                     st_url = f"https://api.github.com/repos/{owner}/{repo_name}/deployments/{dep_id}/statuses?per_page=1"
                     st_req = urllib.request.Request(st_url, headers={"User-Agent": "HexSyncTH-Desktop/2.0"})
@@ -201,23 +220,39 @@ def check_repo_vercel(owner, repo_name):
                                 target_url = statuses[0].get("target_url") or statuses[0].get("environment_url")
                     except Exception:
                         pass
-
-                if not target_url:
-                    clean_slug = repo_name.lower().replace("_", "-")
-                    target_url = f"https://{clean_slug}.vercel.app"
-
-                result = {
-                    "connected": True,
-                    "status": "LIVE",
-                    "url": target_url,
-                    "environment": first_dep.get("environment", "Production")
-                }
     except Exception:
         pass
 
-    _vercel_cache[cache_key] = result
+    if not has_deployments:
+        res = {"connected": False, "status": "NOT_CONNECTED", "url": None, "environment": None}
+        _vercel_cache[cache_key] = res
+        _vercel_cache_time[cache_key] = now
+        return res
+
+    # 2. Prioritize clean Production Domain alias (e.g. projectjr.vercel.app)
+    for cand in uniq_candidates:
+        test_url = f"https://{cand}.vercel.app"
+        try:
+            h_req = urllib.request.Request(test_url, headers={"User-Agent": "Mozilla/5.0"}, method="HEAD")
+            with urllib.request.urlopen(h_req, timeout=2.0) as h_resp:
+                if h_resp.status in (200, 301, 302, 308):
+                    res = {"connected": True, "status": "LIVE", "url": test_url, "environment": "Production"}
+                    _vercel_cache[cache_key] = res
+                    _vercel_cache_time[cache_key] = now
+                    return res
+        except Exception:
+            pass
+
+    final_url = target_url or f"https://{uniq_candidates[0]}.vercel.app"
+    res = {
+        "connected": True,
+        "status": "LIVE",
+        "url": final_url,
+        "environment": first_dep.get("environment", "Production") if first_dep else "Production"
+    }
+    _vercel_cache[cache_key] = res
     _vercel_cache_time[cache_key] = now
-    return result
+    return res
 
 def ensure_git_setup(proj):
     cwd = proj["path"]
