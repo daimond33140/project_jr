@@ -125,6 +125,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+body.loading-active {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
 .app-container {
   max-width: 1600px;
   margin: 0 auto;
@@ -132,6 +137,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  position: relative;
+  z-index: 2;
 }
 
 /* --------------------------------------------------
