@@ -252,7 +252,7 @@ function initTrendChart(filteredTrends = null) {
           data: [
             {
               name: "จุดสูงสุด",
-              coord: ["ม.ค. 63", 192991310000],
+              coord: ["ธ.ค. 62", 192991310000],
               value: "จุดสูงสุด",
               itemStyle: { color: "#10b981" }
             },
@@ -276,7 +276,7 @@ function initTrendChart(filteredTrends = null) {
           tooltip: {
             formatter: function(params) {
               if (params.data.name.includes("สูงสุด")) {
-                return "<div style='font-weight:700;color:#10b981;'>หมุดสีเขียว: จุดสูงสุด (ม.ค. 63)</div><div>รายได้ท่องเที่ยวต่างชาติแตะระดับสูงสุด: <strong>฿193 พันล้าน</strong></div>";
+                return "<div style='font-weight:700;color:#10b981;'>หมุดสีเขียว: จุดสูงสุด (ธ.ค. 62)</div><div>รายได้ท่องเที่ยวต่างชาติแตะระดับสูงสุด: <strong>฿193 พันล้าน</strong></div>";
               }
               return "<div style='font-weight:700;color:#ef4444;'>หมุดสีแดง: จุดต่ำสุด (เม.ย. 63)</div><div>ช่วงวิกฤตล็อกดาวน์ รายได้ต่างชาติต่ำสุด: <strong>฿260 ล้าน</strong></div>";
             }
