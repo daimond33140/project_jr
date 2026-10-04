@@ -14,6 +14,4399 @@ const RAW_DATA = {
     timeRange: "มกราคม 2562 - กุมภาพันธ์ 2566 (50 เดือน)",
     totalRevenueAccumulated: 5173921836200.0
   },
+
+  yearlyProvinceData: {
+  "กระบี่": {
+    "2019": {
+      "revenue_all": 9337958333.333334,
+      "revenue_thai": 3198414166.6666665,
+      "revenue_foreign": 6139544166.666667,
+      "no_tourist_all": 563319,
+      "no_tourist_thai": 203935,
+      "no_tourist_foreign": 359383,
+      "occupancy_rate": 68.5,
+      "spend_per_head": 16577,
+      "foreign_share": 65.7
+    },
+    "2020": {
+      "revenue_all": 2419305000.0,
+      "revenue_thai": 1133906666.6666667,
+      "revenue_foreign": 1285398333.3333333,
+      "no_tourist_all": 130240,
+      "no_tourist_thai": 77968,
+      "no_tourist_foreign": 52271,
+      "occupancy_rate": 18.6,
+      "spend_per_head": 18576,
+      "foreign_share": 53.1
+    },
+    "2021": {
+      "revenue_all": 374517500.0,
+      "revenue_thai": 371606666.6666667,
+      "revenue_foreign": 2910833.3333333335,
+      "no_tourist_all": 32305,
+      "no_tourist_thai": 31939,
+      "no_tourist_foreign": 365,
+      "occupancy_rate": 6.0,
+      "spend_per_head": 11593,
+      "foreign_share": 0.8
+    },
+    "2022": {
+      "revenue_all": 1328045000.0,
+      "revenue_thai": 1167035833.3333333,
+      "revenue_foreign": 161009166.66666666,
+      "no_tourist_all": 144171,
+      "no_tourist_thai": 118360,
+      "no_tourist_foreign": 25811,
+      "occupancy_rate": 27.1,
+      "spend_per_head": 9212,
+      "foreign_share": 12.1
+    },
+    "2023": {
+      "revenue_all": 2143030000.0,
+      "revenue_thai": 1580520000.0,
+      "revenue_foreign": 562510000.0,
+      "no_tourist_all": 266930,
+      "no_tourist_thai": 165071,
+      "no_tourist_foreign": 101859,
+      "occupancy_rate": 71.0,
+      "spend_per_head": 8028,
+      "foreign_share": 26.2
+    }
+  },
+  "กรุงเทพมหานคร": {
+    "2019": {
+      "revenue_all": 88984480000.0,
+      "revenue_thai": 32050375000.0,
+      "revenue_foreign": 56934105000.0,
+      "no_tourist_all": 5580546,
+      "no_tourist_thai": 3506153,
+      "no_tourist_foreign": 2074392,
+      "occupancy_rate": 82.2,
+      "spend_per_head": 15945,
+      "foreign_share": 64.0
+    },
+    "2020": {
+      "revenue_all": 21228346666.666668,
+      "revenue_thai": 11146766666.666666,
+      "revenue_foreign": 10081580000.0,
+      "no_tourist_all": 1968159,
+      "no_tourist_thai": 1566283,
+      "no_tourist_foreign": 401876,
+      "occupancy_rate": 28.2,
+      "spend_per_head": 10786,
+      "foreign_share": 47.5
+    },
+    "2021": {
+      "revenue_all": 5224992500.0,
+      "revenue_thai": 4378898333.333333,
+      "revenue_foreign": 846094166.6666666,
+      "no_tourist_all": 1047653,
+      "no_tourist_thai": 995540,
+      "no_tourist_foreign": 52113,
+      "occupancy_rate": 13.0,
+      "spend_per_head": 4987,
+      "foreign_share": 16.2
+    },
+    "2022": {
+      "revenue_all": 28414173333.333332,
+      "revenue_thai": 11856401666.666666,
+      "revenue_foreign": 16557771666.666666,
+      "no_tourist_all": 3218870,
+      "no_tourist_thai": 2399499,
+      "no_tourist_foreign": 819371,
+      "occupancy_rate": 46.6,
+      "spend_per_head": 8827,
+      "foreign_share": 58.3
+    },
+    "2023": {
+      "revenue_all": 60371760000.0,
+      "revenue_thai": 13777585000.0,
+      "revenue_foreign": 46594175000.0,
+      "no_tourist_all": 4784866,
+      "no_tourist_thai": 2645072,
+      "no_tourist_foreign": 2139793,
+      "occupancy_rate": 75.5,
+      "spend_per_head": 12617,
+      "foreign_share": 77.2
+    }
+  },
+  "กาญจนบุรี": {
+    "2019": {
+      "revenue_all": 2323660000.0,
+      "revenue_thai": 2133315833.3333333,
+      "revenue_foreign": 190344166.66666666,
+      "no_tourist_all": 801504,
+      "no_tourist_thai": 760157,
+      "no_tourist_foreign": 41347,
+      "occupancy_rate": 69.3,
+      "spend_per_head": 2899,
+      "foreign_share": 8.2
+    },
+    "2020": {
+      "revenue_all": 1268083333.3333333,
+      "revenue_thai": 1231217500.0,
+      "revenue_foreign": 36865833.333333336,
+      "no_tourist_all": 505688,
+      "no_tourist_thai": 499135,
+      "no_tourist_foreign": 6553,
+      "occupancy_rate": 42.6,
+      "spend_per_head": 2508,
+      "foreign_share": 2.9
+    },
+    "2021": {
+      "revenue_all": 706960833.3333334,
+      "revenue_thai": 706248333.3333334,
+      "revenue_foreign": 712500.0,
+      "no_tourist_all": 342937,
+      "no_tourist_thai": 342672,
+      "no_tourist_foreign": 264,
+      "occupancy_rate": 22.6,
+      "spend_per_head": 2061,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 1789990833.3333333,
+      "revenue_thai": 1766175000.0,
+      "revenue_foreign": 23815833.333333332,
+      "no_tourist_all": 961189,
+      "no_tourist_thai": 954430,
+      "no_tourist_foreign": 6758,
+      "occupancy_rate": 58.4,
+      "spend_per_head": 1862,
+      "foreign_share": 1.3
+    },
+    "2023": {
+      "revenue_all": 2402355000.0,
+      "revenue_thai": 2343470000.0,
+      "revenue_foreign": 58885000.0,
+      "no_tourist_all": 1270957,
+      "no_tourist_thai": 1251837,
+      "no_tourist_foreign": 19119,
+      "occupancy_rate": 66.3,
+      "spend_per_head": 1890,
+      "foreign_share": 2.5
+    }
+  },
+  "กาฬสินธุ์": {
+    "2019": {
+      "revenue_all": 103490833.33333333,
+      "revenue_thai": 102664166.66666667,
+      "revenue_foreign": 826666.6666666666,
+      "no_tourist_all": 64024,
+      "no_tourist_thai": 63669,
+      "no_tourist_foreign": 355,
+      "occupancy_rate": 53.6,
+      "spend_per_head": 1616,
+      "foreign_share": 0.8
+    },
+    "2020": {
+      "revenue_all": 43350000.0,
+      "revenue_thai": 43190000.0,
+      "revenue_foreign": 160000.0,
+      "no_tourist_all": 32009,
+      "no_tourist_thai": 31935,
+      "no_tourist_foreign": 73,
+      "occupancy_rate": 25.3,
+      "spend_per_head": 1354,
+      "foreign_share": 0.4
+    },
+    "2021": {
+      "revenue_all": 22644166.666666668,
+      "revenue_thai": 22615833.333333332,
+      "revenue_foreign": 28333.333333333332,
+      "no_tourist_all": 20943,
+      "no_tourist_thai": 20915,
+      "no_tourist_foreign": 28,
+      "occupancy_rate": 15.1,
+      "spend_per_head": 1081,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 53685833.333333336,
+      "revenue_thai": 52181666.666666664,
+      "revenue_foreign": 1504166.6666666667,
+      "no_tourist_all": 53377,
+      "no_tourist_thai": 52929,
+      "no_tourist_foreign": 448,
+      "occupancy_rate": 41.7,
+      "spend_per_head": 1006,
+      "foreign_share": 2.8
+    },
+    "2023": {
+      "revenue_all": 73495000.0,
+      "revenue_thai": 68225000.0,
+      "revenue_foreign": 5270000.0,
+      "no_tourist_all": 65910,
+      "no_tourist_thai": 64257,
+      "no_tourist_foreign": 1653,
+      "occupancy_rate": 52.1,
+      "spend_per_head": 1115,
+      "foreign_share": 7.2
+    }
+  },
+  "กำแพงเพชร": {
+    "2019": {
+      "revenue_all": 138334166.66666666,
+      "revenue_thai": 134151666.66666667,
+      "revenue_foreign": 4182500.0,
+      "no_tourist_all": 65241,
+      "no_tourist_thai": 63292,
+      "no_tourist_foreign": 1949,
+      "occupancy_rate": 47.7,
+      "spend_per_head": 2120,
+      "foreign_share": 3.0
+    },
+    "2020": {
+      "revenue_all": 72434166.66666667,
+      "revenue_thai": 71097500.0,
+      "revenue_foreign": 1336666.6666666667,
+      "no_tourist_all": 38373,
+      "no_tourist_thai": 37929,
+      "no_tourist_foreign": 443,
+      "occupancy_rate": 29.2,
+      "spend_per_head": 1888,
+      "foreign_share": 1.8
+    },
+    "2021": {
+      "revenue_all": 34715000.0,
+      "revenue_thai": 34615833.333333336,
+      "revenue_foreign": 99166.66666666667,
+      "no_tourist_all": 22484,
+      "no_tourist_thai": 22427,
+      "no_tourist_foreign": 57,
+      "occupancy_rate": 12.3,
+      "spend_per_head": 1544,
+      "foreign_share": 0.3
+    },
+    "2022": {
+      "revenue_all": 110023333.33333333,
+      "revenue_thai": 107355833.33333333,
+      "revenue_foreign": 2667500.0,
+      "no_tourist_all": 65090,
+      "no_tourist_thai": 63681,
+      "no_tourist_foreign": 1408,
+      "occupancy_rate": 33.6,
+      "spend_per_head": 1690,
+      "foreign_share": 2.4
+    },
+    "2023": {
+      "revenue_all": 138850000.0,
+      "revenue_thai": 133400000.0,
+      "revenue_foreign": 5450000.0,
+      "no_tourist_all": 73580,
+      "no_tourist_thai": 70970,
+      "no_tourist_foreign": 2610,
+      "occupancy_rate": 39.7,
+      "spend_per_head": 1887,
+      "foreign_share": 3.9
+    }
+  },
+  "ขอนแก่น": {
+    "2019": {
+      "revenue_all": 1509273333.3333333,
+      "revenue_thai": 1482293333.3333333,
+      "revenue_foreign": 26980000.0,
+      "no_tourist_all": 465317,
+      "no_tourist_thai": 458564,
+      "no_tourist_foreign": 6752,
+      "occupancy_rate": 57.6,
+      "spend_per_head": 3244,
+      "foreign_share": 1.8
+    },
+    "2020": {
+      "revenue_all": 724138333.3333334,
+      "revenue_thai": 719828333.3333334,
+      "revenue_foreign": 4310000.0,
+      "no_tourist_all": 243363,
+      "no_tourist_thai": 242088,
+      "no_tourist_foreign": 1274,
+      "occupancy_rate": 33.8,
+      "spend_per_head": 2976,
+      "foreign_share": 0.6
+    },
+    "2021": {
+      "revenue_all": 262612500.0,
+      "revenue_thai": 262108333.33333334,
+      "revenue_foreign": 504166.6666666667,
+      "no_tourist_all": 115641,
+      "no_tourist_thai": 115448,
+      "no_tourist_foreign": 193,
+      "occupancy_rate": 18.2,
+      "spend_per_head": 2271,
+      "foreign_share": 0.2
+    },
+    "2022": {
+      "revenue_all": 788609166.6666666,
+      "revenue_thai": 778673333.3333334,
+      "revenue_foreign": 9935833.333333334,
+      "no_tourist_all": 292739,
+      "no_tourist_thai": 289165,
+      "no_tourist_foreign": 3574,
+      "occupancy_rate": 50.5,
+      "spend_per_head": 2694,
+      "foreign_share": 1.3
+    },
+    "2023": {
+      "revenue_all": 912720000.0,
+      "revenue_thai": 887385000.0,
+      "revenue_foreign": 25335000.0,
+      "no_tourist_all": 328575,
+      "no_tourist_thai": 319249,
+      "no_tourist_foreign": 9326,
+      "occupancy_rate": 59.4,
+      "spend_per_head": 2778,
+      "foreign_share": 2.8
+    }
+  },
+  "จันทบุรี": {
+    "2019": {
+      "revenue_all": 726153333.3333334,
+      "revenue_thai": 680986666.6666666,
+      "revenue_foreign": 45166666.666666664,
+      "no_tourist_all": 207040,
+      "no_tourist_thai": 199179,
+      "no_tourist_foreign": 7860,
+      "occupancy_rate": 60.2,
+      "spend_per_head": 3507,
+      "foreign_share": 6.2
+    },
+    "2020": {
+      "revenue_all": 367555833.3333333,
+      "revenue_thai": 359998333.3333333,
+      "revenue_foreign": 7557500.0,
+      "no_tourist_all": 118462,
+      "no_tourist_thai": 117363,
+      "no_tourist_foreign": 1099,
+      "occupancy_rate": 34.3,
+      "spend_per_head": 3103,
+      "foreign_share": 2.1
+    },
+    "2021": {
+      "revenue_all": 170472500.0,
+      "revenue_thai": 170223333.33333334,
+      "revenue_foreign": 249166.66666666666,
+      "no_tourist_all": 58353,
+      "no_tourist_thai": 58251,
+      "no_tourist_foreign": 101,
+      "occupancy_rate": 24.0,
+      "spend_per_head": 2921,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 381185000.0,
+      "revenue_thai": 379433333.3333333,
+      "revenue_foreign": 1751666.6666666667,
+      "no_tourist_all": 112665,
+      "no_tourist_thai": 111870,
+      "no_tourist_foreign": 794,
+      "occupancy_rate": 49.4,
+      "spend_per_head": 3383,
+      "foreign_share": 0.5
+    },
+    "2023": {
+      "revenue_all": 882250000.0,
+      "revenue_thai": 876710000.0,
+      "revenue_foreign": 5540000.0,
+      "no_tourist_all": 255297,
+      "no_tourist_thai": 252701,
+      "no_tourist_foreign": 2596,
+      "occupancy_rate": 61.9,
+      "spend_per_head": 3456,
+      "foreign_share": 0.6
+    }
+  },
+  "ฉะเชิงเทรา": {
+    "2019": {
+      "revenue_all": 423815000.0,
+      "revenue_thai": 418835833.3333333,
+      "revenue_foreign": 4979166.666666667,
+      "no_tourist_all": 288894,
+      "no_tourist_thai": 286213,
+      "no_tourist_foreign": 2681,
+      "occupancy_rate": 56.9,
+      "spend_per_head": 1467,
+      "foreign_share": 1.2
+    },
+    "2020": {
+      "revenue_all": 229325000.0,
+      "revenue_thai": 228725833.33333334,
+      "revenue_foreign": 599166.6666666666,
+      "no_tourist_all": 172696,
+      "no_tourist_thai": 172240,
+      "no_tourist_foreign": 456,
+      "occupancy_rate": 23.0,
+      "spend_per_head": 1328,
+      "foreign_share": 0.3
+    },
+    "2021": {
+      "revenue_all": 111561666.66666667,
+      "revenue_thai": 111546666.66666667,
+      "revenue_foreign": 15000.0,
+      "no_tourist_all": 95675,
+      "no_tourist_thai": 95657,
+      "no_tourist_foreign": 17,
+      "occupancy_rate": 9.0,
+      "spend_per_head": 1166,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 427805000.0,
+      "revenue_thai": 427380833.3333333,
+      "revenue_foreign": 424166.6666666667,
+      "no_tourist_all": 385059,
+      "no_tourist_thai": 384603,
+      "no_tourist_foreign": 456,
+      "occupancy_rate": 31.7,
+      "spend_per_head": 1111,
+      "foreign_share": 0.1
+    },
+    "2023": {
+      "revenue_all": 496375000.0,
+      "revenue_thai": 495150000.0,
+      "revenue_foreign": 1225000.0,
+      "no_tourist_all": 443685,
+      "no_tourist_thai": 442455,
+      "no_tourist_foreign": 1230,
+      "occupancy_rate": 40.8,
+      "spend_per_head": 1119,
+      "foreign_share": 0.2
+    }
+  },
+  "ชลบุรี": {
+    "2019": {
+      "revenue_all": 23027361666.666668,
+      "revenue_thai": 4624956666.666667,
+      "revenue_foreign": 18402405000.0,
+      "no_tourist_all": 1550243,
+      "no_tourist_thai": 719695,
+      "no_tourist_foreign": 830547,
+      "occupancy_rate": 80.4,
+      "spend_per_head": 14854,
+      "foreign_share": 79.9
+    },
+    "2020": {
+      "revenue_all": 5208285833.333333,
+      "revenue_thai": 2332410000.0,
+      "revenue_foreign": 2875875833.3333335,
+      "no_tourist_all": 580395,
+      "no_tourist_thai": 458867,
+      "no_tourist_foreign": 121528,
+      "occupancy_rate": 28.9,
+      "spend_per_head": 8974,
+      "foreign_share": 55.2
+    },
+    "2021": {
+      "revenue_all": 994039166.6666666,
+      "revenue_thai": 971523333.3333334,
+      "revenue_foreign": 22515833.333333332,
+      "no_tourist_all": 234478,
+      "no_tourist_thai": 232053,
+      "no_tourist_foreign": 2425,
+      "occupancy_rate": 11.5,
+      "spend_per_head": 4239,
+      "foreign_share": 2.3
+    },
+    "2022": {
+      "revenue_all": 8289213333.333333,
+      "revenue_thai": 6183295000.0,
+      "revenue_foreign": 2105918333.3333333,
+      "no_tourist_all": 1223747,
+      "no_tourist_thai": 1068992,
+      "no_tourist_foreign": 154754,
+      "occupancy_rate": 53.5,
+      "spend_per_head": 6774,
+      "foreign_share": 25.4
+    },
+    "2023": {
+      "revenue_all": 16716190000.0,
+      "revenue_thai": 7157420000.0,
+      "revenue_foreign": 9558770000.0,
+      "no_tourist_all": 1927488,
+      "no_tourist_thai": 1252809,
+      "no_tourist_foreign": 674678,
+      "occupancy_rate": 76.7,
+      "spend_per_head": 8673,
+      "foreign_share": 57.2
+    }
+  },
+  "ชัยนาท": {
+    "2019": {
+      "revenue_all": 111380000.0,
+      "revenue_thai": 110705833.33333333,
+      "revenue_foreign": 674166.6666666666,
+      "no_tourist_all": 71161,
+      "no_tourist_thai": 70784,
+      "no_tourist_foreign": 377,
+      "occupancy_rate": 72.8,
+      "spend_per_head": 1565,
+      "foreign_share": 0.6
+    },
+    "2020": {
+      "revenue_all": 43366666.666666664,
+      "revenue_thai": 43237500.0,
+      "revenue_foreign": 129166.66666666667,
+      "no_tourist_all": 32908,
+      "no_tourist_thai": 32829,
+      "no_tourist_foreign": 78,
+      "occupancy_rate": 30.6,
+      "spend_per_head": 1318,
+      "foreign_share": 0.3
+    },
+    "2021": {
+      "revenue_all": 32067500.0,
+      "revenue_thai": 32066666.666666668,
+      "revenue_foreign": 833.3333333333334,
+      "no_tourist_all": 26378,
+      "no_tourist_thai": 26377,
+      "no_tourist_foreign": 1,
+      "occupancy_rate": 15.9,
+      "spend_per_head": 1216,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 84976666.66666667,
+      "revenue_thai": 84867500.0,
+      "revenue_foreign": 109166.66666666667,
+      "no_tourist_all": 66454,
+      "no_tourist_thai": 66323,
+      "no_tourist_foreign": 131,
+      "occupancy_rate": 40.4,
+      "spend_per_head": 1279,
+      "foreign_share": 0.1
+    },
+    "2023": {
+      "revenue_all": 98405000.0,
+      "revenue_thai": 97980000.0,
+      "revenue_foreign": 425000.0,
+      "no_tourist_all": 75396,
+      "no_tourist_thai": 74934,
+      "no_tourist_foreign": 462,
+      "occupancy_rate": 43.9,
+      "spend_per_head": 1305,
+      "foreign_share": 0.4
+    }
+  },
+  "ชัยภูมิ": {
+    "2019": {
+      "revenue_all": 183593333.33333334,
+      "revenue_thai": 181635833.33333334,
+      "revenue_foreign": 1957500.0,
+      "no_tourist_all": 150360,
+      "no_tourist_thai": 149505,
+      "no_tourist_foreign": 854,
+      "occupancy_rate": 58.9,
+      "spend_per_head": 1221,
+      "foreign_share": 1.1
+    },
+    "2020": {
+      "revenue_all": 79141666.66666667,
+      "revenue_thai": 78803333.33333333,
+      "revenue_foreign": 338333.3333333333,
+      "no_tourist_all": 67341,
+      "no_tourist_thai": 67201,
+      "no_tourist_foreign": 139,
+      "occupancy_rate": 26.4,
+      "spend_per_head": 1175,
+      "foreign_share": 0.4
+    },
+    "2021": {
+      "revenue_all": 48594166.666666664,
+      "revenue_thai": 48494166.666666664,
+      "revenue_foreign": 100000.0,
+      "no_tourist_all": 38174,
+      "no_tourist_thai": 38124,
+      "no_tourist_foreign": 50,
+      "occupancy_rate": 13.6,
+      "spend_per_head": 1273,
+      "foreign_share": 0.2
+    },
+    "2022": {
+      "revenue_all": 121070833.33333333,
+      "revenue_thai": 120329166.66666667,
+      "revenue_foreign": 741666.6666666666,
+      "no_tourist_all": 87996,
+      "no_tourist_thai": 87663,
+      "no_tourist_foreign": 332,
+      "occupancy_rate": 35.9,
+      "spend_per_head": 1376,
+      "foreign_share": 0.6
+    },
+    "2023": {
+      "revenue_all": 135205000.0,
+      "revenue_thai": 134245000.0,
+      "revenue_foreign": 960000.0,
+      "no_tourist_all": 97523,
+      "no_tourist_thai": 97095,
+      "no_tourist_foreign": 428,
+      "occupancy_rate": 46.2,
+      "spend_per_head": 1386,
+      "foreign_share": 0.7
+    }
+  },
+  "ชุมพร": {
+    "2019": {
+      "revenue_all": 627967500.0,
+      "revenue_thai": 566630833.3333334,
+      "revenue_foreign": 61336666.666666664,
+      "no_tourist_all": 126228,
+      "no_tourist_thai": 116735,
+      "no_tourist_foreign": 9493,
+      "occupancy_rate": 60.6,
+      "spend_per_head": 4975,
+      "foreign_share": 9.8
+    },
+    "2020": {
+      "revenue_all": 223796666.66666666,
+      "revenue_thai": 215875000.0,
+      "revenue_foreign": 7921666.666666667,
+      "no_tourist_all": 53988,
+      "no_tourist_thai": 52359,
+      "no_tourist_foreign": 1628,
+      "occupancy_rate": 24.7,
+      "spend_per_head": 4145,
+      "foreign_share": 3.5
+    },
+    "2021": {
+      "revenue_all": 80457500.0,
+      "revenue_thai": 80405000.0,
+      "revenue_foreign": 52500.0,
+      "no_tourist_all": 25855,
+      "no_tourist_thai": 25839,
+      "no_tourist_foreign": 16,
+      "occupancy_rate": 13.5,
+      "spend_per_head": 3112,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 264139166.66666666,
+      "revenue_thai": 263361666.66666666,
+      "revenue_foreign": 777500.0,
+      "no_tourist_all": 90927,
+      "no_tourist_thai": 90628,
+      "no_tourist_foreign": 299,
+      "occupancy_rate": 43.3,
+      "spend_per_head": 2905,
+      "foreign_share": 0.3
+    },
+    "2023": {
+      "revenue_all": 300145000.0,
+      "revenue_thai": 298350000.0,
+      "revenue_foreign": 1795000.0,
+      "no_tourist_all": 121296,
+      "no_tourist_thai": 120518,
+      "no_tourist_foreign": 778,
+      "occupancy_rate": 59.8,
+      "spend_per_head": 2474,
+      "foreign_share": 0.6
+    }
+  },
+  "ตรัง": {
+    "2019": {
+      "revenue_all": 796779166.6666666,
+      "revenue_thai": 654484166.6666666,
+      "revenue_foreign": 142295000.0,
+      "no_tourist_all": 130296,
+      "no_tourist_thai": 113977,
+      "no_tourist_foreign": 16319,
+      "occupancy_rate": 62.1,
+      "spend_per_head": 6115,
+      "foreign_share": 17.9
+    },
+    "2020": {
+      "revenue_all": 333925000.0,
+      "revenue_thai": 293415833.3333333,
+      "revenue_foreign": 40509166.666666664,
+      "no_tourist_all": 54007,
+      "no_tourist_thai": 49921,
+      "no_tourist_foreign": 4086,
+      "occupancy_rate": 27.3,
+      "spend_per_head": 6183,
+      "foreign_share": 12.1
+    },
+    "2021": {
+      "revenue_all": 112054166.66666667,
+      "revenue_thai": 111953333.33333333,
+      "revenue_foreign": 100833.33333333333,
+      "no_tourist_all": 25795,
+      "no_tourist_thai": 25769,
+      "no_tourist_foreign": 26,
+      "occupancy_rate": 14.9,
+      "spend_per_head": 4344,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 303015000.0,
+      "revenue_thai": 300680000.0,
+      "revenue_foreign": 2335000.0,
+      "no_tourist_all": 82001,
+      "no_tourist_thai": 81284,
+      "no_tourist_foreign": 717,
+      "occupancy_rate": 42.1,
+      "spend_per_head": 3695,
+      "foreign_share": 0.8
+    },
+    "2023": {
+      "revenue_all": 352405000.0,
+      "revenue_thai": 342755000.0,
+      "revenue_foreign": 9650000.0,
+      "no_tourist_all": 106954,
+      "no_tourist_thai": 103786,
+      "no_tourist_foreign": 3167,
+      "occupancy_rate": 55.6,
+      "spend_per_head": 3295,
+      "foreign_share": 2.7
+    }
+  },
+  "ตราด": {
+    "2019": {
+      "revenue_all": 1642810833.3333333,
+      "revenue_thai": 959310000.0,
+      "revenue_foreign": 683500833.3333334,
+      "no_tourist_all": 189854,
+      "no_tourist_thai": 143732,
+      "no_tourist_foreign": 46121,
+      "occupancy_rate": 66.3,
+      "spend_per_head": 8653,
+      "foreign_share": 41.6
+    },
+    "2020": {
+      "revenue_all": 677146666.6666666,
+      "revenue_thai": 487486666.6666667,
+      "revenue_foreign": 189660000.0,
+      "no_tourist_all": 90854,
+      "no_tourist_thai": 78212,
+      "no_tourist_foreign": 12642,
+      "occupancy_rate": 32.5,
+      "spend_per_head": 7453,
+      "foreign_share": 28.0
+    },
+    "2021": {
+      "revenue_all": 300131666.6666667,
+      "revenue_thai": 293177500.0,
+      "revenue_foreign": 6954166.666666667,
+      "no_tourist_all": 58719,
+      "no_tourist_thai": 58131,
+      "no_tourist_foreign": 588,
+      "occupancy_rate": 16.8,
+      "spend_per_head": 5111,
+      "foreign_share": 2.3
+    },
+    "2022": {
+      "revenue_all": 733705833.3333334,
+      "revenue_thai": 709206666.6666666,
+      "revenue_foreign": 24499166.666666668,
+      "no_tourist_all": 111291,
+      "no_tourist_thai": 107509,
+      "no_tourist_foreign": 3782,
+      "occupancy_rate": 40.8,
+      "spend_per_head": 6593,
+      "foreign_share": 3.3
+    },
+    "2023": {
+      "revenue_all": 1005335000.0,
+      "revenue_thai": 898020000.0,
+      "revenue_foreign": 107315000.0,
+      "no_tourist_all": 150756,
+      "no_tourist_thai": 135801,
+      "no_tourist_foreign": 14955,
+      "occupancy_rate": 55.1,
+      "spend_per_head": 6669,
+      "foreign_share": 10.7
+    }
+  },
+  "ตาก": {
+    "2019": {
+      "revenue_all": 607789166.6666666,
+      "revenue_thai": 592961666.6666666,
+      "revenue_foreign": 14827500.0,
+      "no_tourist_all": 187937,
+      "no_tourist_thai": 184244,
+      "no_tourist_foreign": 3693,
+      "occupancy_rate": 64.2,
+      "spend_per_head": 3234,
+      "foreign_share": 2.4
+    },
+    "2020": {
+      "revenue_all": 312088333.3333333,
+      "revenue_thai": 308602500.0,
+      "revenue_foreign": 3485833.3333333335,
+      "no_tourist_all": 105118,
+      "no_tourist_thai": 104130,
+      "no_tourist_foreign": 988,
+      "occupancy_rate": 39.8,
+      "spend_per_head": 2969,
+      "foreign_share": 1.1
+    },
+    "2021": {
+      "revenue_all": 99214166.66666667,
+      "revenue_thai": 99117500.0,
+      "revenue_foreign": 96666.66666666667,
+      "no_tourist_all": 40170,
+      "no_tourist_thai": 40146,
+      "no_tourist_foreign": 24,
+      "occupancy_rate": 13.6,
+      "spend_per_head": 2470,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 405636666.6666667,
+      "revenue_thai": 401770000.0,
+      "revenue_foreign": 3866666.6666666665,
+      "no_tourist_all": 139428,
+      "no_tourist_thai": 138554,
+      "no_tourist_foreign": 874,
+      "occupancy_rate": 49.8,
+      "spend_per_head": 2909,
+      "foreign_share": 1.0
+    },
+    "2023": {
+      "revenue_all": 652355000.0,
+      "revenue_thai": 629335000.0,
+      "revenue_foreign": 23020000.0,
+      "no_tourist_all": 198584,
+      "no_tourist_thai": 193761,
+      "no_tourist_foreign": 4823,
+      "occupancy_rate": 73.8,
+      "spend_per_head": 3285,
+      "foreign_share": 3.5
+    }
+  },
+  "นครนายก": {
+    "2019": {
+      "revenue_all": 638247500.0,
+      "revenue_thai": 629693333.3333334,
+      "revenue_foreign": 8554166.666666666,
+      "no_tourist_all": 256210,
+      "no_tourist_thai": 253846,
+      "no_tourist_foreign": 2364,
+      "occupancy_rate": 62.4,
+      "spend_per_head": 2491,
+      "foreign_share": 1.3
+    },
+    "2020": {
+      "revenue_all": 338719166.6666667,
+      "revenue_thai": 337425833.3333333,
+      "revenue_foreign": 1293333.3333333333,
+      "no_tourist_all": 157924,
+      "no_tourist_thai": 157487,
+      "no_tourist_foreign": 437,
+      "occupancy_rate": 36.0,
+      "spend_per_head": 2145,
+      "foreign_share": 0.4
+    },
+    "2021": {
+      "revenue_all": 100035833.33333333,
+      "revenue_thai": 100004166.66666667,
+      "revenue_foreign": 31666.666666666668,
+      "no_tourist_all": 55656,
+      "no_tourist_thai": 55644,
+      "no_tourist_foreign": 12,
+      "occupancy_rate": 23.1,
+      "spend_per_head": 1797,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 285989166.6666667,
+      "revenue_thai": 285531666.6666667,
+      "revenue_foreign": 457500.0,
+      "no_tourist_all": 128558,
+      "no_tourist_thai": 128394,
+      "no_tourist_foreign": 164,
+      "occupancy_rate": 55.9,
+      "spend_per_head": 2225,
+      "foreign_share": 0.2
+    },
+    "2023": {
+      "revenue_all": 308840000.0,
+      "revenue_thai": 305765000.0,
+      "revenue_foreign": 3075000.0,
+      "no_tourist_all": 132267,
+      "no_tourist_thai": 131306,
+      "no_tourist_foreign": 961,
+      "occupancy_rate": 61.8,
+      "spend_per_head": 2335,
+      "foreign_share": 1.0
+    }
+  },
+  "นครปฐม": {
+    "2019": {
+      "revenue_all": 516823333.3333333,
+      "revenue_thai": 494216666.6666667,
+      "revenue_foreign": 22606666.666666668,
+      "no_tourist_all": 352461,
+      "no_tourist_thai": 341736,
+      "no_tourist_foreign": 10725,
+      "occupancy_rate": 69.8,
+      "spend_per_head": 1466,
+      "foreign_share": 4.4
+    },
+    "2020": {
+      "revenue_all": 187030000.0,
+      "revenue_thai": 184438333.33333334,
+      "revenue_foreign": 2591666.6666666665,
+      "no_tourist_all": 139636,
+      "no_tourist_thai": 137887,
+      "no_tourist_foreign": 1748,
+      "occupancy_rate": 32.9,
+      "spend_per_head": 1339,
+      "foreign_share": 1.4
+    },
+    "2021": {
+      "revenue_all": 102952625.0,
+      "revenue_thai": 102815000.0,
+      "revenue_foreign": 137625.0,
+      "no_tourist_all": 79404,
+      "no_tourist_thai": 79347,
+      "no_tourist_foreign": 57,
+      "occupancy_rate": 16.1,
+      "spend_per_head": 1297,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 311574166.6666667,
+      "revenue_thai": 308695833.3333333,
+      "revenue_foreign": 2878333.3333333335,
+      "no_tourist_all": 245337,
+      "no_tourist_thai": 244183,
+      "no_tourist_foreign": 1154,
+      "occupancy_rate": 44.9,
+      "spend_per_head": 1270,
+      "foreign_share": 0.9
+    },
+    "2023": {
+      "revenue_all": 353720000.0,
+      "revenue_thai": 343575000.0,
+      "revenue_foreign": 10145000.0,
+      "no_tourist_all": 268388,
+      "no_tourist_thai": 264419,
+      "no_tourist_foreign": 3968,
+      "occupancy_rate": 46.1,
+      "spend_per_head": 1318,
+      "foreign_share": 2.9
+    }
+  },
+  "นครพนม": {
+    "2019": {
+      "revenue_all": 181835833.33333334,
+      "revenue_thai": 171764166.66666666,
+      "revenue_foreign": 10071666.666666666,
+      "no_tourist_all": 96026,
+      "no_tourist_thai": 88649,
+      "no_tourist_foreign": 7376,
+      "occupancy_rate": 57.5,
+      "spend_per_head": 1894,
+      "foreign_share": 5.5
+    },
+    "2020": {
+      "revenue_all": 98559166.66666667,
+      "revenue_thai": 97031666.66666667,
+      "revenue_foreign": 1527500.0,
+      "no_tourist_all": 57954,
+      "no_tourist_thai": 56866,
+      "no_tourist_foreign": 1087,
+      "occupancy_rate": 35.2,
+      "spend_per_head": 1701,
+      "foreign_share": 1.5
+    },
+    "2021": {
+      "revenue_all": 45072500.0,
+      "revenue_thai": 45035000.0,
+      "revenue_foreign": 37500.0,
+      "no_tourist_all": 33917,
+      "no_tourist_thai": 33895,
+      "no_tourist_foreign": 21,
+      "occupancy_rate": 19.5,
+      "spend_per_head": 1329,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 183586666.66666666,
+      "revenue_thai": 173032500.0,
+      "revenue_foreign": 10554166.666666666,
+      "no_tourist_all": 128329,
+      "no_tourist_thai": 123850,
+      "no_tourist_foreign": 4478,
+      "occupancy_rate": 64.8,
+      "spend_per_head": 1431,
+      "foreign_share": 5.7
+    },
+    "2023": {
+      "revenue_all": 270330000.0,
+      "revenue_thai": 245660000.0,
+      "revenue_foreign": 24670000.0,
+      "no_tourist_all": 171131,
+      "no_tourist_thai": 161222,
+      "no_tourist_foreign": 9909,
+      "occupancy_rate": 74.8,
+      "spend_per_head": 1580,
+      "foreign_share": 9.1
+    }
+  },
+  "นครราชสีมา": {
+    "2019": {
+      "revenue_all": 2062008333.3333333,
+      "revenue_thai": 1992235833.3333333,
+      "revenue_foreign": 69772500.0,
+      "no_tourist_all": 824869,
+      "no_tourist_thai": 808384,
+      "no_tourist_foreign": 16485,
+      "occupancy_rate": 66.8,
+      "spend_per_head": 2500,
+      "foreign_share": 3.4
+    },
+    "2020": {
+      "revenue_all": 1056232500.0,
+      "revenue_thai": 1036214166.6666666,
+      "revenue_foreign": 20018333.333333332,
+      "no_tourist_all": 474121,
+      "no_tourist_thai": 469799,
+      "no_tourist_foreign": 4321,
+      "occupancy_rate": 39.4,
+      "spend_per_head": 2228,
+      "foreign_share": 1.9
+    },
+    "2021": {
+      "revenue_all": 483904166.6666667,
+      "revenue_thai": 480985000.0,
+      "revenue_foreign": 2919166.6666666665,
+      "no_tourist_all": 289165,
+      "no_tourist_thai": 287891,
+      "no_tourist_foreign": 1274,
+      "occupancy_rate": 25.0,
+      "spend_per_head": 1673,
+      "foreign_share": 0.6
+    },
+    "2022": {
+      "revenue_all": 837055000.0,
+      "revenue_thai": 816020000.0,
+      "revenue_foreign": 21035000.0,
+      "no_tourist_all": 511489,
+      "no_tourist_thai": 504692,
+      "no_tourist_foreign": 6796,
+      "occupancy_rate": 52.6,
+      "spend_per_head": 1637,
+      "foreign_share": 2.5
+    },
+    "2023": {
+      "revenue_all": 1095745000.0,
+      "revenue_thai": 1063795000.0,
+      "revenue_foreign": 31950000.0,
+      "no_tourist_all": 644833,
+      "no_tourist_thai": 634582,
+      "no_tourist_foreign": 10250,
+      "occupancy_rate": 66.6,
+      "spend_per_head": 1699,
+      "foreign_share": 2.9
+    }
+  },
+  "นครศรีธรรมราช": {
+    "2019": {
+      "revenue_all": 1333000000.0,
+      "revenue_thai": 1302557500.0,
+      "revenue_foreign": 30442500.0,
+      "no_tourist_all": 317354,
+      "no_tourist_thai": 310289,
+      "no_tourist_foreign": 7065,
+      "occupancy_rate": 57.4,
+      "spend_per_head": 4200,
+      "foreign_share": 2.3
+    },
+    "2020": {
+      "revenue_all": 684810833.3333334,
+      "revenue_thai": 678466666.6666666,
+      "revenue_foreign": 6344166.666666667,
+      "no_tourist_all": 199840,
+      "no_tourist_thai": 198004,
+      "no_tourist_foreign": 1835,
+      "occupancy_rate": 38.2,
+      "spend_per_head": 3427,
+      "foreign_share": 0.9
+    },
+    "2021": {
+      "revenue_all": 230899166.66666666,
+      "revenue_thai": 230738333.33333334,
+      "revenue_foreign": 160833.33333333334,
+      "no_tourist_all": 67522,
+      "no_tourist_thai": 67470,
+      "no_tourist_foreign": 52,
+      "occupancy_rate": 16.7,
+      "spend_per_head": 3420,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 466771666.6666667,
+      "revenue_thai": 465297500.0,
+      "revenue_foreign": 1474166.6666666667,
+      "no_tourist_all": 169371,
+      "no_tourist_thai": 168876,
+      "no_tourist_foreign": 495,
+      "occupancy_rate": 40.1,
+      "spend_per_head": 2756,
+      "foreign_share": 0.3
+    },
+    "2023": {
+      "revenue_all": 639285000.0,
+      "revenue_thai": 634780000.0,
+      "revenue_foreign": 4505000.0,
+      "no_tourist_all": 269644,
+      "no_tourist_thai": 267983,
+      "no_tourist_foreign": 1661,
+      "occupancy_rate": 64.4,
+      "spend_per_head": 2371,
+      "foreign_share": 0.7
+    }
+  },
+  "นครสวรรค์": {
+    "2019": {
+      "revenue_all": 331766666.6666667,
+      "revenue_thai": 324840833.3333333,
+      "revenue_foreign": 6925833.333333333,
+      "no_tourist_all": 161300,
+      "no_tourist_thai": 157716,
+      "no_tourist_foreign": 3584,
+      "occupancy_rate": 52.4,
+      "spend_per_head": 2057,
+      "foreign_share": 2.1
+    },
+    "2020": {
+      "revenue_all": 167108333.33333334,
+      "revenue_thai": 165257500.0,
+      "revenue_foreign": 1850833.3333333333,
+      "no_tourist_all": 85796,
+      "no_tourist_thai": 84571,
+      "no_tourist_foreign": 1224,
+      "occupancy_rate": 35.5,
+      "spend_per_head": 1948,
+      "foreign_share": 1.1
+    },
+    "2021": {
+      "revenue_all": 102533333.33333333,
+      "revenue_thai": 102272500.0,
+      "revenue_foreign": 260833.33333333334,
+      "no_tourist_all": 57105,
+      "no_tourist_thai": 57010,
+      "no_tourist_foreign": 95,
+      "occupancy_rate": 18.4,
+      "spend_per_head": 1796,
+      "foreign_share": 0.3
+    },
+    "2022": {
+      "revenue_all": 345130000.0,
+      "revenue_thai": 342710833.3333333,
+      "revenue_foreign": 2419166.6666666665,
+      "no_tourist_all": 146235,
+      "no_tourist_thai": 145494,
+      "no_tourist_foreign": 740,
+      "occupancy_rate": 45.6,
+      "spend_per_head": 2360,
+      "foreign_share": 0.7
+    },
+    "2023": {
+      "revenue_all": 490635000.0,
+      "revenue_thai": 487835000.0,
+      "revenue_foreign": 2800000.0,
+      "no_tourist_all": 189007,
+      "no_tourist_thai": 188228,
+      "no_tourist_foreign": 779,
+      "occupancy_rate": 53.9,
+      "spend_per_head": 2596,
+      "foreign_share": 0.6
+    }
+  },
+  "นนทบุรี": {
+    "2019": {
+      "revenue_all": 388035000.0,
+      "revenue_thai": 335509166.6666667,
+      "revenue_foreign": 52525833.333333336,
+      "no_tourist_all": 233898,
+      "no_tourist_thai": 213035,
+      "no_tourist_foreign": 20863,
+      "occupancy_rate": 64.6,
+      "spend_per_head": 1659,
+      "foreign_share": 13.5
+    },
+    "2020": {
+      "revenue_all": 154008333.33333334,
+      "revenue_thai": 144733333.33333334,
+      "revenue_foreign": 9275000.0,
+      "no_tourist_all": 114589,
+      "no_tourist_thai": 111462,
+      "no_tourist_foreign": 3127,
+      "occupancy_rate": 26.8,
+      "spend_per_head": 1344,
+      "foreign_share": 6.0
+    },
+    "2021": {
+      "revenue_all": 60005391.666666664,
+      "revenue_thai": 59777500.0,
+      "revenue_foreign": 227891.66666666666,
+      "no_tourist_all": 48259,
+      "no_tourist_thai": 48071,
+      "no_tourist_foreign": 187,
+      "occupancy_rate": 9.6,
+      "spend_per_head": 1243,
+      "foreign_share": 0.4
+    },
+    "2022": {
+      "revenue_all": 263867500.0,
+      "revenue_thai": 255025833.33333334,
+      "revenue_foreign": 8841666.666666666,
+      "no_tourist_all": 207498,
+      "no_tourist_thai": 200914,
+      "no_tourist_foreign": 6584,
+      "occupancy_rate": 41.4,
+      "spend_per_head": 1272,
+      "foreign_share": 3.4
+    },
+    "2023": {
+      "revenue_all": 407190000.0,
+      "revenue_thai": 383180000.0,
+      "revenue_foreign": 24010000.0,
+      "no_tourist_all": 305800,
+      "no_tourist_thai": 288703,
+      "no_tourist_foreign": 17097,
+      "occupancy_rate": 54.4,
+      "spend_per_head": 1332,
+      "foreign_share": 5.9
+    }
+  },
+  "นราธิวาส": {
+    "2019": {
+      "revenue_all": 264213333.33333334,
+      "revenue_thai": 80529166.66666667,
+      "revenue_foreign": 183684166.66666666,
+      "no_tourist_all": 58650,
+      "no_tourist_thai": 21859,
+      "no_tourist_foreign": 36791,
+      "occupancy_rate": 64.7,
+      "spend_per_head": 4505,
+      "foreign_share": 69.5
+    },
+    "2020": {
+      "revenue_all": 65009166.666666664,
+      "revenue_thai": 35177500.0,
+      "revenue_foreign": 29831666.666666668,
+      "no_tourist_all": 18010,
+      "no_tourist_thai": 11278,
+      "no_tourist_foreign": 6731,
+      "occupancy_rate": 16.7,
+      "spend_per_head": 3610,
+      "foreign_share": 45.9
+    },
+    "2021": {
+      "revenue_all": 15852500.0,
+      "revenue_thai": 15852500.0,
+      "revenue_foreign": 0.0,
+      "no_tourist_all": 6481,
+      "no_tourist_thai": 6481,
+      "no_tourist_foreign": 0,
+      "occupancy_rate": 7.6,
+      "spend_per_head": 2446,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 65551666.666666664,
+      "revenue_thai": 46722500.0,
+      "revenue_foreign": 18829166.666666668,
+      "no_tourist_all": 31429,
+      "no_tourist_thai": 24623,
+      "no_tourist_foreign": 6805,
+      "occupancy_rate": 32.9,
+      "spend_per_head": 2086,
+      "foreign_share": 28.7
+    },
+    "2023": {
+      "revenue_all": 127060000.0,
+      "revenue_thai": 61185000.0,
+      "revenue_foreign": 65875000.0,
+      "no_tourist_all": 61049,
+      "no_tourist_thai": 36255,
+      "no_tourist_foreign": 24794,
+      "occupancy_rate": 53.6,
+      "spend_per_head": 2081,
+      "foreign_share": 51.8
+    }
+  },
+  "น่าน": {
+    "2019": {
+      "revenue_all": 226992500.0,
+      "revenue_thai": 218609166.66666666,
+      "revenue_foreign": 8383333.333333333,
+      "no_tourist_all": 79491,
+      "no_tourist_thai": 77651,
+      "no_tourist_foreign": 1839,
+      "occupancy_rate": 59.5,
+      "spend_per_head": 2856,
+      "foreign_share": 3.7
+    },
+    "2020": {
+      "revenue_all": 129961666.66666667,
+      "revenue_thai": 127805833.33333333,
+      "revenue_foreign": 2155833.3333333335,
+      "no_tourist_all": 53763,
+      "no_tourist_thai": 53315,
+      "no_tourist_foreign": 448,
+      "occupancy_rate": 44.1,
+      "spend_per_head": 2417,
+      "foreign_share": 1.7
+    },
+    "2021": {
+      "revenue_all": 84320833.33333333,
+      "revenue_thai": 83500833.33333333,
+      "revenue_foreign": 820000.0,
+      "no_tourist_all": 44408,
+      "no_tourist_thai": 44150,
+      "no_tourist_foreign": 258,
+      "occupancy_rate": 29.1,
+      "spend_per_head": 1899,
+      "foreign_share": 1.0
+    },
+    "2022": {
+      "revenue_all": 256349166.66666666,
+      "revenue_thai": 249391666.66666666,
+      "revenue_foreign": 6957500.0,
+      "no_tourist_all": 110653,
+      "no_tourist_thai": 109279,
+      "no_tourist_foreign": 1374,
+      "occupancy_rate": 69.5,
+      "spend_per_head": 2317,
+      "foreign_share": 2.7
+    },
+    "2023": {
+      "revenue_all": 408880000.0,
+      "revenue_thai": 399485000.0,
+      "revenue_foreign": 9395000.0,
+      "no_tourist_all": 164022,
+      "no_tourist_thai": 162393,
+      "no_tourist_foreign": 1628,
+      "occupancy_rate": 92.2,
+      "spend_per_head": 2493,
+      "foreign_share": 2.3
+    }
+  },
+  "บึงกาฬ": {
+    "2019": {
+      "revenue_all": 89196666.66666667,
+      "revenue_thai": 88090833.33333333,
+      "revenue_foreign": 1105833.3333333333,
+      "no_tourist_all": 50516,
+      "no_tourist_thai": 49955,
+      "no_tourist_foreign": 560,
+      "occupancy_rate": 57.9,
+      "spend_per_head": 1766,
+      "foreign_share": 1.2
+    },
+    "2020": {
+      "revenue_all": 49186666.666666664,
+      "revenue_thai": 49073333.333333336,
+      "revenue_foreign": 113333.33333333333,
+      "no_tourist_all": 29939,
+      "no_tourist_thai": 29888,
+      "no_tourist_foreign": 50,
+      "occupancy_rate": 34.0,
+      "spend_per_head": 1643,
+      "foreign_share": 0.2
+    },
+    "2021": {
+      "revenue_all": 18225000.0,
+      "revenue_thai": 18079166.666666668,
+      "revenue_foreign": 145833.33333333334,
+      "no_tourist_all": 14198,
+      "no_tourist_thai": 14125,
+      "no_tourist_foreign": 72,
+      "occupancy_rate": 13.7,
+      "spend_per_head": 1284,
+      "foreign_share": 0.8
+    },
+    "2022": {
+      "revenue_all": 78863333.33333333,
+      "revenue_thai": 76533333.33333333,
+      "revenue_foreign": 2330000.0,
+      "no_tourist_all": 60121,
+      "no_tourist_thai": 58857,
+      "no_tourist_foreign": 1264,
+      "occupancy_rate": 50.8,
+      "spend_per_head": 1312,
+      "foreign_share": 3.0
+    },
+    "2023": {
+      "revenue_all": 82520000.0,
+      "revenue_thai": 78485000.0,
+      "revenue_foreign": 4035000.0,
+      "no_tourist_all": 59612,
+      "no_tourist_thai": 57553,
+      "no_tourist_foreign": 2059,
+      "occupancy_rate": 52.7,
+      "spend_per_head": 1384,
+      "foreign_share": 4.9
+    }
+  },
+  "บุรีรัมย์": {
+    "2019": {
+      "revenue_all": 391995833.3333333,
+      "revenue_thai": 367157500.0,
+      "revenue_foreign": 24838333.333333332,
+      "no_tourist_all": 194210,
+      "no_tourist_thai": 187720,
+      "no_tourist_foreign": 6489,
+      "occupancy_rate": 61.0,
+      "spend_per_head": 2018,
+      "foreign_share": 6.3
+    },
+    "2020": {
+      "revenue_all": 152366666.66666666,
+      "revenue_thai": 151167500.0,
+      "revenue_foreign": 1199166.6666666667,
+      "no_tourist_all": 80038,
+      "no_tourist_thai": 79328,
+      "no_tourist_foreign": 710,
+      "occupancy_rate": 29.7,
+      "spend_per_head": 1904,
+      "foreign_share": 0.8
+    },
+    "2021": {
+      "revenue_all": 121350833.33333333,
+      "revenue_thai": 121036666.66666667,
+      "revenue_foreign": 314166.6666666667,
+      "no_tourist_all": 65423,
+      "no_tourist_thai": 65246,
+      "no_tourist_foreign": 176,
+      "occupancy_rate": 19.9,
+      "spend_per_head": 1855,
+      "foreign_share": 0.3
+    },
+    "2022": {
+      "revenue_all": 491874166.6666667,
+      "revenue_thai": 487780000.0,
+      "revenue_foreign": 4094166.6666666665,
+      "no_tourist_all": 242953,
+      "no_tourist_thai": 241314,
+      "no_tourist_foreign": 1638,
+      "occupancy_rate": 62.5,
+      "spend_per_head": 2025,
+      "foreign_share": 0.8
+    },
+    "2023": {
+      "revenue_all": 589385000.0,
+      "revenue_thai": 579275000.0,
+      "revenue_foreign": 10110000.0,
+      "no_tourist_all": 289374,
+      "no_tourist_thai": 285954,
+      "no_tourist_foreign": 3419,
+      "occupancy_rate": 70.8,
+      "spend_per_head": 2037,
+      "foreign_share": 1.7
+    }
+  },
+  "ปทุมธานี": {
+    "2019": {
+      "revenue_all": 289195000.0,
+      "revenue_thai": 177018333.33333334,
+      "revenue_foreign": 112176666.66666667,
+      "no_tourist_all": 177075,
+      "no_tourist_thai": 127045,
+      "no_tourist_foreign": 50030,
+      "occupancy_rate": 53.4,
+      "spend_per_head": 1633,
+      "foreign_share": 38.8
+    },
+    "2020": {
+      "revenue_all": 89994166.66666667,
+      "revenue_thai": 79588333.33333333,
+      "revenue_foreign": 10405833.333333334,
+      "no_tourist_all": 68543,
+      "no_tourist_thai": 62227,
+      "no_tourist_foreign": 6316,
+      "occupancy_rate": 20.1,
+      "spend_per_head": 1313,
+      "foreign_share": 11.6
+    },
+    "2021": {
+      "revenue_all": 42004833.333333336,
+      "revenue_thai": 41777500.0,
+      "revenue_foreign": 227333.33333333334,
+      "no_tourist_all": 35557,
+      "no_tourist_thai": 35395,
+      "no_tourist_foreign": 161,
+      "occupancy_rate": 9.2,
+      "spend_per_head": 1181,
+      "foreign_share": 0.5
+    },
+    "2022": {
+      "revenue_all": 167341666.66666666,
+      "revenue_thai": 163465833.33333334,
+      "revenue_foreign": 3875833.3333333335,
+      "no_tourist_all": 127042,
+      "no_tourist_thai": 124043,
+      "no_tourist_foreign": 2999,
+      "occupancy_rate": 29.0,
+      "spend_per_head": 1317,
+      "foreign_share": 2.3
+    },
+    "2023": {
+      "revenue_all": 300725000.0,
+      "revenue_thai": 275995000.0,
+      "revenue_foreign": 24730000.0,
+      "no_tourist_all": 212609,
+      "no_tourist_thai": 194474,
+      "no_tourist_foreign": 18135,
+      "occupancy_rate": 44.5,
+      "spend_per_head": 1414,
+      "foreign_share": 8.2
+    }
+  },
+  "ประจวบคีรีขันธ์": {
+    "2019": {
+      "revenue_all": 3532719166.6666665,
+      "revenue_thai": 2383485833.3333335,
+      "revenue_foreign": 1149233333.3333333,
+      "no_tourist_all": 604972,
+      "no_tourist_thai": 501949,
+      "no_tourist_foreign": 103023,
+      "occupancy_rate": 50.5,
+      "spend_per_head": 5839,
+      "foreign_share": 32.5
+    },
+    "2020": {
+      "revenue_all": 1501734166.6666667,
+      "revenue_thai": 1344600833.3333333,
+      "revenue_foreign": 157133333.33333334,
+      "no_tourist_all": 342411,
+      "no_tourist_thai": 326691,
+      "no_tourist_foreign": 15720,
+      "occupancy_rate": 35.7,
+      "spend_per_head": 4386,
+      "foreign_share": 10.5
+    },
+    "2021": {
+      "revenue_all": 877562500.0,
+      "revenue_thai": 874535833.3333334,
+      "revenue_foreign": 3026666.6666666665,
+      "no_tourist_all": 223093,
+      "no_tourist_thai": 222793,
+      "no_tourist_foreign": 299,
+      "occupancy_rate": 21.2,
+      "spend_per_head": 3934,
+      "foreign_share": 0.3
+    },
+    "2022": {
+      "revenue_all": 2736510000.0,
+      "revenue_thai": 2613030000.0,
+      "revenue_foreign": 123480000.0,
+      "no_tourist_all": 812323,
+      "no_tourist_thai": 799786,
+      "no_tourist_foreign": 12537,
+      "occupancy_rate": 60.5,
+      "spend_per_head": 3369,
+      "foreign_share": 4.5
+    },
+    "2023": {
+      "revenue_all": 3702475000.0,
+      "revenue_thai": 3277595000.0,
+      "revenue_foreign": 424880000.0,
+      "no_tourist_all": 1038713,
+      "no_tourist_thai": 995971,
+      "no_tourist_foreign": 42742,
+      "occupancy_rate": 77.5,
+      "spend_per_head": 3564,
+      "foreign_share": 11.5
+    }
+  },
+  "ปราจีนบุรี": {
+    "2019": {
+      "revenue_all": 441604166.6666667,
+      "revenue_thai": 400603333.3333333,
+      "revenue_foreign": 41000833.333333336,
+      "no_tourist_all": 146048,
+      "no_tourist_thai": 136905,
+      "no_tourist_foreign": 9142,
+      "occupancy_rate": 57.7,
+      "spend_per_head": 3024,
+      "foreign_share": 9.3
+    },
+    "2020": {
+      "revenue_all": 213914166.66666666,
+      "revenue_thai": 208713333.33333334,
+      "revenue_foreign": 5200833.333333333,
+      "no_tourist_all": 78448,
+      "no_tourist_thai": 76856,
+      "no_tourist_foreign": 1592,
+      "occupancy_rate": 31.9,
+      "spend_per_head": 2727,
+      "foreign_share": 2.4
+    },
+    "2021": {
+      "revenue_all": 95063333.33333333,
+      "revenue_thai": 95015833.33333333,
+      "revenue_foreign": 47500.0,
+      "no_tourist_all": 43105,
+      "no_tourist_thai": 43080,
+      "no_tourist_foreign": 24,
+      "occupancy_rate": 17.5,
+      "spend_per_head": 2205,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 232987500.0,
+      "revenue_thai": 232205833.33333334,
+      "revenue_foreign": 781666.6666666666,
+      "no_tourist_all": 86923,
+      "no_tourist_thai": 86712,
+      "no_tourist_foreign": 210,
+      "occupancy_rate": 36.6,
+      "spend_per_head": 2680,
+      "foreign_share": 0.3
+    },
+    "2023": {
+      "revenue_all": 279130000.0,
+      "revenue_thai": 277370000.0,
+      "revenue_foreign": 1760000.0,
+      "no_tourist_all": 99917,
+      "no_tourist_thai": 99411,
+      "no_tourist_foreign": 505,
+      "occupancy_rate": 45.8,
+      "spend_per_head": 2794,
+      "foreign_share": 0.6
+    }
+  },
+  "ปัตตานี": {
+    "2019": {
+      "revenue_all": 87175000.0,
+      "revenue_thai": 86305833.33333333,
+      "revenue_foreign": 869166.6666666666,
+      "no_tourist_all": 23504,
+      "no_tourist_thai": 23306,
+      "no_tourist_foreign": 198,
+      "occupancy_rate": 68.6,
+      "spend_per_head": 3709,
+      "foreign_share": 1.0
+    },
+    "2020": {
+      "revenue_all": 34539166.666666664,
+      "revenue_thai": 34160000.0,
+      "revenue_foreign": 379166.6666666667,
+      "no_tourist_all": 9647,
+      "no_tourist_thai": 9597,
+      "no_tourist_foreign": 50,
+      "occupancy_rate": 20.1,
+      "spend_per_head": 3580,
+      "foreign_share": 1.1
+    },
+    "2021": {
+      "revenue_all": 17549166.666666668,
+      "revenue_thai": 17549166.666666668,
+      "revenue_foreign": 0.0,
+      "no_tourist_all": 5876,
+      "no_tourist_thai": 5876,
+      "no_tourist_foreign": 0,
+      "occupancy_rate": 12.5,
+      "spend_per_head": 2987,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 47083333.333333336,
+      "revenue_thai": 46570833.333333336,
+      "revenue_foreign": 512500.0,
+      "no_tourist_all": 20840,
+      "no_tourist_thai": 19696,
+      "no_tourist_foreign": 1144,
+      "occupancy_rate": 34.5,
+      "spend_per_head": 2259,
+      "foreign_share": 1.1
+    },
+    "2023": {
+      "revenue_all": 51485000.0,
+      "revenue_thai": 50400000.0,
+      "revenue_foreign": 1085000.0,
+      "no_tourist_all": 26930,
+      "no_tourist_thai": 24383,
+      "no_tourist_foreign": 2547,
+      "occupancy_rate": 41.8,
+      "spend_per_head": 1912,
+      "foreign_share": 2.1
+    }
+  },
+  "พระนครศรีอยุธยา": {
+    "2019": {
+      "revenue_all": 1596160000.0,
+      "revenue_thai": 1082384166.6666667,
+      "revenue_foreign": 513775833.3333333,
+      "no_tourist_all": 691067,
+      "no_tourist_thai": 515264,
+      "no_tourist_foreign": 175802,
+      "occupancy_rate": 62.5,
+      "spend_per_head": 2310,
+      "foreign_share": 32.2
+    },
+    "2020": {
+      "revenue_all": 512834166.6666667,
+      "revenue_thai": 460507500.0,
+      "revenue_foreign": 52326666.666666664,
+      "no_tourist_all": 296738,
+      "no_tourist_thai": 272686,
+      "no_tourist_foreign": 24052,
+      "occupancy_rate": 33.4,
+      "spend_per_head": 1728,
+      "foreign_share": 10.2
+    },
+    "2021": {
+      "revenue_all": 311281666.6666667,
+      "revenue_thai": 309141666.6666667,
+      "revenue_foreign": 2140000.0,
+      "no_tourist_all": 194407,
+      "no_tourist_thai": 193185,
+      "no_tourist_foreign": 1221,
+      "occupancy_rate": 19.7,
+      "spend_per_head": 1601,
+      "foreign_share": 0.7
+    },
+    "2022": {
+      "revenue_all": 997154166.6666666,
+      "revenue_thai": 940440833.3333334,
+      "revenue_foreign": 56713333.333333336,
+      "no_tourist_all": 660140,
+      "no_tourist_thai": 633356,
+      "no_tourist_foreign": 26784,
+      "occupancy_rate": 52.6,
+      "spend_per_head": 1511,
+      "foreign_share": 5.7
+    },
+    "2023": {
+      "revenue_all": 1388390000.0,
+      "revenue_thai": 1150330000.0,
+      "revenue_foreign": 238060000.0,
+      "no_tourist_all": 857698,
+      "no_tourist_thai": 743943,
+      "no_tourist_foreign": 113755,
+      "occupancy_rate": 60.8,
+      "spend_per_head": 1619,
+      "foreign_share": 17.1
+    }
+  },
+  "พะเยา": {
+    "2019": {
+      "revenue_all": 116930000.0,
+      "revenue_thai": 113327500.0,
+      "revenue_foreign": 3602500.0,
+      "no_tourist_all": 54781,
+      "no_tourist_thai": 52518,
+      "no_tourist_foreign": 2263,
+      "occupancy_rate": 47.7,
+      "spend_per_head": 2134,
+      "foreign_share": 3.1
+    },
+    "2020": {
+      "revenue_all": 69111666.66666667,
+      "revenue_thai": 68210000.0,
+      "revenue_foreign": 901666.6666666666,
+      "no_tourist_all": 34256,
+      "no_tourist_thai": 33615,
+      "no_tourist_foreign": 641,
+      "occupancy_rate": 33.6,
+      "spend_per_head": 2018,
+      "foreign_share": 1.3
+    },
+    "2021": {
+      "revenue_all": 45804166.666666664,
+      "revenue_thai": 45468333.333333336,
+      "revenue_foreign": 335833.3333333333,
+      "no_tourist_all": 26251,
+      "no_tourist_thai": 26074,
+      "no_tourist_foreign": 176,
+      "occupancy_rate": 20.9,
+      "spend_per_head": 1745,
+      "foreign_share": 0.7
+    },
+    "2022": {
+      "revenue_all": 152875833.33333334,
+      "revenue_thai": 145488333.33333334,
+      "revenue_foreign": 7387500.0,
+      "no_tourist_all": 81455,
+      "no_tourist_thai": 78595,
+      "no_tourist_foreign": 2859,
+      "occupancy_rate": 60.8,
+      "spend_per_head": 1877,
+      "foreign_share": 4.8
+    },
+    "2023": {
+      "revenue_all": 210880000.0,
+      "revenue_thai": 195285000.0,
+      "revenue_foreign": 15595000.0,
+      "no_tourist_all": 98689,
+      "no_tourist_thai": 93542,
+      "no_tourist_foreign": 5146,
+      "occupancy_rate": 75.0,
+      "spend_per_head": 2137,
+      "foreign_share": 7.4
+    }
+  },
+  "พังงา": {
+    "2019": {
+      "revenue_all": 4308735000.0,
+      "revenue_thai": 537356666.6666666,
+      "revenue_foreign": 3771378333.3333335,
+      "no_tourist_all": 408775,
+      "no_tourist_thai": 119574,
+      "no_tourist_foreign": 289201,
+      "occupancy_rate": 64.6,
+      "spend_per_head": 10541,
+      "foreign_share": 87.5
+    },
+    "2020": {
+      "revenue_all": 977380000.0,
+      "revenue_thai": 241779166.66666666,
+      "revenue_foreign": 735600833.3333334,
+      "no_tourist_all": 101118,
+      "no_tourist_thai": 53235,
+      "no_tourist_foreign": 47883,
+      "occupancy_rate": 21.9,
+      "spend_per_head": 9666,
+      "foreign_share": 75.3
+    },
+    "2021": {
+      "revenue_all": 229175000.0,
+      "revenue_thai": 182409166.66666666,
+      "revenue_foreign": 46765833.333333336,
+      "no_tourist_all": 56360,
+      "no_tourist_thai": 51072,
+      "no_tourist_foreign": 5287,
+      "occupancy_rate": 11.9,
+      "spend_per_head": 4066,
+      "foreign_share": 20.4
+    },
+    "2022": {
+      "revenue_all": 507938333.3333333,
+      "revenue_thai": 230769166.66666666,
+      "revenue_foreign": 277169166.6666667,
+      "no_tourist_all": 109535,
+      "no_tourist_thai": 74374,
+      "no_tourist_foreign": 35160,
+      "occupancy_rate": 36.6,
+      "spend_per_head": 4637,
+      "foreign_share": 54.6
+    },
+    "2023": {
+      "revenue_all": 873950000.0,
+      "revenue_thai": 278915000.0,
+      "revenue_foreign": 595035000.0,
+      "no_tourist_all": 191109,
+      "no_tourist_thai": 79586,
+      "no_tourist_foreign": 111523,
+      "occupancy_rate": 66.8,
+      "spend_per_head": 4573,
+      "foreign_share": 68.1
+    }
+  },
+  "พัทลุง": {
+    "2019": {
+      "revenue_all": 285317500.0,
+      "revenue_thai": 281356666.6666667,
+      "revenue_foreign": 3960833.3333333335,
+      "no_tourist_all": 135511,
+      "no_tourist_thai": 133986,
+      "no_tourist_foreign": 1524,
+      "occupancy_rate": 65.1,
+      "spend_per_head": 2105,
+      "foreign_share": 1.4
+    },
+    "2020": {
+      "revenue_all": 113308333.33333333,
+      "revenue_thai": 112901666.66666667,
+      "revenue_foreign": 406666.6666666667,
+      "no_tourist_all": 61436,
+      "no_tourist_thai": 61308,
+      "no_tourist_foreign": 128,
+      "occupancy_rate": 33.3,
+      "spend_per_head": 1844,
+      "foreign_share": 0.4
+    },
+    "2021": {
+      "revenue_all": 39330833.333333336,
+      "revenue_thai": 39330833.333333336,
+      "revenue_foreign": 0.0,
+      "no_tourist_all": 26780,
+      "no_tourist_thai": 26780,
+      "no_tourist_foreign": 0,
+      "occupancy_rate": 11.7,
+      "spend_per_head": 1469,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 61262500.0,
+      "revenue_thai": 61151666.666666664,
+      "revenue_foreign": 110833.33333333333,
+      "no_tourist_all": 51905,
+      "no_tourist_thai": 51665,
+      "no_tourist_foreign": 240,
+      "occupancy_rate": 40.1,
+      "spend_per_head": 1180,
+      "foreign_share": 0.2
+    },
+    "2023": {
+      "revenue_all": 89255000.0,
+      "revenue_thai": 88535000.0,
+      "revenue_foreign": 720000.0,
+      "no_tourist_all": 89779,
+      "no_tourist_thai": 88840,
+      "no_tourist_foreign": 938,
+      "occupancy_rate": 61.0,
+      "spend_per_head": 994,
+      "foreign_share": 0.8
+    }
+  },
+  "พิจิตร": {
+    "2019": {
+      "revenue_all": 124922500.0,
+      "revenue_thai": 124039166.66666667,
+      "revenue_foreign": 883333.3333333334,
+      "no_tourist_all": 74124,
+      "no_tourist_thai": 73641,
+      "no_tourist_foreign": 483,
+      "occupancy_rate": 50.1,
+      "spend_per_head": 1685,
+      "foreign_share": 0.7
+    },
+    "2020": {
+      "revenue_all": 65213333.333333336,
+      "revenue_thai": 65048333.333333336,
+      "revenue_foreign": 165000.0,
+      "no_tourist_all": 38806,
+      "no_tourist_thai": 38725,
+      "no_tourist_foreign": 81,
+      "occupancy_rate": 31.6,
+      "spend_per_head": 1680,
+      "foreign_share": 0.3
+    },
+    "2021": {
+      "revenue_all": 39640833.333333336,
+      "revenue_thai": 39623333.333333336,
+      "revenue_foreign": 17500.0,
+      "no_tourist_all": 24866,
+      "no_tourist_thai": 24858,
+      "no_tourist_foreign": 7,
+      "occupancy_rate": 14.9,
+      "spend_per_head": 1594,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 90758333.33333333,
+      "revenue_thai": 90564166.66666667,
+      "revenue_foreign": 194166.66666666666,
+      "no_tourist_all": 57287,
+      "no_tourist_thai": 57201,
+      "no_tourist_foreign": 85,
+      "occupancy_rate": 44.2,
+      "spend_per_head": 1584,
+      "foreign_share": 0.2
+    },
+    "2023": {
+      "revenue_all": 109410000.0,
+      "revenue_thai": 109055000.0,
+      "revenue_foreign": 355000.0,
+      "no_tourist_all": 62124,
+      "no_tourist_thai": 61980,
+      "no_tourist_foreign": 143,
+      "occupancy_rate": 53.2,
+      "spend_per_head": 1761,
+      "foreign_share": 0.3
+    }
+  },
+  "พิษณุโลก": {
+    "2019": {
+      "revenue_all": 712918333.3333334,
+      "revenue_thai": 644076666.6666666,
+      "revenue_foreign": 68841666.66666667,
+      "no_tourist_all": 278866,
+      "no_tourist_thai": 260554,
+      "no_tourist_foreign": 18311,
+      "occupancy_rate": 58.1,
+      "spend_per_head": 2556,
+      "foreign_share": 9.7
+    },
+    "2020": {
+      "revenue_all": 382832500.0,
+      "revenue_thai": 370126666.6666667,
+      "revenue_foreign": 12705833.333333334,
+      "no_tourist_all": 157811,
+      "no_tourist_thai": 153945,
+      "no_tourist_foreign": 3866,
+      "occupancy_rate": 40.1,
+      "spend_per_head": 2426,
+      "foreign_share": 3.3
+    },
+    "2021": {
+      "revenue_all": 187719166.66666666,
+      "revenue_thai": 187296666.66666666,
+      "revenue_foreign": 422500.0,
+      "no_tourist_all": 88518,
+      "no_tourist_thai": 88333,
+      "no_tourist_foreign": 185,
+      "occupancy_rate": 22.3,
+      "spend_per_head": 2121,
+      "foreign_share": 0.2
+    },
+    "2022": {
+      "revenue_all": 514621666.6666667,
+      "revenue_thai": 504940000.0,
+      "revenue_foreign": 9681666.666666666,
+      "no_tourist_all": 215965,
+      "no_tourist_thai": 212489,
+      "no_tourist_foreign": 3476,
+      "occupancy_rate": 45.5,
+      "spend_per_head": 2383,
+      "foreign_share": 1.9
+    },
+    "2023": {
+      "revenue_all": 730180000.0,
+      "revenue_thai": 699930000.0,
+      "revenue_foreign": 30250000.0,
+      "no_tourist_all": 273107,
+      "no_tourist_thai": 263159,
+      "no_tourist_foreign": 9948,
+      "occupancy_rate": 54.1,
+      "spend_per_head": 2674,
+      "foreign_share": 4.1
+    }
+  },
+  "ภูเก็ต": {
+    "2019": {
+      "revenue_all": 36907555833.333336,
+      "revenue_thai": 4143814166.6666665,
+      "revenue_foreign": 32763741666.666668,
+      "no_tourist_all": 1214705,
+      "no_tourist_thai": 331462,
+      "no_tourist_foreign": 883243,
+      "occupancy_rate": 75.2,
+      "spend_per_head": 30384,
+      "foreign_share": 88.8
+    },
+    "2020": {
+      "revenue_all": 9038627500.0,
+      "revenue_thai": 1744710833.3333333,
+      "revenue_foreign": 7293916666.666667,
+      "no_tourist_all": 333607,
+      "no_tourist_thai": 157703,
+      "no_tourist_foreign": 175904,
+      "occupancy_rate": 19.5,
+      "spend_per_head": 27094,
+      "foreign_share": 80.7
+    },
+    "2021": {
+      "revenue_all": 1776675000.0,
+      "revenue_thai": 688661666.6666666,
+      "revenue_foreign": 1088013333.3333333,
+      "no_tourist_all": 95692,
+      "no_tourist_thai": 76980,
+      "no_tourist_foreign": 18711,
+      "occupancy_rate": 7.7,
+      "spend_per_head": 18567,
+      "foreign_share": 61.2
+    },
+    "2022": {
+      "revenue_all": 16136398333.333334,
+      "revenue_thai": 1413467500.0,
+      "revenue_foreign": 14722930833.333334,
+      "no_tourist_all": 469040,
+      "no_tourist_thai": 192355,
+      "no_tourist_foreign": 276684,
+      "occupancy_rate": 47.8,
+      "spend_per_head": 34403,
+      "foreign_share": 91.2
+    },
+    "2023": {
+      "revenue_all": 32235025000.0,
+      "revenue_thai": 1651315000.0,
+      "revenue_foreign": 30583710000.0,
+      "no_tourist_all": 892162,
+      "no_tourist_thai": 256629,
+      "no_tourist_foreign": 635532,
+      "occupancy_rate": 83.9,
+      "spend_per_head": 36131,
+      "foreign_share": 94.9
+    }
+  },
+  "มหาสารคาม": {
+    "2019": {
+      "revenue_all": 99802500.0,
+      "revenue_thai": 98299166.66666667,
+      "revenue_foreign": 1503333.3333333333,
+      "no_tourist_all": 62314,
+      "no_tourist_thai": 61484,
+      "no_tourist_foreign": 829,
+      "occupancy_rate": 49.6,
+      "spend_per_head": 1602,
+      "foreign_share": 1.5
+    },
+    "2020": {
+      "revenue_all": 50544166.666666664,
+      "revenue_thai": 50250000.0,
+      "revenue_foreign": 294166.6666666667,
+      "no_tourist_all": 37708,
+      "no_tourist_thai": 37483,
+      "no_tourist_foreign": 225,
+      "occupancy_rate": 28.9,
+      "spend_per_head": 1340,
+      "foreign_share": 0.6
+    },
+    "2021": {
+      "revenue_all": 19860833.333333332,
+      "revenue_thai": 19832500.0,
+      "revenue_foreign": 28333.333333333332,
+      "no_tourist_all": 15948,
+      "no_tourist_thai": 15939,
+      "no_tourist_foreign": 8,
+      "occupancy_rate": 10.3,
+      "spend_per_head": 1245,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 48326666.666666664,
+      "revenue_thai": 46751666.666666664,
+      "revenue_foreign": 1575000.0,
+      "no_tourist_all": 40834,
+      "no_tourist_thai": 40254,
+      "no_tourist_foreign": 580,
+      "occupancy_rate": 44.8,
+      "spend_per_head": 1183,
+      "foreign_share": 3.3
+    },
+    "2023": {
+      "revenue_all": 63060000.0,
+      "revenue_thai": 61085000.0,
+      "revenue_foreign": 1975000.0,
+      "no_tourist_all": 53444,
+      "no_tourist_thai": 52660,
+      "no_tourist_foreign": 784,
+      "occupancy_rate": 56.9,
+      "spend_per_head": 1180,
+      "foreign_share": 3.1
+    }
+  },
+  "มุกดาหาร": {
+    "2019": {
+      "revenue_all": 298645000.0,
+      "revenue_thai": 266680000.0,
+      "revenue_foreign": 31965000.0,
+      "no_tourist_all": 176348,
+      "no_tourist_thai": 160981,
+      "no_tourist_foreign": 15366,
+      "occupancy_rate": 56.4,
+      "spend_per_head": 1693,
+      "foreign_share": 10.7
+    },
+    "2020": {
+      "revenue_all": 115864166.66666667,
+      "revenue_thai": 110886666.66666667,
+      "revenue_foreign": 4977500.0,
+      "no_tourist_all": 71957,
+      "no_tourist_thai": 69782,
+      "no_tourist_foreign": 2174,
+      "occupancy_rate": 23.8,
+      "spend_per_head": 1610,
+      "foreign_share": 4.3
+    },
+    "2021": {
+      "revenue_all": 62286666.666666664,
+      "revenue_thai": 62268333.333333336,
+      "revenue_foreign": 18333.333333333332,
+      "no_tourist_all": 45715,
+      "no_tourist_thai": 45710,
+      "no_tourist_foreign": 5,
+      "occupancy_rate": 15.6,
+      "spend_per_head": 1362,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 190025000.0,
+      "revenue_thai": 178329166.66666666,
+      "revenue_foreign": 11695833.333333334,
+      "no_tourist_all": 135419,
+      "no_tourist_thai": 130449,
+      "no_tourist_foreign": 4969,
+      "occupancy_rate": 46.1,
+      "spend_per_head": 1403,
+      "foreign_share": 6.2
+    },
+    "2023": {
+      "revenue_all": 239365000.0,
+      "revenue_thai": 217930000.0,
+      "revenue_foreign": 21435000.0,
+      "no_tourist_all": 160653,
+      "no_tourist_thai": 151535,
+      "no_tourist_foreign": 9118,
+      "occupancy_rate": 52.6,
+      "spend_per_head": 1490,
+      "foreign_share": 9.0
+    }
+  },
+  "ยะลา": {
+    "2019": {
+      "revenue_all": 278379166.6666667,
+      "revenue_thai": 43701666.666666664,
+      "revenue_foreign": 234677500.0,
+      "no_tourist_all": 57494,
+      "no_tourist_thai": 12099,
+      "no_tourist_foreign": 45395,
+      "occupancy_rate": 51.9,
+      "spend_per_head": 4842,
+      "foreign_share": 84.3
+    },
+    "2020": {
+      "revenue_all": 111774166.66666667,
+      "revenue_thai": 78999166.66666667,
+      "revenue_foreign": 32775000.0,
+      "no_tourist_all": 34519,
+      "no_tourist_thai": 27587,
+      "no_tourist_foreign": 6931,
+      "occupancy_rate": 26.4,
+      "spend_per_head": 3238,
+      "foreign_share": 29.3
+    },
+    "2021": {
+      "revenue_all": 47252500.0,
+      "revenue_thai": 47252500.0,
+      "revenue_foreign": 0.0,
+      "no_tourist_all": 19129,
+      "no_tourist_thai": 19129,
+      "no_tourist_foreign": 0,
+      "occupancy_rate": 13.0,
+      "spend_per_head": 2470,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 173314166.66666666,
+      "revenue_thai": 139496666.66666666,
+      "revenue_foreign": 33817500.0,
+      "no_tourist_all": 87819,
+      "no_tourist_thai": 74668,
+      "no_tourist_foreign": 13150,
+      "occupancy_rate": 58.2,
+      "spend_per_head": 1974,
+      "foreign_share": 19.5
+    },
+    "2023": {
+      "revenue_all": 251555000.0,
+      "revenue_thai": 136610000.0,
+      "revenue_foreign": 114945000.0,
+      "no_tourist_all": 126725,
+      "no_tourist_thai": 85370,
+      "no_tourist_foreign": 41355,
+      "occupancy_rate": 76.4,
+      "spend_per_head": 1985,
+      "foreign_share": 45.7
+    }
+  },
+  "ยโสธร": {
+    "2019": {
+      "revenue_all": 69371666.66666667,
+      "revenue_thai": 66010000.0,
+      "revenue_foreign": 3361666.6666666665,
+      "no_tourist_all": 51823,
+      "no_tourist_thai": 50514,
+      "no_tourist_foreign": 1308,
+      "occupancy_rate": 55.0,
+      "spend_per_head": 1339,
+      "foreign_share": 4.8
+    },
+    "2020": {
+      "revenue_all": 27082500.0,
+      "revenue_thai": 26545833.333333332,
+      "revenue_foreign": 536666.6666666666,
+      "no_tourist_all": 25288,
+      "no_tourist_thai": 25043,
+      "no_tourist_foreign": 244,
+      "occupancy_rate": 25.5,
+      "spend_per_head": 1071,
+      "foreign_share": 2.0
+    },
+    "2021": {
+      "revenue_all": 15119166.666666666,
+      "revenue_thai": 15119166.666666666,
+      "revenue_foreign": 0.0,
+      "no_tourist_all": 15131,
+      "no_tourist_thai": 15131,
+      "no_tourist_foreign": 0,
+      "occupancy_rate": 14.5,
+      "spend_per_head": 999,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 35379166.666666664,
+      "revenue_thai": 35204166.666666664,
+      "revenue_foreign": 175000.0,
+      "no_tourist_all": 35925,
+      "no_tourist_thai": 35820,
+      "no_tourist_foreign": 104,
+      "occupancy_rate": 37.4,
+      "spend_per_head": 985,
+      "foreign_share": 0.5
+    },
+    "2023": {
+      "revenue_all": 36625000.0,
+      "revenue_thai": 36425000.0,
+      "revenue_foreign": 200000.0,
+      "no_tourist_all": 37018,
+      "no_tourist_thai": 36879,
+      "no_tourist_foreign": 139,
+      "occupancy_rate": 39.0,
+      "spend_per_head": 989,
+      "foreign_share": 0.5
+    }
+  },
+  "ระนอง": {
+    "2019": {
+      "revenue_all": 372015000.0,
+      "revenue_thai": 340396666.6666667,
+      "revenue_foreign": 31618333.333333332,
+      "no_tourist_all": 83644,
+      "no_tourist_thai": 78946,
+      "no_tourist_foreign": 4698,
+      "occupancy_rate": 57.8,
+      "spend_per_head": 4448,
+      "foreign_share": 8.5
+    },
+    "2020": {
+      "revenue_all": 116123333.33333333,
+      "revenue_thai": 107082500.0,
+      "revenue_foreign": 9040833.333333334,
+      "no_tourist_all": 32751,
+      "no_tourist_thai": 31520,
+      "no_tourist_foreign": 1230,
+      "occupancy_rate": 19.5,
+      "spend_per_head": 3546,
+      "foreign_share": 7.8
+    },
+    "2021": {
+      "revenue_all": 34390000.0,
+      "revenue_thai": 34285833.333333336,
+      "revenue_foreign": 104166.66666666667,
+      "no_tourist_all": 13826,
+      "no_tourist_thai": 13790,
+      "no_tourist_foreign": 36,
+      "occupancy_rate": 9.7,
+      "spend_per_head": 2487,
+      "foreign_share": 0.3
+    },
+    "2022": {
+      "revenue_all": 98614166.66666667,
+      "revenue_thai": 96955833.33333333,
+      "revenue_foreign": 1658333.3333333333,
+      "no_tourist_all": 41797,
+      "no_tourist_thai": 41225,
+      "no_tourist_foreign": 572,
+      "occupancy_rate": 40.0,
+      "spend_per_head": 2359,
+      "foreign_share": 1.7
+    },
+    "2023": {
+      "revenue_all": 121510000.0,
+      "revenue_thai": 118175000.0,
+      "revenue_foreign": 3335000.0,
+      "no_tourist_all": 60728,
+      "no_tourist_thai": 59404,
+      "no_tourist_foreign": 1324,
+      "occupancy_rate": 55.8,
+      "spend_per_head": 2001,
+      "foreign_share": 2.7
+    }
+  },
+  "ระยอง": {
+    "2019": {
+      "revenue_all": 3090099166.6666665,
+      "revenue_thai": 2667036666.6666665,
+      "revenue_foreign": 423062500.0,
+      "no_tourist_all": 656448,
+      "no_tourist_thai": 609216,
+      "no_tourist_foreign": 47231,
+      "occupancy_rate": 69.9,
+      "spend_per_head": 4707,
+      "foreign_share": 13.7
+    },
+    "2020": {
+      "revenue_all": 1046940833.3333334,
+      "revenue_thai": 979776666.6666666,
+      "revenue_foreign": 67164166.66666667,
+      "no_tourist_all": 260315,
+      "no_tourist_thai": 250182,
+      "no_tourist_foreign": 10132,
+      "occupancy_rate": 28.7,
+      "spend_per_head": 4022,
+      "foreign_share": 6.4
+    },
+    "2021": {
+      "revenue_all": 327010833.3333333,
+      "revenue_thai": 325017500.0,
+      "revenue_foreign": 1993333.3333333333,
+      "no_tourist_all": 113339,
+      "no_tourist_thai": 112724,
+      "no_tourist_foreign": 614,
+      "occupancy_rate": 20.2,
+      "spend_per_head": 2885,
+      "foreign_share": 0.6
+    },
+    "2022": {
+      "revenue_all": 806780000.0,
+      "revenue_thai": 780490833.3333334,
+      "revenue_foreign": 26289166.666666668,
+      "no_tourist_all": 229380,
+      "no_tourist_thai": 220096,
+      "no_tourist_foreign": 9283,
+      "occupancy_rate": 54.6,
+      "spend_per_head": 3517,
+      "foreign_share": 3.3
+    },
+    "2023": {
+      "revenue_all": 1425425000.0,
+      "revenue_thai": 1332725000.0,
+      "revenue_foreign": 92700000.0,
+      "no_tourist_all": 395711,
+      "no_tourist_thai": 364650,
+      "no_tourist_foreign": 31060,
+      "occupancy_rate": 67.8,
+      "spend_per_head": 3602,
+      "foreign_share": 6.5
+    }
+  },
+  "ราชบุรี": {
+    "2019": {
+      "revenue_all": 367245000.0,
+      "revenue_thai": 353995000.0,
+      "revenue_foreign": 13250000.0,
+      "no_tourist_all": 194235,
+      "no_tourist_thai": 188529,
+      "no_tourist_foreign": 5706,
+      "occupancy_rate": 56.9,
+      "spend_per_head": 1891,
+      "foreign_share": 3.6
+    },
+    "2020": {
+      "revenue_all": 195345000.0,
+      "revenue_thai": 193948333.33333334,
+      "revenue_foreign": 1396666.6666666667,
+      "no_tourist_all": 119196,
+      "no_tourist_thai": 118604,
+      "no_tourist_foreign": 592,
+      "occupancy_rate": 36.3,
+      "spend_per_head": 1639,
+      "foreign_share": 0.7
+    },
+    "2021": {
+      "revenue_all": 81942500.0,
+      "revenue_thai": 81625000.0,
+      "revenue_foreign": 317500.0,
+      "no_tourist_all": 64328,
+      "no_tourist_thai": 64225,
+      "no_tourist_foreign": 103,
+      "occupancy_rate": 19.2,
+      "spend_per_head": 1274,
+      "foreign_share": 0.4
+    },
+    "2022": {
+      "revenue_all": 158923333.33333334,
+      "revenue_thai": 152315833.33333334,
+      "revenue_foreign": 6607500.0,
+      "no_tourist_all": 134664,
+      "no_tourist_thai": 132183,
+      "no_tourist_foreign": 2481,
+      "occupancy_rate": 50.6,
+      "spend_per_head": 1180,
+      "foreign_share": 4.2
+    },
+    "2023": {
+      "revenue_all": 230410000.0,
+      "revenue_thai": 208570000.0,
+      "revenue_foreign": 21840000.0,
+      "no_tourist_all": 195661,
+      "no_tourist_thai": 185260,
+      "no_tourist_foreign": 10401,
+      "occupancy_rate": 60.7,
+      "spend_per_head": 1178,
+      "foreign_share": 9.5
+    }
+  },
+  "ร้อยเอ็ด": {
+    "2019": {
+      "revenue_all": 120949166.66666667,
+      "revenue_thai": 119831666.66666667,
+      "revenue_foreign": 1117500.0,
+      "no_tourist_all": 76718,
+      "no_tourist_thai": 76181,
+      "no_tourist_foreign": 537,
+      "occupancy_rate": 49.5,
+      "spend_per_head": 1577,
+      "foreign_share": 0.9
+    },
+    "2020": {
+      "revenue_all": 66430833.333333336,
+      "revenue_thai": 66135833.333333336,
+      "revenue_foreign": 295000.0,
+      "no_tourist_all": 49618,
+      "no_tourist_thai": 49488,
+      "no_tourist_foreign": 130,
+      "occupancy_rate": 30.0,
+      "spend_per_head": 1339,
+      "foreign_share": 0.4
+    },
+    "2021": {
+      "revenue_all": 32503333.333333332,
+      "revenue_thai": 32485833.333333332,
+      "revenue_foreign": 17500.0,
+      "no_tourist_all": 25503,
+      "no_tourist_thai": 25497,
+      "no_tourist_foreign": 5,
+      "occupancy_rate": 14.1,
+      "spend_per_head": 1274,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 65072500.0,
+      "revenue_thai": 63960833.333333336,
+      "revenue_foreign": 1111666.6666666667,
+      "no_tourist_all": 51114,
+      "no_tourist_thai": 50655,
+      "no_tourist_foreign": 459,
+      "occupancy_rate": 32.3,
+      "spend_per_head": 1273,
+      "foreign_share": 1.7
+    },
+    "2023": {
+      "revenue_all": 115110000.0,
+      "revenue_thai": 113055000.0,
+      "revenue_foreign": 2055000.0,
+      "no_tourist_all": 86994,
+      "no_tourist_thai": 86205,
+      "no_tourist_foreign": 789,
+      "occupancy_rate": 58.3,
+      "spend_per_head": 1323,
+      "foreign_share": 1.8
+    }
+  },
+  "ลพบุรี": {
+    "2019": {
+      "revenue_all": 479243333.3333333,
+      "revenue_thai": 475485000.0,
+      "revenue_foreign": 3758333.3333333335,
+      "no_tourist_all": 294321,
+      "no_tourist_thai": 292491,
+      "no_tourist_foreign": 1829,
+      "occupancy_rate": 55.1,
+      "spend_per_head": 1628,
+      "foreign_share": 0.8
+    },
+    "2020": {
+      "revenue_all": 193906666.66666666,
+      "revenue_thai": 192984166.66666666,
+      "revenue_foreign": 922500.0,
+      "no_tourist_all": 138322,
+      "no_tourist_thai": 137902,
+      "no_tourist_foreign": 419,
+      "occupancy_rate": 28.7,
+      "spend_per_head": 1402,
+      "foreign_share": 0.5
+    },
+    "2021": {
+      "revenue_all": 92567500.0,
+      "revenue_thai": 92489166.66666667,
+      "revenue_foreign": 78333.33333333333,
+      "no_tourist_all": 77991,
+      "no_tourist_thai": 77923,
+      "no_tourist_foreign": 68,
+      "occupancy_rate": 17.2,
+      "spend_per_head": 1187,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 387934166.6666667,
+      "revenue_thai": 387263333.3333333,
+      "revenue_foreign": 670833.3333333334,
+      "no_tourist_all": 338318,
+      "no_tourist_thai": 337811,
+      "no_tourist_foreign": 507,
+      "occupancy_rate": 46.0,
+      "spend_per_head": 1147,
+      "foreign_share": 0.2
+    },
+    "2023": {
+      "revenue_all": 390705000.0,
+      "revenue_thai": 387810000.0,
+      "revenue_foreign": 2895000.0,
+      "no_tourist_all": 316114,
+      "no_tourist_thai": 314184,
+      "no_tourist_foreign": 1930,
+      "occupancy_rate": 56.0,
+      "spend_per_head": 1236,
+      "foreign_share": 0.7
+    }
+  },
+  "ลำปาง": {
+    "2019": {
+      "revenue_all": 362630833.3333333,
+      "revenue_thai": 316602500.0,
+      "revenue_foreign": 46028333.333333336,
+      "no_tourist_all": 113521,
+      "no_tourist_thai": 103834,
+      "no_tourist_foreign": 9686,
+      "occupancy_rate": 61.2,
+      "spend_per_head": 3194,
+      "foreign_share": 12.7
+    },
+    "2020": {
+      "revenue_all": 192159166.66666666,
+      "revenue_thai": 181794166.66666666,
+      "revenue_foreign": 10365000.0,
+      "no_tourist_all": 68465,
+      "no_tourist_thai": 66255,
+      "no_tourist_foreign": 2209,
+      "occupancy_rate": 41.1,
+      "spend_per_head": 2807,
+      "foreign_share": 5.4
+    },
+    "2021": {
+      "revenue_all": 131643333.33333333,
+      "revenue_thai": 130450833.33333333,
+      "revenue_foreign": 1192500.0,
+      "no_tourist_all": 50681,
+      "no_tourist_thai": 50309,
+      "no_tourist_foreign": 372,
+      "occupancy_rate": 22.4,
+      "spend_per_head": 2597,
+      "foreign_share": 0.9
+    },
+    "2022": {
+      "revenue_all": 351159166.6666667,
+      "revenue_thai": 343157500.0,
+      "revenue_foreign": 8001666.666666667,
+      "no_tourist_all": 130236,
+      "no_tourist_thai": 128408,
+      "no_tourist_foreign": 1828,
+      "occupancy_rate": 54.8,
+      "spend_per_head": 2696,
+      "foreign_share": 2.3
+    },
+    "2023": {
+      "revenue_all": 485420000.0,
+      "revenue_thai": 453670000.0,
+      "revenue_foreign": 31750000.0,
+      "no_tourist_all": 158437,
+      "no_tourist_thai": 152066,
+      "no_tourist_foreign": 6371,
+      "occupancy_rate": 66.6,
+      "spend_per_head": 3064,
+      "foreign_share": 6.5
+    }
+  },
+  "ลำพูน": {
+    "2019": {
+      "revenue_all": 140218333.33333334,
+      "revenue_thai": 133760833.33333333,
+      "revenue_foreign": 6457500.0,
+      "no_tourist_all": 100445,
+      "no_tourist_thai": 95996,
+      "no_tourist_foreign": 4449,
+      "occupancy_rate": 54.8,
+      "spend_per_head": 1396,
+      "foreign_share": 4.6
+    },
+    "2020": {
+      "revenue_all": 76715833.33333333,
+      "revenue_thai": 74485833.33333333,
+      "revenue_foreign": 2230000.0,
+      "no_tourist_all": 57978,
+      "no_tourist_thai": 56683,
+      "no_tourist_foreign": 1295,
+      "occupancy_rate": 36.6,
+      "spend_per_head": 1323,
+      "foreign_share": 2.9
+    },
+    "2021": {
+      "revenue_all": 43288333.333333336,
+      "revenue_thai": 42943333.333333336,
+      "revenue_foreign": 345000.0,
+      "no_tourist_all": 36796,
+      "no_tourist_thai": 36534,
+      "no_tourist_foreign": 262,
+      "occupancy_rate": 19.7,
+      "spend_per_head": 1176,
+      "foreign_share": 0.8
+    },
+    "2022": {
+      "revenue_all": 115156666.66666667,
+      "revenue_thai": 110226666.66666667,
+      "revenue_foreign": 4930000.0,
+      "no_tourist_all": 94194,
+      "no_tourist_thai": 91686,
+      "no_tourist_foreign": 2507,
+      "occupancy_rate": 52.6,
+      "spend_per_head": 1223,
+      "foreign_share": 4.3
+    },
+    "2023": {
+      "revenue_all": 153105000.0,
+      "revenue_thai": 137220000.0,
+      "revenue_foreign": 15885000.0,
+      "no_tourist_all": 111528,
+      "no_tourist_thai": 104502,
+      "no_tourist_foreign": 7026,
+      "occupancy_rate": 67.7,
+      "spend_per_head": 1373,
+      "foreign_share": 10.4
+    }
+  },
+  "ศรีสะเกษ": {
+    "2019": {
+      "revenue_all": 180532500.0,
+      "revenue_thai": 175910833.33333334,
+      "revenue_foreign": 4621666.666666667,
+      "no_tourist_all": 128331,
+      "no_tourist_thai": 126618,
+      "no_tourist_foreign": 1713,
+      "occupancy_rate": 57.9,
+      "spend_per_head": 1407,
+      "foreign_share": 2.6
+    },
+    "2020": {
+      "revenue_all": 90325833.33333333,
+      "revenue_thai": 89363333.33333333,
+      "revenue_foreign": 962500.0,
+      "no_tourist_all": 70789,
+      "no_tourist_thai": 70418,
+      "no_tourist_foreign": 371,
+      "occupancy_rate": 32.6,
+      "spend_per_head": 1276,
+      "foreign_share": 1.1
+    },
+    "2021": {
+      "revenue_all": 35321666.666666664,
+      "revenue_thai": 35319166.666666664,
+      "revenue_foreign": 2500.0,
+      "no_tourist_all": 30761,
+      "no_tourist_thai": 30760,
+      "no_tourist_foreign": 1,
+      "occupancy_rate": 18.2,
+      "spend_per_head": 1148,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 86831666.66666667,
+      "revenue_thai": 86262500.0,
+      "revenue_foreign": 569166.6666666666,
+      "no_tourist_all": 74603,
+      "no_tourist_thai": 74368,
+      "no_tourist_foreign": 235,
+      "occupancy_rate": 43.7,
+      "spend_per_head": 1164,
+      "foreign_share": 0.7
+    },
+    "2023": {
+      "revenue_all": 72740000.0,
+      "revenue_thai": 72010000.0,
+      "revenue_foreign": 730000.0,
+      "no_tourist_all": 62681,
+      "no_tourist_thai": 62362,
+      "no_tourist_foreign": 318,
+      "occupancy_rate": 41.4,
+      "spend_per_head": 1160,
+      "foreign_share": 1.0
+    }
+  },
+  "สกลนคร": {
+    "2019": {
+      "revenue_all": 206410833.33333334,
+      "revenue_thai": 205029166.66666666,
+      "revenue_foreign": 1381666.6666666667,
+      "no_tourist_all": 114581,
+      "no_tourist_thai": 114105,
+      "no_tourist_foreign": 476,
+      "occupancy_rate": 56.0,
+      "spend_per_head": 1801,
+      "foreign_share": 0.7
+    },
+    "2020": {
+      "revenue_all": 108821666.66666667,
+      "revenue_thai": 108582500.0,
+      "revenue_foreign": 239166.66666666666,
+      "no_tourist_all": 71414,
+      "no_tourist_thai": 71321,
+      "no_tourist_foreign": 93,
+      "occupancy_rate": 32.4,
+      "spend_per_head": 1524,
+      "foreign_share": 0.2
+    },
+    "2021": {
+      "revenue_all": 58419166.666666664,
+      "revenue_thai": 58387500.0,
+      "revenue_foreign": 31666.666666666668,
+      "no_tourist_all": 43203,
+      "no_tourist_thai": 43186,
+      "no_tourist_foreign": 17,
+      "occupancy_rate": 17.0,
+      "spend_per_head": 1352,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 173268333.33333334,
+      "revenue_thai": 171382500.0,
+      "revenue_foreign": 1885833.3333333333,
+      "no_tourist_all": 129813,
+      "no_tourist_thai": 129119,
+      "no_tourist_foreign": 694,
+      "occupancy_rate": 45.1,
+      "spend_per_head": 1335,
+      "foreign_share": 1.1
+    },
+    "2023": {
+      "revenue_all": 204095000.0,
+      "revenue_thai": 200875000.0,
+      "revenue_foreign": 3220000.0,
+      "no_tourist_all": 146407,
+      "no_tourist_thai": 145156,
+      "no_tourist_foreign": 1250,
+      "occupancy_rate": 51.3,
+      "spend_per_head": 1394,
+      "foreign_share": 1.6
+    }
+  },
+  "สงขลา": {
+    "2019": {
+      "revenue_all": 5530460000.0,
+      "revenue_thai": 2625047500.0,
+      "revenue_foreign": 2905412500.0,
+      "no_tourist_all": 625288,
+      "no_tourist_thai": 368379,
+      "no_tourist_foreign": 256908,
+      "occupancy_rate": 71.5,
+      "spend_per_head": 8845,
+      "foreign_share": 52.5
+    },
+    "2020": {
+      "revenue_all": 1905880000.0,
+      "revenue_thai": 1452010833.3333333,
+      "revenue_foreign": 453869166.6666667,
+      "no_tourist_all": 257761,
+      "no_tourist_thai": 221145,
+      "no_tourist_foreign": 36615,
+      "occupancy_rate": 27.2,
+      "spend_per_head": 7394,
+      "foreign_share": 23.8
+    },
+    "2021": {
+      "revenue_all": 271192500.0,
+      "revenue_thai": 270870833.3333333,
+      "revenue_foreign": 321666.6666666667,
+      "no_tourist_all": 44294,
+      "no_tourist_thai": 44242,
+      "no_tourist_foreign": 52,
+      "occupancy_rate": 6.5,
+      "spend_per_head": 6123,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 1311596666.6666667,
+      "revenue_thai": 848348333.3333334,
+      "revenue_foreign": 463248333.3333333,
+      "no_tourist_all": 227962,
+      "no_tourist_thai": 152179,
+      "no_tourist_foreign": 75783,
+      "occupancy_rate": 38.3,
+      "spend_per_head": 5754,
+      "foreign_share": 35.3
+    },
+    "2023": {
+      "revenue_all": 2066960000.0,
+      "revenue_thai": 911050000.0,
+      "revenue_foreign": 1155910000.0,
+      "no_tourist_all": 362949,
+      "no_tourist_thai": 168346,
+      "no_tourist_foreign": 194603,
+      "occupancy_rate": 64.7,
+      "spend_per_head": 5695,
+      "foreign_share": 55.9
+    }
+  },
+  "สตูล": {
+    "2019": {
+      "revenue_all": 769925833.3333334,
+      "revenue_thai": 692965833.3333334,
+      "revenue_foreign": 76960000.0,
+      "no_tourist_all": 129685,
+      "no_tourist_thai": 114293,
+      "no_tourist_foreign": 15392,
+      "occupancy_rate": 62.5,
+      "spend_per_head": 5937,
+      "foreign_share": 10.0
+    },
+    "2020": {
+      "revenue_all": 403789166.6666667,
+      "revenue_thai": 387392500.0,
+      "revenue_foreign": 16396666.666666666,
+      "no_tourist_all": 67712,
+      "no_tourist_thai": 64535,
+      "no_tourist_foreign": 3176,
+      "occupancy_rate": 30.9,
+      "spend_per_head": 5963,
+      "foreign_share": 4.1
+    },
+    "2021": {
+      "revenue_all": 156079166.66666666,
+      "revenue_thai": 155591666.66666666,
+      "revenue_foreign": 487500.0,
+      "no_tourist_all": 39591,
+      "no_tourist_thai": 39489,
+      "no_tourist_foreign": 102,
+      "occupancy_rate": 19.5,
+      "spend_per_head": 3942,
+      "foreign_share": 0.3
+    },
+    "2022": {
+      "revenue_all": 497681666.6666667,
+      "revenue_thai": 486849166.6666667,
+      "revenue_foreign": 10832500.0,
+      "no_tourist_all": 132946,
+      "no_tourist_thai": 130157,
+      "no_tourist_foreign": 2788,
+      "occupancy_rate": 48.9,
+      "spend_per_head": 3743,
+      "foreign_share": 2.2
+    },
+    "2023": {
+      "revenue_all": 564130000.0,
+      "revenue_thai": 526885000.0,
+      "revenue_foreign": 37245000.0,
+      "no_tourist_all": 147364,
+      "no_tourist_thai": 137100,
+      "no_tourist_foreign": 10264,
+      "occupancy_rate": 57.4,
+      "spend_per_head": 3828,
+      "foreign_share": 6.6
+    }
+  },
+  "สมุทรปราการ": {
+    "2019": {
+      "revenue_all": 584169166.6666666,
+      "revenue_thai": 298845833.3333333,
+      "revenue_foreign": 285323333.3333333,
+      "no_tourist_all": 290062,
+      "no_tourist_thai": 184176,
+      "no_tourist_foreign": 105885,
+      "occupancy_rate": 62.6,
+      "spend_per_head": 2014,
+      "foreign_share": 48.8
+    },
+    "2020": {
+      "revenue_all": 176360833.33333334,
+      "revenue_thai": 118205000.0,
+      "revenue_foreign": 58155833.333333336,
+      "no_tourist_all": 104963,
+      "no_tourist_thai": 79404,
+      "no_tourist_foreign": 25559,
+      "occupancy_rate": 21.0,
+      "spend_per_head": 1680,
+      "foreign_share": 33.0
+    },
+    "2021": {
+      "revenue_all": 57459166.666666664,
+      "revenue_thai": 53607500.0,
+      "revenue_foreign": 3851666.6666666665,
+      "no_tourist_all": 38175,
+      "no_tourist_thai": 35353,
+      "no_tourist_foreign": 2821,
+      "occupancy_rate": 7.8,
+      "spend_per_head": 1505,
+      "foreign_share": 6.7
+    },
+    "2022": {
+      "revenue_all": 284402500.0,
+      "revenue_thai": 235110000.0,
+      "revenue_foreign": 49292500.0,
+      "no_tourist_all": 196663,
+      "no_tourist_thai": 160270,
+      "no_tourist_foreign": 36393,
+      "occupancy_rate": 33.7,
+      "spend_per_head": 1446,
+      "foreign_share": 17.3
+    },
+    "2023": {
+      "revenue_all": 398720000.0,
+      "revenue_thai": 292835000.0,
+      "revenue_foreign": 105885000.0,
+      "no_tourist_all": 275980,
+      "no_tourist_thai": 208397,
+      "no_tourist_foreign": 67582,
+      "occupancy_rate": 49.6,
+      "spend_per_head": 1445,
+      "foreign_share": 26.6
+    }
+  },
+  "สมุทรสงคราม": {
+    "2019": {
+      "revenue_all": 256784166.66666666,
+      "revenue_thai": 249705000.0,
+      "revenue_foreign": 7079166.666666667,
+      "no_tourist_all": 172844,
+      "no_tourist_thai": 168278,
+      "no_tourist_foreign": 4566,
+      "occupancy_rate": 64.1,
+      "spend_per_head": 1486,
+      "foreign_share": 2.8
+    },
+    "2020": {
+      "revenue_all": 143704166.66666666,
+      "revenue_thai": 142315000.0,
+      "revenue_foreign": 1389166.6666666667,
+      "no_tourist_all": 109096,
+      "no_tourist_thai": 108367,
+      "no_tourist_foreign": 729,
+      "occupancy_rate": 38.5,
+      "spend_per_head": 1317,
+      "foreign_share": 1.0
+    },
+    "2021": {
+      "revenue_all": 77940833.33333333,
+      "revenue_thai": 77809166.66666667,
+      "revenue_foreign": 131666.66666666666,
+      "no_tourist_all": 73492,
+      "no_tourist_thai": 73437,
+      "no_tourist_foreign": 54,
+      "occupancy_rate": 13.0,
+      "spend_per_head": 1061,
+      "foreign_share": 0.2
+    },
+    "2022": {
+      "revenue_all": 375636666.6666667,
+      "revenue_thai": 371890000.0,
+      "revenue_foreign": 3746666.6666666665,
+      "no_tourist_all": 376841,
+      "no_tourist_thai": 374900,
+      "no_tourist_foreign": 1940,
+      "occupancy_rate": 45.7,
+      "spend_per_head": 997,
+      "foreign_share": 1.0
+    },
+    "2023": {
+      "revenue_all": 533960000.0,
+      "revenue_thai": 518295000.0,
+      "revenue_foreign": 15665000.0,
+      "no_tourist_all": 552412,
+      "no_tourist_thai": 540502,
+      "no_tourist_foreign": 11910,
+      "occupancy_rate": 59.4,
+      "spend_per_head": 967,
+      "foreign_share": 2.9
+    }
+  },
+  "สมุทรสาคร": {
+    "2019": {
+      "revenue_all": 207395000.0,
+      "revenue_thai": 206749166.66666666,
+      "revenue_foreign": 645833.3333333334,
+      "no_tourist_all": 126288,
+      "no_tourist_thai": 125925,
+      "no_tourist_foreign": 362,
+      "occupancy_rate": 58.0,
+      "spend_per_head": 1642,
+      "foreign_share": 0.3
+    },
+    "2020": {
+      "revenue_all": 57728333.333333336,
+      "revenue_thai": 57578333.333333336,
+      "revenue_foreign": 150000.0,
+      "no_tourist_all": 39652,
+      "no_tourist_thai": 39554,
+      "no_tourist_foreign": 98,
+      "occupancy_rate": 21.9,
+      "spend_per_head": 1456,
+      "foreign_share": 0.3
+    },
+    "2021": {
+      "revenue_all": 11855833.333333334,
+      "revenue_thai": 11826666.666666666,
+      "revenue_foreign": 29166.666666666668,
+      "no_tourist_all": 11201,
+      "no_tourist_thai": 11185,
+      "no_tourist_foreign": 15,
+      "occupancy_rate": 6.3,
+      "spend_per_head": 1058,
+      "foreign_share": 0.2
+    },
+    "2022": {
+      "revenue_all": 59493333.333333336,
+      "revenue_thai": 59084166.666666664,
+      "revenue_foreign": 409166.6666666667,
+      "no_tourist_all": 46073,
+      "no_tourist_thai": 45865,
+      "no_tourist_foreign": 208,
+      "occupancy_rate": 25.5,
+      "spend_per_head": 1291,
+      "foreign_share": 0.7
+    },
+    "2023": {
+      "revenue_all": 122700000.0,
+      "revenue_thai": 120295000.0,
+      "revenue_foreign": 2405000.0,
+      "no_tourist_all": 88080,
+      "no_tourist_thai": 86902,
+      "no_tourist_foreign": 1177,
+      "occupancy_rate": 42.7,
+      "spend_per_head": 1393,
+      "foreign_share": 2.0
+    }
+  },
+  "สระบุรี": {
+    "2019": {
+      "revenue_all": 567573333.3333334,
+      "revenue_thai": 550661666.6666666,
+      "revenue_foreign": 16911666.666666668,
+      "no_tourist_all": 365833,
+      "no_tourist_thai": 357215,
+      "no_tourist_foreign": 8618,
+      "occupancy_rate": 57.0,
+      "spend_per_head": 1551,
+      "foreign_share": 3.0
+    },
+    "2020": {
+      "revenue_all": 195215000.0,
+      "revenue_thai": 193689166.66666666,
+      "revenue_foreign": 1525833.3333333333,
+      "no_tourist_all": 139484,
+      "no_tourist_thai": 138726,
+      "no_tourist_foreign": 758,
+      "occupancy_rate": 31.0,
+      "spend_per_head": 1400,
+      "foreign_share": 0.8
+    },
+    "2021": {
+      "revenue_all": 127494333.33333333,
+      "revenue_thai": 127357500.0,
+      "revenue_foreign": 136833.33333333334,
+      "no_tourist_all": 93488,
+      "no_tourist_thai": 93391,
+      "no_tourist_foreign": 96,
+      "occupancy_rate": 18.2,
+      "spend_per_head": 1364,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 515274166.6666667,
+      "revenue_thai": 513870000.0,
+      "revenue_foreign": 1404166.6666666667,
+      "no_tourist_all": 332166,
+      "no_tourist_thai": 331218,
+      "no_tourist_foreign": 947,
+      "occupancy_rate": 45.7,
+      "spend_per_head": 1551,
+      "foreign_share": 0.3
+    },
+    "2023": {
+      "revenue_all": 620865000.0,
+      "revenue_thai": 615835000.0,
+      "revenue_foreign": 5030000.0,
+      "no_tourist_all": 380277,
+      "no_tourist_thai": 377032,
+      "no_tourist_foreign": 3245,
+      "occupancy_rate": 57.4,
+      "spend_per_head": 1633,
+      "foreign_share": 0.8
+    }
+  },
+  "สระแก้ว": {
+    "2019": {
+      "revenue_all": 563428333.3333334,
+      "revenue_thai": 503535833.3333333,
+      "revenue_foreign": 59892500.0,
+      "no_tourist_all": 185412,
+      "no_tourist_thai": 161753,
+      "no_tourist_foreign": 23658,
+      "occupancy_rate": 56.1,
+      "spend_per_head": 3039,
+      "foreign_share": 10.6
+    },
+    "2020": {
+      "revenue_all": 250648333.33333334,
+      "revenue_thai": 241820833.33333334,
+      "revenue_foreign": 8827500.0,
+      "no_tourist_all": 84513,
+      "no_tourist_thai": 81481,
+      "no_tourist_foreign": 3032,
+      "occupancy_rate": 26.0,
+      "spend_per_head": 2966,
+      "foreign_share": 3.5
+    },
+    "2021": {
+      "revenue_all": 71075833.33333333,
+      "revenue_thai": 70754166.66666667,
+      "revenue_foreign": 321666.6666666667,
+      "no_tourist_all": 27557,
+      "no_tourist_thai": 27375,
+      "no_tourist_foreign": 181,
+      "occupancy_rate": 14.1,
+      "spend_per_head": 2579,
+      "foreign_share": 0.5
+    },
+    "2022": {
+      "revenue_all": 297402500.0,
+      "revenue_thai": 295705000.0,
+      "revenue_foreign": 1697500.0,
+      "no_tourist_all": 93990,
+      "no_tourist_thai": 93301,
+      "no_tourist_foreign": 689,
+      "occupancy_rate": 43.1,
+      "spend_per_head": 3164,
+      "foreign_share": 0.6
+    },
+    "2023": {
+      "revenue_all": 333175000.0,
+      "revenue_thai": 329890000.0,
+      "revenue_foreign": 3285000.0,
+      "no_tourist_all": 102615,
+      "no_tourist_thai": 101261,
+      "no_tourist_foreign": 1354,
+      "occupancy_rate": 47.3,
+      "spend_per_head": 3247,
+      "foreign_share": 1.0
+    }
+  },
+  "สิงห์บุรี": {
+    "2019": {
+      "revenue_all": 73135000.0,
+      "revenue_thai": 72680833.33333333,
+      "revenue_foreign": 454166.6666666667,
+      "no_tourist_all": 48124,
+      "no_tourist_thai": 47856,
+      "no_tourist_foreign": 268,
+      "occupancy_rate": 58.9,
+      "spend_per_head": 1520,
+      "foreign_share": 0.6
+    },
+    "2020": {
+      "revenue_all": 31944166.666666668,
+      "revenue_thai": 31885000.0,
+      "revenue_foreign": 59166.666666666664,
+      "no_tourist_all": 21544,
+      "no_tourist_thai": 21509,
+      "no_tourist_foreign": 35,
+      "occupancy_rate": 25.7,
+      "spend_per_head": 1483,
+      "foreign_share": 0.2
+    },
+    "2021": {
+      "revenue_all": 21465000.0,
+      "revenue_thai": 21453333.333333332,
+      "revenue_foreign": 11666.666666666666,
+      "no_tourist_all": 15733,
+      "no_tourist_thai": 15718,
+      "no_tourist_foreign": 15,
+      "occupancy_rate": 14.6,
+      "spend_per_head": 1364,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 63945000.0,
+      "revenue_thai": 63338333.333333336,
+      "revenue_foreign": 606666.6666666666,
+      "no_tourist_all": 51307,
+      "no_tourist_thai": 50996,
+      "no_tourist_foreign": 311,
+      "occupancy_rate": 37.9,
+      "spend_per_head": 1246,
+      "foreign_share": 0.9
+    },
+    "2023": {
+      "revenue_all": 67130000.0,
+      "revenue_thai": 65920000.0,
+      "revenue_foreign": 1210000.0,
+      "no_tourist_all": 54127,
+      "no_tourist_thai": 53550,
+      "no_tourist_foreign": 577,
+      "occupancy_rate": 41.2,
+      "spend_per_head": 1240,
+      "foreign_share": 1.8
+    }
+  },
+  "สุพรรณบุรี": {
+    "2019": {
+      "revenue_all": 476437500.0,
+      "revenue_thai": 471122500.0,
+      "revenue_foreign": 5315000.0,
+      "no_tourist_all": 272995,
+      "no_tourist_thai": 270545,
+      "no_tourist_foreign": 2450,
+      "occupancy_rate": 79.0,
+      "spend_per_head": 1745,
+      "foreign_share": 1.1
+    },
+    "2020": {
+      "revenue_all": 215616666.66666666,
+      "revenue_thai": 214820000.0,
+      "revenue_foreign": 796666.6666666666,
+      "no_tourist_all": 146172,
+      "no_tourist_thai": 145733,
+      "no_tourist_foreign": 439,
+      "occupancy_rate": 41.4,
+      "spend_per_head": 1475,
+      "foreign_share": 0.4
+    },
+    "2021": {
+      "revenue_all": 129145833.33333333,
+      "revenue_thai": 129124166.66666667,
+      "revenue_foreign": 21666.666666666668,
+      "no_tourist_all": 114611,
+      "no_tourist_thai": 114598,
+      "no_tourist_foreign": 12,
+      "occupancy_rate": 17.3,
+      "spend_per_head": 1127,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 379440000.0,
+      "revenue_thai": 377355000.0,
+      "revenue_foreign": 2085000.0,
+      "no_tourist_all": 307162,
+      "no_tourist_thai": 305828,
+      "no_tourist_foreign": 1334,
+      "occupancy_rate": 48.2,
+      "spend_per_head": 1235,
+      "foreign_share": 0.5
+    },
+    "2023": {
+      "revenue_all": 698640000.0,
+      "revenue_thai": 691335000.0,
+      "revenue_foreign": 7305000.0,
+      "no_tourist_all": 578314,
+      "no_tourist_thai": 573341,
+      "no_tourist_foreign": 4972,
+      "occupancy_rate": 64.3,
+      "spend_per_head": 1208,
+      "foreign_share": 1.0
+    }
+  },
+  "สุราษฎร์ธานี": {
+    "2019": {
+      "revenue_all": 7857260000.0,
+      "revenue_thai": 1420020000.0,
+      "revenue_foreign": 6437240000.0,
+      "no_tourist_all": 491726,
+      "no_tourist_thai": 192430,
+      "no_tourist_foreign": 299296,
+      "occupancy_rate": 68.2,
+      "spend_per_head": 15979,
+      "foreign_share": 81.9
+    },
+    "2020": {
+      "revenue_all": 2020217500.0,
+      "revenue_thai": 620870000.0,
+      "revenue_foreign": 1399347500.0,
+      "no_tourist_all": 151240,
+      "no_tourist_thai": 98808,
+      "no_tourist_foreign": 52432,
+      "occupancy_rate": 20.0,
+      "spend_per_head": 13358,
+      "foreign_share": 69.3
+    },
+    "2021": {
+      "revenue_all": 227764166.66666666,
+      "revenue_thai": 210811666.66666666,
+      "revenue_foreign": 16952500.0,
+      "no_tourist_all": 40111,
+      "no_tourist_thai": 38432,
+      "no_tourist_foreign": 1679,
+      "occupancy_rate": 5.5,
+      "spend_per_head": 5678,
+      "foreign_share": 7.4
+    },
+    "2022": {
+      "revenue_all": 2305070833.3333335,
+      "revenue_thai": 1464931666.6666667,
+      "revenue_foreign": 840139166.6666666,
+      "no_tourist_all": 307553,
+      "no_tourist_thai": 237269,
+      "no_tourist_foreign": 70283,
+      "occupancy_rate": 45.2,
+      "spend_per_head": 7495,
+      "foreign_share": 36.4
+    },
+    "2023": {
+      "revenue_all": 3485185000.0,
+      "revenue_thai": 1781980000.0,
+      "revenue_foreign": 1703205000.0,
+      "no_tourist_all": 508523,
+      "no_tourist_thai": 338411,
+      "no_tourist_foreign": 170111,
+      "occupancy_rate": 73.7,
+      "spend_per_head": 6854,
+      "foreign_share": 48.9
+    }
+  },
+  "สุรินทร์": {
+    "2019": {
+      "revenue_all": 263991666.66666666,
+      "revenue_thai": 253590833.33333334,
+      "revenue_foreign": 10400833.333333334,
+      "no_tourist_all": 118396,
+      "no_tourist_thai": 114630,
+      "no_tourist_foreign": 3765,
+      "occupancy_rate": 57.8,
+      "spend_per_head": 2230,
+      "foreign_share": 3.9
+    },
+    "2020": {
+      "revenue_all": 122760833.33333333,
+      "revenue_thai": 121045000.0,
+      "revenue_foreign": 1715833.3333333333,
+      "no_tourist_all": 59604,
+      "no_tourist_thai": 59077,
+      "no_tourist_foreign": 527,
+      "occupancy_rate": 29.6,
+      "spend_per_head": 2060,
+      "foreign_share": 1.4
+    },
+    "2021": {
+      "revenue_all": 53238333.333333336,
+      "revenue_thai": 53193333.333333336,
+      "revenue_foreign": 45000.0,
+      "no_tourist_all": 31471,
+      "no_tourist_thai": 31443,
+      "no_tourist_foreign": 28,
+      "occupancy_rate": 15.4,
+      "spend_per_head": 1692,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 126728333.33333333,
+      "revenue_thai": 125125000.0,
+      "revenue_foreign": 1603333.3333333333,
+      "no_tourist_all": 71874,
+      "no_tourist_thai": 71081,
+      "no_tourist_foreign": 793,
+      "occupancy_rate": 40.4,
+      "spend_per_head": 1763,
+      "foreign_share": 1.3
+    },
+    "2023": {
+      "revenue_all": 177975000.0,
+      "revenue_thai": 173850000.0,
+      "revenue_foreign": 4125000.0,
+      "no_tourist_all": 101330,
+      "no_tourist_thai": 99206,
+      "no_tourist_foreign": 2124,
+      "occupancy_rate": 56.6,
+      "spend_per_head": 1756,
+      "foreign_share": 2.3
+    }
+  },
+  "สุโขทัย": {
+    "2019": {
+      "revenue_all": 323910833.3333333,
+      "revenue_thai": 226095833.33333334,
+      "revenue_foreign": 97815000.0,
+      "no_tourist_all": 125123,
+      "no_tourist_thai": 92233,
+      "no_tourist_foreign": 32890,
+      "occupancy_rate": 60.9,
+      "spend_per_head": 2589,
+      "foreign_share": 30.2
+    },
+    "2020": {
+      "revenue_all": 152575000.0,
+      "revenue_thai": 128347500.0,
+      "revenue_foreign": 24227500.0,
+      "no_tourist_all": 63218,
+      "no_tourist_thai": 55721,
+      "no_tourist_foreign": 7497,
+      "occupancy_rate": 36.6,
+      "spend_per_head": 2413,
+      "foreign_share": 15.9
+    },
+    "2021": {
+      "revenue_all": 58788333.333333336,
+      "revenue_thai": 57774166.666666664,
+      "revenue_foreign": 1014166.6666666666,
+      "no_tourist_all": 29637,
+      "no_tourist_thai": 29177,
+      "no_tourist_foreign": 459,
+      "occupancy_rate": 13.7,
+      "spend_per_head": 1984,
+      "foreign_share": 1.7
+    },
+    "2022": {
+      "revenue_all": 170600000.0,
+      "revenue_thai": 152978333.33333334,
+      "revenue_foreign": 17621666.666666668,
+      "no_tourist_all": 77239,
+      "no_tourist_thai": 70870,
+      "no_tourist_foreign": 6369,
+      "occupancy_rate": 31.9,
+      "spend_per_head": 2209,
+      "foreign_share": 10.3
+    },
+    "2023": {
+      "revenue_all": 259135000.0,
+      "revenue_thai": 208200000.0,
+      "revenue_foreign": 50935000.0,
+      "no_tourist_all": 104658,
+      "no_tourist_thai": 88287,
+      "no_tourist_foreign": 16370,
+      "occupancy_rate": 39.4,
+      "spend_per_head": 2476,
+      "foreign_share": 19.7
+    }
+  },
+  "หนองคาย": {
+    "2019": {
+      "revenue_all": 472965000.0,
+      "revenue_thai": 400661666.6666667,
+      "revenue_foreign": 72303333.33333333,
+      "no_tourist_all": 232322,
+      "no_tourist_thai": 179913,
+      "no_tourist_foreign": 52409,
+      "occupancy_rate": 61.9,
+      "spend_per_head": 2036,
+      "foreign_share": 15.3
+    },
+    "2020": {
+      "revenue_all": 213286666.66666666,
+      "revenue_thai": 197667500.0,
+      "revenue_foreign": 15619166.666666666,
+      "no_tourist_all": 112068,
+      "no_tourist_thai": 101055,
+      "no_tourist_foreign": 11012,
+      "occupancy_rate": 35.0,
+      "spend_per_head": 1903,
+      "foreign_share": 7.3
+    },
+    "2021": {
+      "revenue_all": 73661666.66666667,
+      "revenue_thai": 73442500.0,
+      "revenue_foreign": 219166.66666666666,
+      "no_tourist_all": 52573,
+      "no_tourist_thai": 52422,
+      "no_tourist_foreign": 150,
+      "occupancy_rate": 15.6,
+      "spend_per_head": 1401,
+      "foreign_share": 0.3
+    },
+    "2022": {
+      "revenue_all": 279169166.6666667,
+      "revenue_thai": 215350833.33333334,
+      "revenue_foreign": 63818333.333333336,
+      "no_tourist_all": 177267,
+      "no_tourist_thai": 149439,
+      "no_tourist_foreign": 27828,
+      "occupancy_rate": 50.2,
+      "spend_per_head": 1575,
+      "foreign_share": 22.9
+    },
+    "2023": {
+      "revenue_all": 414745000.0,
+      "revenue_thai": 268890000.0,
+      "revenue_foreign": 145855000.0,
+      "no_tourist_all": 240024,
+      "no_tourist_thai": 176454,
+      "no_tourist_foreign": 63570,
+      "occupancy_rate": 64.9,
+      "spend_per_head": 1728,
+      "foreign_share": 35.2
+    }
+  },
+  "หนองบัวลำภู": {
+    "2019": {
+      "revenue_all": 34037500.0,
+      "revenue_thai": 33848333.333333336,
+      "revenue_foreign": 189166.66666666666,
+      "no_tourist_all": 31784,
+      "no_tourist_thai": 31624,
+      "no_tourist_foreign": 160,
+      "occupancy_rate": 51.8,
+      "spend_per_head": 1071,
+      "foreign_share": 0.6
+    },
+    "2020": {
+      "revenue_all": 14830833.333333334,
+      "revenue_thai": 14785000.0,
+      "revenue_foreign": 45833.333333333336,
+      "no_tourist_all": 15948,
+      "no_tourist_thai": 15916,
+      "no_tourist_foreign": 32,
+      "occupancy_rate": 23.3,
+      "spend_per_head": 930,
+      "foreign_share": 0.3
+    },
+    "2021": {
+      "revenue_all": 4873333.333333333,
+      "revenue_thai": 4864166.666666667,
+      "revenue_foreign": 9166.666666666666,
+      "no_tourist_all": 7005,
+      "no_tourist_thai": 6997,
+      "no_tourist_foreign": 8,
+      "occupancy_rate": 7.4,
+      "spend_per_head": 696,
+      "foreign_share": 0.2
+    },
+    "2022": {
+      "revenue_all": 17430000.0,
+      "revenue_thai": 17348333.333333332,
+      "revenue_foreign": 81666.66666666667,
+      "no_tourist_all": 22913,
+      "no_tourist_thai": 22833,
+      "no_tourist_foreign": 79,
+      "occupancy_rate": 29.4,
+      "spend_per_head": 761,
+      "foreign_share": 0.5
+    },
+    "2023": {
+      "revenue_all": 21020000.0,
+      "revenue_thai": 20825000.0,
+      "revenue_foreign": 195000.0,
+      "no_tourist_all": 27708,
+      "no_tourist_thai": 27505,
+      "no_tourist_foreign": 203,
+      "occupancy_rate": 35.0,
+      "spend_per_head": 759,
+      "foreign_share": 0.9
+    }
+  },
+  "อำนาจเจริญ": {
+    "2019": {
+      "revenue_all": 36607500.0,
+      "revenue_thai": 34192500.0,
+      "revenue_foreign": 2415000.0,
+      "no_tourist_all": 25560,
+      "no_tourist_thai": 24841,
+      "no_tourist_foreign": 719,
+      "occupancy_rate": 56.4,
+      "spend_per_head": 1432,
+      "foreign_share": 6.6
+    },
+    "2020": {
+      "revenue_all": 17302500.0,
+      "revenue_thai": 17005000.0,
+      "revenue_foreign": 297500.0,
+      "no_tourist_all": 12807,
+      "no_tourist_thai": 12674,
+      "no_tourist_foreign": 133,
+      "occupancy_rate": 25.9,
+      "spend_per_head": 1351,
+      "foreign_share": 1.7
+    },
+    "2021": {
+      "revenue_all": 11633333.333333334,
+      "revenue_thai": 11633333.333333334,
+      "revenue_foreign": 0.0,
+      "no_tourist_all": 9535,
+      "no_tourist_thai": 9535,
+      "no_tourist_foreign": 0,
+      "occupancy_rate": 14.6,
+      "spend_per_head": 1220,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 19910000.0,
+      "revenue_thai": 19597500.0,
+      "revenue_foreign": 312500.0,
+      "no_tourist_all": 18469,
+      "no_tourist_thai": 18317,
+      "no_tourist_foreign": 151,
+      "occupancy_rate": 31.8,
+      "spend_per_head": 1078,
+      "foreign_share": 1.6
+    },
+    "2023": {
+      "revenue_all": 24830000.0,
+      "revenue_thai": 24075000.0,
+      "revenue_foreign": 755000.0,
+      "no_tourist_all": 22504,
+      "no_tourist_thai": 22090,
+      "no_tourist_foreign": 414,
+      "occupancy_rate": 38.8,
+      "spend_per_head": 1103,
+      "foreign_share": 3.0
+    }
+  },
+  "อุดรธานี": {
+    "2019": {
+      "revenue_all": 952121666.6666666,
+      "revenue_thai": 894039166.6666666,
+      "revenue_foreign": 58082500.0,
+      "no_tourist_all": 334993,
+      "no_tourist_thai": 319795,
+      "no_tourist_foreign": 15198,
+      "occupancy_rate": 72.4,
+      "spend_per_head": 2842,
+      "foreign_share": 6.1
+    },
+    "2020": {
+      "revenue_all": 474344166.6666667,
+      "revenue_thai": 460207500.0,
+      "revenue_foreign": 14136666.666666666,
+      "no_tourist_all": 186357,
+      "no_tourist_thai": 183401,
+      "no_tourist_foreign": 2956,
+      "occupancy_rate": 42.0,
+      "spend_per_head": 2545,
+      "foreign_share": 3.0
+    },
+    "2021": {
+      "revenue_all": 176435000.0,
+      "revenue_thai": 176159166.66666666,
+      "revenue_foreign": 275833.3333333333,
+      "no_tourist_all": 79175,
+      "no_tourist_thai": 79054,
+      "no_tourist_foreign": 121,
+      "occupancy_rate": 15.5,
+      "spend_per_head": 2228,
+      "foreign_share": 0.2
+    },
+    "2022": {
+      "revenue_all": 504431666.6666667,
+      "revenue_thai": 458494166.6666667,
+      "revenue_foreign": 45937500.0,
+      "no_tourist_all": 263410,
+      "no_tourist_thai": 249764,
+      "no_tourist_foreign": 13646,
+      "occupancy_rate": 48.8,
+      "spend_per_head": 1915,
+      "foreign_share": 9.1
+    },
+    "2023": {
+      "revenue_all": 728230000.0,
+      "revenue_thai": 572535000.0,
+      "revenue_foreign": 155695000.0,
+      "no_tourist_all": 355748,
+      "no_tourist_thai": 310037,
+      "no_tourist_foreign": 45710,
+      "occupancy_rate": 65.5,
+      "spend_per_head": 2047,
+      "foreign_share": 21.4
+    }
+  },
+  "อุตรดิตถ์": {
+    "2019": {
+      "revenue_all": 186733333.33333334,
+      "revenue_thai": 185455833.33333334,
+      "revenue_foreign": 1277500.0,
+      "no_tourist_all": 90336,
+      "no_tourist_thai": 89609,
+      "no_tourist_foreign": 726,
+      "occupancy_rate": 53.1,
+      "spend_per_head": 2067,
+      "foreign_share": 0.7
+    },
+    "2020": {
+      "revenue_all": 97625833.33333333,
+      "revenue_thai": 97248333.33333333,
+      "revenue_foreign": 377500.0,
+      "no_tourist_all": 52473,
+      "no_tourist_thai": 52322,
+      "no_tourist_foreign": 151,
+      "occupancy_rate": 31.2,
+      "spend_per_head": 1860,
+      "foreign_share": 0.4
+    },
+    "2021": {
+      "revenue_all": 38225000.0,
+      "revenue_thai": 38186666.666666664,
+      "revenue_foreign": 38333.333333333336,
+      "no_tourist_all": 27812,
+      "no_tourist_thai": 27790,
+      "no_tourist_foreign": 22,
+      "occupancy_rate": 14.9,
+      "spend_per_head": 1374,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 105240000.0,
+      "revenue_thai": 104422500.0,
+      "revenue_foreign": 817500.0,
+      "no_tourist_all": 76995,
+      "no_tourist_thai": 76640,
+      "no_tourist_foreign": 355,
+      "occupancy_rate": 39.7,
+      "spend_per_head": 1367,
+      "foreign_share": 0.8
+    },
+    "2023": {
+      "revenue_all": 141205000.0,
+      "revenue_thai": 139645000.0,
+      "revenue_foreign": 1560000.0,
+      "no_tourist_all": 92066,
+      "no_tourist_thai": 91473,
+      "no_tourist_foreign": 593,
+      "occupancy_rate": 42.4,
+      "spend_per_head": 1534,
+      "foreign_share": 1.1
+    }
+  },
+  "อุทัยธานี": {
+    "2019": {
+      "revenue_all": 112872500.0,
+      "revenue_thai": 111483333.33333333,
+      "revenue_foreign": 1389166.6666666667,
+      "no_tourist_all": 64367,
+      "no_tourist_thai": 63845,
+      "no_tourist_foreign": 521,
+      "occupancy_rate": 48.1,
+      "spend_per_head": 1754,
+      "foreign_share": 1.2
+    },
+    "2020": {
+      "revenue_all": 65510000.0,
+      "revenue_thai": 65316666.666666664,
+      "revenue_foreign": 193333.33333333334,
+      "no_tourist_all": 40053,
+      "no_tourist_thai": 39996,
+      "no_tourist_foreign": 57,
+      "occupancy_rate": 32.7,
+      "spend_per_head": 1636,
+      "foreign_share": 0.3
+    },
+    "2021": {
+      "revenue_all": 34676666.666666664,
+      "revenue_thai": 34676666.666666664,
+      "revenue_foreign": 0.0,
+      "no_tourist_all": 23325,
+      "no_tourist_thai": 23325,
+      "no_tourist_foreign": 0,
+      "occupancy_rate": 14.5,
+      "spend_per_head": 1487,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 106271666.66666667,
+      "revenue_thai": 106224166.66666667,
+      "revenue_foreign": 47500.0,
+      "no_tourist_all": 74308,
+      "no_tourist_thai": 74285,
+      "no_tourist_foreign": 23,
+      "occupancy_rate": 40.4,
+      "spend_per_head": 1430,
+      "foreign_share": 0.0
+    },
+    "2023": {
+      "revenue_all": 133385000.0,
+      "revenue_thai": 133190000.0,
+      "revenue_foreign": 195000.0,
+      "no_tourist_all": 84642,
+      "no_tourist_thai": 84541,
+      "no_tourist_foreign": 101,
+      "occupancy_rate": 51.2,
+      "spend_per_head": 1576,
+      "foreign_share": 0.1
+    }
+  },
+  "อุบลราชธานี": {
+    "2019": {
+      "revenue_all": 666464166.6666666,
+      "revenue_thai": 615340833.3333334,
+      "revenue_foreign": 51123333.333333336,
+      "no_tourist_all": 268155,
+      "no_tourist_thai": 255462,
+      "no_tourist_foreign": 12692,
+      "occupancy_rate": 62.6,
+      "spend_per_head": 2485,
+      "foreign_share": 7.7
+    },
+    "2020": {
+      "revenue_all": 284654166.6666667,
+      "revenue_thai": 270988333.3333333,
+      "revenue_foreign": 13665833.333333334,
+      "no_tourist_all": 128098,
+      "no_tourist_thai": 125193,
+      "no_tourist_foreign": 2905,
+      "occupancy_rate": 34.0,
+      "spend_per_head": 2222,
+      "foreign_share": 4.8
+    },
+    "2021": {
+      "revenue_all": 124857500.0,
+      "revenue_thai": 124835000.0,
+      "revenue_foreign": 22500.0,
+      "no_tourist_all": 86436,
+      "no_tourist_thai": 86422,
+      "no_tourist_foreign": 13,
+      "occupancy_rate": 19.8,
+      "spend_per_head": 1445,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 240082500.0,
+      "revenue_thai": 238647500.0,
+      "revenue_foreign": 1435000.0,
+      "no_tourist_all": 175275,
+      "no_tourist_thai": 174685,
+      "no_tourist_foreign": 589,
+      "occupancy_rate": 39.7,
+      "spend_per_head": 1370,
+      "foreign_share": 0.6
+    },
+    "2023": {
+      "revenue_all": 456155000.0,
+      "revenue_thai": 453305000.0,
+      "revenue_foreign": 2850000.0,
+      "no_tourist_all": 304941,
+      "no_tourist_thai": 303782,
+      "no_tourist_foreign": 1159,
+      "occupancy_rate": 46.8,
+      "spend_per_head": 1496,
+      "foreign_share": 0.6
+    }
+  },
+  "อ่างทอง": {
+    "2019": {
+      "revenue_all": 84460000.0,
+      "revenue_thai": 81491666.66666667,
+      "revenue_foreign": 2968333.3333333335,
+      "no_tourist_all": 69046,
+      "no_tourist_thai": 66370,
+      "no_tourist_foreign": 2676,
+      "occupancy_rate": 64.0,
+      "spend_per_head": 1223,
+      "foreign_share": 3.5
+    },
+    "2020": {
+      "revenue_all": 36476666.666666664,
+      "revenue_thai": 35700833.333333336,
+      "revenue_foreign": 775833.3333333334,
+      "no_tourist_all": 31443,
+      "no_tourist_thai": 30755,
+      "no_tourist_foreign": 688,
+      "occupancy_rate": 20.4,
+      "spend_per_head": 1160,
+      "foreign_share": 2.1
+    },
+    "2021": {
+      "revenue_all": 21745000.0,
+      "revenue_thai": 21745000.0,
+      "revenue_foreign": 0.0,
+      "no_tourist_all": 21163,
+      "no_tourist_thai": 21163,
+      "no_tourist_foreign": 0,
+      "occupancy_rate": 11.8,
+      "spend_per_head": 1028,
+      "foreign_share": 0.0
+    },
+    "2022": {
+      "revenue_all": 55365000.0,
+      "revenue_thai": 55294166.666666664,
+      "revenue_foreign": 70833.33333333333,
+      "no_tourist_all": 55895,
+      "no_tourist_thai": 55839,
+      "no_tourist_foreign": 55,
+      "occupancy_rate": 31.2,
+      "spend_per_head": 991,
+      "foreign_share": 0.1
+    },
+    "2023": {
+      "revenue_all": 90045000.0,
+      "revenue_thai": 89350000.0,
+      "revenue_foreign": 695000.0,
+      "no_tourist_all": 81433,
+      "no_tourist_thai": 80917,
+      "no_tourist_foreign": 516,
+      "occupancy_rate": 46.6,
+      "spend_per_head": 1106,
+      "foreign_share": 0.8
+    }
+  },
+  "เชียงราย": {
+    "2019": {
+      "revenue_all": 2440975833.3333335,
+      "revenue_thai": 1872851666.6666667,
+      "revenue_foreign": 568124166.6666666,
+      "no_tourist_all": 310762,
+      "no_tourist_thai": 257600,
+      "no_tourist_foreign": 53162,
+      "occupancy_rate": 54.9,
+      "spend_per_head": 7855,
+      "foreign_share": 23.3
+    },
+    "2020": {
+      "revenue_all": 1245795833.3333333,
+      "revenue_thai": 1164012500.0,
+      "revenue_foreign": 81783333.33333333,
+      "no_tourist_all": 181140,
+      "no_tourist_thai": 171590,
+      "no_tourist_foreign": 9549,
+      "occupancy_rate": 38.3,
+      "spend_per_head": 6878,
+      "foreign_share": 6.6
+    },
+    "2021": {
+      "revenue_all": 662347500.0,
+      "revenue_thai": 658176666.6666666,
+      "revenue_foreign": 4170833.3333333335,
+      "no_tourist_all": 115784,
+      "no_tourist_thai": 115200,
+      "no_tourist_foreign": 584,
+      "occupancy_rate": 22.8,
+      "spend_per_head": 5721,
+      "foreign_share": 0.6
+    },
+    "2022": {
+      "revenue_all": 2867772500.0,
+      "revenue_thai": 2612130000.0,
+      "revenue_foreign": 255642500.0,
+      "no_tourist_all": 420970,
+      "no_tourist_thai": 397729,
+      "no_tourist_foreign": 23240,
+      "occupancy_rate": 67.7,
+      "spend_per_head": 6812,
+      "foreign_share": 8.9
+    },
+    "2023": {
+      "revenue_all": 4477535000.0,
+      "revenue_thai": 3573795000.0,
+      "revenue_foreign": 903740000.0,
+      "no_tourist_all": 605456,
+      "no_tourist_thai": 529499,
+      "no_tourist_foreign": 75957,
+      "occupancy_rate": 82.3,
+      "spend_per_head": 7395,
+      "foreign_share": 20.2
+    }
+  },
+  "เชียงใหม่": {
+    "2019": {
+      "revenue_all": 9222527500.0,
+      "revenue_thai": 5602624166.666667,
+      "revenue_foreign": 3619903333.3333335,
+      "no_tourist_all": 930488,
+      "no_tourist_thai": 640954,
+      "no_tourist_foreign": 289533,
+      "occupancy_rate": 74.3,
+      "spend_per_head": 9911,
+      "foreign_share": 39.3
+    },
+    "2020": {
+      "revenue_all": 4153419166.6666665,
+      "revenue_thai": 3539526666.6666665,
+      "revenue_foreign": 613892500.0,
+      "no_tourist_all": 500646,
+      "no_tourist_thai": 453585,
+      "no_tourist_foreign": 47061,
+      "occupancy_rate": 41.8,
+      "spend_per_head": 8296,
+      "foreign_share": 14.8
+    },
+    "2021": {
+      "revenue_all": 1940937500.0,
+      "revenue_thai": 1922744166.6666667,
+      "revenue_foreign": 18193333.333333332,
+      "no_tourist_all": 311167,
+      "no_tourist_thai": 308584,
+      "no_tourist_foreign": 2583,
+      "occupancy_rate": 20.5,
+      "spend_per_head": 6238,
+      "foreign_share": 0.9
+    },
+    "2022": {
+      "revenue_all": 4973435000.0,
+      "revenue_thai": 4168215833.3333335,
+      "revenue_foreign": 805219166.6666666,
+      "no_tourist_all": 731102,
+      "no_tourist_thai": 639741,
+      "no_tourist_foreign": 91360,
+      "occupancy_rate": 56.5,
+      "spend_per_head": 6803,
+      "foreign_share": 16.2
+    },
+    "2023": {
+      "revenue_all": 8280935000.0,
+      "revenue_thai": 4811475000.0,
+      "revenue_foreign": 3469460000.0,
+      "no_tourist_all": 1040924,
+      "no_tourist_thai": 671840,
+      "no_tourist_foreign": 369084,
+      "occupancy_rate": 85.7,
+      "spend_per_head": 7955,
+      "foreign_share": 41.9
+    }
+  },
+  "เพชรบุรี": {
+    "2019": {
+      "revenue_all": 2586199166.6666665,
+      "revenue_thai": 2197956666.6666665,
+      "revenue_foreign": 388242500.0,
+      "no_tourist_all": 746541,
+      "no_tourist_thai": 700897,
+      "no_tourist_foreign": 45644,
+      "occupancy_rate": 69.0,
+      "spend_per_head": 3464,
+      "foreign_share": 15.0
+    },
+    "2020": {
+      "revenue_all": 1201985000.0,
+      "revenue_thai": 1129099166.6666667,
+      "revenue_foreign": 72885833.33333333,
+      "no_tourist_all": 415560,
+      "no_tourist_thai": 406468,
+      "no_tourist_foreign": 9092,
+      "occupancy_rate": 41.5,
+      "spend_per_head": 2892,
+      "foreign_share": 6.1
+    },
+    "2021": {
+      "revenue_all": 747384166.6666666,
+      "revenue_thai": 746325833.3333334,
+      "revenue_foreign": 1058333.3333333333,
+      "no_tourist_all": 273396,
+      "no_tourist_thai": 273228,
+      "no_tourist_foreign": 168,
+      "occupancy_rate": 24.6,
+      "spend_per_head": 2734,
+      "foreign_share": 0.1
+    },
+    "2022": {
+      "revenue_all": 2032887500.0,
+      "revenue_thai": 2015600833.3333333,
+      "revenue_foreign": 17286666.666666668,
+      "no_tourist_all": 749132,
+      "no_tourist_thai": 744971,
+      "no_tourist_foreign": 4160,
+      "occupancy_rate": 61.3,
+      "spend_per_head": 2714,
+      "foreign_share": 0.9
+    },
+    "2023": {
+      "revenue_all": 2476415000.0,
+      "revenue_thai": 2427705000.0,
+      "revenue_foreign": 48710000.0,
+      "no_tourist_all": 912131,
+      "no_tourist_thai": 899883,
+      "no_tourist_foreign": 12248,
+      "occupancy_rate": 68.3,
+      "spend_per_head": 2715,
+      "foreign_share": 2.0
+    }
+  },
+  "เพชรบูรณ์": {
+    "2019": {
+      "revenue_all": 640070833.3333334,
+      "revenue_thai": 632167500.0,
+      "revenue_foreign": 7903333.333333333,
+      "no_tourist_all": 200923,
+      "no_tourist_thai": 198712,
+      "no_tourist_foreign": 2210,
+      "occupancy_rate": 55.6,
+      "spend_per_head": 3186,
+      "foreign_share": 1.2
+    },
+    "2020": {
+      "revenue_all": 357348333.3333333,
+      "revenue_thai": 355560833.3333333,
+      "revenue_foreign": 1787500.0,
+      "no_tourist_all": 120453,
+      "no_tourist_thai": 119804,
+      "no_tourist_foreign": 649,
+      "occupancy_rate": 40.7,
+      "spend_per_head": 2967,
+      "foreign_share": 0.5
+    },
+    "2021": {
+      "revenue_all": 179944166.66666666,
+      "revenue_thai": 179324166.66666666,
+      "revenue_foreign": 620000.0,
+      "no_tourist_all": 72324,
+      "no_tourist_thai": 72120,
+      "no_tourist_foreign": 204,
+      "occupancy_rate": 20.4,
+      "spend_per_head": 2488,
+      "foreign_share": 0.3
+    },
+    "2022": {
+      "revenue_all": 549611666.6666666,
+      "revenue_thai": 539458333.3333334,
+      "revenue_foreign": 10153333.333333334,
+      "no_tourist_all": 183257,
+      "no_tourist_thai": 180135,
+      "no_tourist_foreign": 3121,
+      "occupancy_rate": 47.7,
+      "spend_per_head": 2999,
+      "foreign_share": 1.8
+    },
+    "2023": {
+      "revenue_all": 862105000.0,
+      "revenue_thai": 833190000.0,
+      "revenue_foreign": 28915000.0,
+      "no_tourist_all": 256730,
+      "no_tourist_thai": 249167,
+      "no_tourist_foreign": 7563,
+      "occupancy_rate": 66.3,
+      "spend_per_head": 3358,
+      "foreign_share": 3.4
+    }
+  },
+  "เลย": {
+    "2019": {
+      "revenue_all": 388365000.0,
+      "revenue_thai": 377663333.3333333,
+      "revenue_foreign": 10701666.666666666,
+      "no_tourist_all": 188134,
+      "no_tourist_thai": 184735,
+      "no_tourist_foreign": 3399,
+      "occupancy_rate": 61.1,
+      "spend_per_head": 2064,
+      "foreign_share": 2.8
+    },
+    "2020": {
+      "revenue_all": 208986666.66666666,
+      "revenue_thai": 207468333.33333334,
+      "revenue_foreign": 1518333.3333333333,
+      "no_tourist_all": 117404,
+      "no_tourist_thai": 116991,
+      "no_tourist_foreign": 412,
+      "occupancy_rate": 36.1,
+      "spend_per_head": 1780,
+      "foreign_share": 0.7
+    },
+    "2021": {
+      "revenue_all": 80753333.33333333,
+      "revenue_thai": 80534166.66666667,
+      "revenue_foreign": 219166.66666666666,
+      "no_tourist_all": 59683,
+      "no_tourist_thai": 59577,
+      "no_tourist_foreign": 106,
+      "occupancy_rate": 12.5,
+      "spend_per_head": 1353,
+      "foreign_share": 0.3
+    },
+    "2022": {
+      "revenue_all": 274428333.3333333,
+      "revenue_thai": 271240000.0,
+      "revenue_foreign": 3188333.3333333335,
+      "no_tourist_all": 143314,
+      "no_tourist_thai": 142358,
+      "no_tourist_foreign": 956,
+      "occupancy_rate": 49.1,
+      "spend_per_head": 1915,
+      "foreign_share": 1.2
+    },
+    "2023": {
+      "revenue_all": 366045000.0,
+      "revenue_thai": 358005000.0,
+      "revenue_foreign": 8040000.0,
+      "no_tourist_all": 169338,
+      "no_tourist_thai": 167099,
+      "no_tourist_foreign": 2239,
+      "occupancy_rate": 62.0,
+      "spend_per_head": 2162,
+      "foreign_share": 2.2
+    }
+  },
+  "แพร่": {
+    "2019": {
+      "revenue_all": 146724166.66666666,
+      "revenue_thai": 131183333.33333333,
+      "revenue_foreign": 15540833.333333334,
+      "no_tourist_all": 72137,
+      "no_tourist_thai": 66440,
+      "no_tourist_foreign": 5697,
+      "occupancy_rate": 52.8,
+      "spend_per_head": 2034,
+      "foreign_share": 10.6
+    },
+    "2020": {
+      "revenue_all": 82050000.0,
+      "revenue_thai": 76610833.33333333,
+      "revenue_foreign": 5439166.666666667,
+      "no_tourist_all": 42914,
+      "no_tourist_thai": 41394,
+      "no_tourist_foreign": 1519,
+      "occupancy_rate": 38.1,
+      "spend_per_head": 1912,
+      "foreign_share": 6.6
+    },
+    "2021": {
+      "revenue_all": 56259166.666666664,
+      "revenue_thai": 56126666.666666664,
+      "revenue_foreign": 132500.0,
+      "no_tourist_all": 32396,
+      "no_tourist_thai": 32317,
+      "no_tourist_foreign": 79,
+      "occupancy_rate": 21.4,
+      "spend_per_head": 1737,
+      "foreign_share": 0.2
+    },
+    "2022": {
+      "revenue_all": 199551666.66666666,
+      "revenue_thai": 197880000.0,
+      "revenue_foreign": 1671666.6666666667,
+      "no_tourist_all": 101053,
+      "no_tourist_thai": 100326,
+      "no_tourist_foreign": 726,
+      "occupancy_rate": 61.3,
+      "spend_per_head": 1975,
+      "foreign_share": 0.8
+    },
+    "2023": {
+      "revenue_all": 262800000.0,
+      "revenue_thai": 260190000.0,
+      "revenue_foreign": 2610000.0,
+      "no_tourist_all": 118715,
+      "no_tourist_thai": 117751,
+      "no_tourist_foreign": 964,
+      "occupancy_rate": 67.8,
+      "spend_per_head": 2214,
+      "foreign_share": 1.0
+    }
+  },
+  "แม่ฮ่องสอน": {
+    "2019": {
+      "revenue_all": 441988333.3333333,
+      "revenue_thai": 271176666.6666667,
+      "revenue_foreign": 170811666.66666666,
+      "no_tourist_all": 91205,
+      "no_tourist_thai": 69332,
+      "no_tourist_foreign": 21872,
+      "occupancy_rate": 47.6,
+      "spend_per_head": 4846,
+      "foreign_share": 38.6
+    },
+    "2020": {
+      "revenue_all": 209656666.66666666,
+      "revenue_thai": 171962500.0,
+      "revenue_foreign": 37694166.666666664,
+      "no_tourist_all": 50460,
+      "no_tourist_thai": 45463,
+      "no_tourist_foreign": 4996,
+      "occupancy_rate": 28.4,
+      "spend_per_head": 4155,
+      "foreign_share": 18.0
+    },
+    "2021": {
+      "revenue_all": 111686666.66666667,
+      "revenue_thai": 109394166.66666667,
+      "revenue_foreign": 2292500.0,
+      "no_tourist_all": 35258,
+      "no_tourist_thai": 34686,
+      "no_tourist_foreign": 572,
+      "occupancy_rate": 16.7,
+      "spend_per_head": 3168,
+      "foreign_share": 2.1
+    },
+    "2022": {
+      "revenue_all": 350810000.0,
+      "revenue_thai": 309579166.6666667,
+      "revenue_foreign": 41230833.333333336,
+      "no_tourist_all": 88093,
+      "no_tourist_thai": 80362,
+      "no_tourist_foreign": 7731,
+      "occupancy_rate": 44.1,
+      "spend_per_head": 3982,
+      "foreign_share": 11.8
+    },
+    "2023": {
+      "revenue_all": 500625000.0,
+      "revenue_thai": 398310000.0,
+      "revenue_foreign": 102315000.0,
+      "no_tourist_all": 110261,
+      "no_tourist_thai": 92807,
+      "no_tourist_foreign": 17453,
+      "occupancy_rate": 61.2,
+      "spend_per_head": 4540,
+      "foreign_share": 20.4
+    }
+  }
+},
+
   
   yearlySummary: [
   {
