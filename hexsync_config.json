@@ -7,7 +7,8 @@
       "path": "C:\\project",
       "github_url": "https://github.com/daimond33140/project_jr.git",
       "branch": "main",
-      "debounce": 5
+      "debounce": 5,
+      "vercel_url": "https://projectjr.vercel.app"
     }
   ]
 }
