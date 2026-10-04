@@ -334,6 +334,34 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
                 }
             self.wfile.write(json.dumps(payload, ensure_ascii=False).encode('utf-8'))
 
+        elif parsed.path == "/api/github_repos":
+            query = urllib.parse.parse_qs(parsed.query)
+            username = query.get("username", ["daimond33140"])[0].strip()
+            if not username:
+                username = "daimond33140"
+            try:
+                url = f"https://api.github.com/users/{username}/repos?sort=updated&per_page=100"
+                req = urllib.request.Request(url, headers={"User-Agent": "HexSyncTH-Desktop/2.0"})
+                with urllib.request.urlopen(req, timeout=12) as response:
+                    raw_data = response.read().decode("utf-8")
+                    repos_json = json.loads(raw_data)
+                    clean_repos = []
+                    for r in repos_json:
+                        clean_repos.append({
+                            "name": r.get("name"),
+                            "full_name": r.get("full_name"),
+                            "html_url": r.get("html_url"),
+                            "clone_url": r.get("clone_url"),
+                            "description": r.get("description") or "ไม่มีคำอธิบาย",
+                            "default_branch": r.get("default_branch") or "main",
+                            "language": r.get("language") or "General",
+                            "stars": r.get("stargazers_count", 0),
+                            "updated_at": r.get("updated_at", "")[:10]
+                        })
+                    self._send_json({"success": True, "username": username, "repos": clean_repos})
+            except Exception as e:
+                self._send_json({"success": False, "error": str(e), "repos": []})
+
         elif parsed.path == "/api/config":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
@@ -441,6 +469,21 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
                 ensure_git_setup(proj)
                 log_event(f"🔄 สลับโปรเจกต์เป็น: [{proj['name']}] ({proj['path']})", "info")
             self._send_json({"success": True})
+
+        elif parsed.path == "/api/set_repo_for_project":
+            repo_url = req_data.get("repo_url", "").strip()
+            branch = req_data.get("branch", "main").strip()
+            proj = get_active_project()
+            if proj and repo_url:
+                with state_lock:
+                    proj["github_url"] = repo_url
+                    proj["branch"] = branch
+                    save_config(config_data)
+                ensure_git_setup(proj)
+                log_event(f"🔗 สลับ Remote ไปที่: {repo_url} [{branch}] เรียบร้อย", "success")
+                self._send_json({"success": True})
+            else:
+                self._send_json({"success": False, "error": "Invalid project or URL"})
 
         elif parsed.path == "/api/delete_project":
             proj_id = req_data.get("project_id")
