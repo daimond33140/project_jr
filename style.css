@@ -1657,93 +1657,490 @@ button, a, select, input, [role="button"], .switcher-btn, .kpi-card, .btn, .map-
 }
 
 /* ==========================================================================
-   18. 144 FPS VIEW SWITCHER BAR (SEPARATE VIEW SELECTOR)
+   18. NASA JPL EYES ON THE SOLAR SYSTEM // RIGHT DOCK & 3D THAILAND HUD
    ========================================================================== */
 
-.view-switcher-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 0.6rem 1.25rem;
-  gap: 1rem;
-  flex-wrap: wrap;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(12px);
-  position: relative;
-  z-index: 3;
-}
-
-.switcher-label {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: 0.02em;
-}
-
-.switcher-buttons {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  flex-wrap: wrap;
-}
-
-.switcher-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.95rem;
-  border-radius: var(--radius-sm);
-  background: var(--bg-card-elevated);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-subtle);
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 600;
-  transition: all 0.15s cubic-bezier(0.2, 0, 0, 1);
+/* Fullscreen 3D WebGL Canvas Layer */
+#webgl-3d-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: auto;
   outline: none;
 }
 
-.switcher-btn:hover {
-  background: rgba(56, 189, 248, 0.12);
-  color: #38bdf8;
-  border-color: rgba(56, 189, 248, 0.4);
-  transform: translateY(-1px);
+/* 18.1 NASA RIGHT DOCK NAVIGATION (เอาปุ่มไว้ขวา) */
+.nasa-right-dock {
+  position: fixed;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(6, 12, 26, 0.82);
+  border: 1px solid rgba(0, 240, 255, 0.28);
+  border-radius: 24px;
+  padding: 0.85rem 0.6rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.75), 0 0 25px rgba(0, 240, 255, 0.15);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  user-select: none;
 }
 
-.switcher-btn.active {
-  background: linear-gradient(135deg, #0284c7, #2563eb);
+.dock-header-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+}
+
+.dock-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00f0ff;
+  box-shadow: 0 0 8px #00f0ff;
+  animation: hudPulse 1.8s infinite ease-in-out;
+}
+
+.dock-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #00f0ff;
+  letter-spacing: 0.08em;
+}
+
+.dock-buttons, .dock-footer-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.dock-divider {
+  width: 24px;
+  height: 1px;
+  background: rgba(0, 240, 255, 0.2);
+  margin: 0.25rem 0;
+}
+
+.dock-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  outline: none;
+}
+
+.dock-btn svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.dock-btn:hover {
+  background: rgba(0, 240, 255, 0.14);
+  color: #00f0ff;
+  border-color: rgba(0, 240, 255, 0.5);
+  transform: scale(1.08);
+}
+
+.dock-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.dock-btn.active {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.28), rgba(37, 99, 235, 0.4));
   color: #ffffff;
-  border-color: rgba(56, 189, 248, 0.8);
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+  border-color: #00f0ff;
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.55);
 }
 
-.f12-hint-badge {
+.dock-btn.active svg {
+  color: #00f0ff;
+}
+
+.dock-btn.special-btn {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.3);
+  color: #c084fc;
+}
+
+.dock-btn.special-btn:hover {
+  background: rgba(168, 85, 247, 0.25);
+  border-color: #c084fc;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.5);
+}
+
+/* Sleek Tooltip Sliding from Right */
+.dock-tooltip {
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  background: rgba(4, 9, 22, 0.95);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  border-radius: 8px;
+  padding: 0.38rem 0.8rem;
+  font-family: 'JetBrains Mono', 'Prompt', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #f8fafc;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  z-index: 100;
+}
+
+.dock-tooltip::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: rgba(4, 9, 22, 0.95);
+  border-right: 1px solid rgba(0, 240, 255, 0.35);
+  border-top: 1px solid rgba(0, 240, 255, 0.35);
+}
+
+.dock-btn:hover .dock-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* 18.2 THAILAND 3D TELEMETRY HUD OVERLAY (ด้านในเป็นประเทศไทย) */
+.thailand-telemetry-hud {
+  position: relative;
+  background: linear-gradient(135deg, rgba(6, 14, 30, 0.82), rgba(10, 24, 48, 0.72));
+  border: 1px solid rgba(0, 240, 255, 0.28);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.6rem;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 240, 255, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.thailand-telemetry-hud::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-top: 2px solid #00f0ff;
+  border-left: 2px solid #00f0ff;
+  pointer-events: none;
+}
+
+.thailand-telemetry-hud::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-bottom: 2px solid #00f0ff;
+  border-right: 2px solid #00f0ff;
+  pointer-events: none;
+}
+
+.hud-badge-tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.25rem 0.65rem;
-  background: rgba(56, 189, 248, 0.08);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  border-radius: var(--radius-sm);
+  gap: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #00f0ff;
+  letter-spacing: 0.06em;
+}
+
+.live-orbit-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00f0ff;
+  box-shadow: 0 0 10px #00f0ff;
+  animation: hudPulse 1.5s infinite ease-in-out;
+}
+
+.hud-target-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Outfit', 'Space Grotesk', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.hud-crosshair-icon {
+  width: 22px;
+  height: 22px;
+  color: #00f0ff;
+}
+
+.hud-coords {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.hud-coords span {
+  color: #38bdf8;
+}
+
+.hud-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.1rem;
+}
+
+.hud-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.hud-lbl {
   font-size: 0.72rem;
   color: #94a3b8;
 }
 
-.f12-hint-badge kbd {
-  background: rgba(56, 189, 248, 0.2);
-  color: #38bdf8;
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace;
+.hud-val {
+  font-family: 'JetBrains Mono', 'Prompt', sans-serif;
+  font-size: 0.92rem;
   font-weight: 700;
-  font-size: 0.7rem;
-  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #f8fafc;
+}
+
+.hud-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-hud-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: #00f0ff;
+  font-family: 'Prompt', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.btn-hud-action:hover {
+  background: rgba(0, 240, 255, 0.22);
+  border-color: #00f0ff;
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-hud-action.active {
+  background: linear-gradient(135deg, #0284c7, #2563eb);
+  color: #ffffff;
+  border-color: #38bdf8;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+}
+
+.hud-orbit-hint {
+  font-size: 0.74rem;
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.hud-orbit-hint svg {
+  width: 14px;
+  height: 14px;
+  color: #00f0ff;
+}
+
+/* 18.3 NASA HUD PANEL CONTAINER (DATA DRAWER) */
+.nasa-hud-panel-container {
+  background: rgba(8, 14, 30, 0.78);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  position: relative;
+  z-index: 5;
+}
+
+.nasa-hud-panel-container.hud-collapsed {
+  display: none !important;
+}
+
+.hud-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.85rem;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.hud-panel-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.hud-status-blink {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: hudPulse 1.6s infinite ease-in-out;
+}
+
+.hud-panel-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: #00f0ff;
+  letter-spacing: 0.08em;
+  background: rgba(0, 240, 255, 0.1);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.hud-panel-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.hud-close-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+  font-family: 'Prompt', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.hud-close-btn:hover {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: #f43f5e;
+  color: #f43f5e;
+}
+
+/* 18.4 NASA BOTTOM TELEMETRY STATUS BAR */
+.nasa-bottom-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(5, 11, 24, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  backdrop-filter: blur(12px);
+  position: relative;
+  z-index: 5;
+}
+
+.bottom-hud-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.bottom-hud-item.highlight {
+  color: #00f0ff;
+  font-weight: 600;
+}
+
+.bottom-hud-item.highlight svg {
+  width: 14px;
+  height: 14px;
+}
+
+.hud-mini-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #00f0ff;
+  box-shadow: 0 0 6px #00f0ff;
+}
+
+.bottom-hud-lbl {
+  color: #64748b;
+}
+
+.bottom-hud-val {
+  color: #e2e8f0;
+}
+
+/* Animation */
+@keyframes hudPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
 }
 
 /* Visibility states for 144 FPS view mode */
@@ -1762,5 +2159,39 @@ button, a, select, input, [role="button"], .switcher-btn, .kpi-card, .btn, .map-
 .view-full-width .thailand-map-svg-container {
   height: 460px;
 }
+
+@media (max-width: 900px) {
+  .nasa-right-dock {
+    top: auto;
+    bottom: 1rem;
+    right: 50%;
+    transform: translateX(50%);
+    flex-direction: row;
+    border-radius: 20px;
+    padding: 0.5rem 0.8rem;
+  }
+  .dock-header-label, .dock-divider {
+    display: none;
+  }
+  .dock-buttons, .dock-footer-buttons {
+    flex-direction: row;
+  }
+  .dock-tooltip {
+    bottom: calc(100% + 12px);
+    top: auto;
+    right: 50%;
+    transform: translateX(50%);
+  }
+  .dock-tooltip::after {
+    bottom: -4px;
+    top: auto;
+    right: 50%;
+    transform: translateX(50%) rotate(45deg);
+  }
+  .dock-btn:hover .dock-tooltip {
+    transform: translateX(50%) translateY(0);
+  }
+}
+
 
 
