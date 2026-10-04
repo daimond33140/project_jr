@@ -857,50 +857,411 @@ function exportToCsv() {
 }
 
 // ==========================================
-// 8. 3D THREE.JS WEBGL BACKGROUND (INSPIRED BY ZAJNO)
+// 8. 3D THREE.JS WEBGL ENGINE (NASA EYES ON THE SOLAR SYSTEM // THAILAND)
 // ==========================================
+let focusThailandAnim = null;
+
 function initThreeJSBackground() {
   const canvas = document.getElementById("webgl-3d-bg");
   if (!canvas || typeof THREE === "undefined") return;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, -6, 22);
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 0, 22);
 
   const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     alpha: true,
-    antialias: false,
+    antialias: true,
     powerPreference: "high-performance"
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // High-performance 3D Wireframe Plane (Clean // Zero Dots)
-  const geom = new THREE.PlaneGeometry(85, 60, 24, 18);
-  const wireMaterial = new THREE.MeshBasicMaterial({
-    color: 0x0284c7,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.08
+  // 8.1 PROCEDURAL HIGH-RES NASA EARTH TEXTURE WITH THAILAND HIGHLIGHTED
+  function createEarthTexture() {
+    const texCanvas = document.createElement("canvas");
+    texCanvas.width = 2048;
+    texCanvas.height = 1024;
+    const ctx = texCanvas.getContext("2d");
+
+    // Deep Cosmic Ocean
+    const oceanGrad = ctx.createLinearGradient(0, 0, 0, 1024);
+    oceanGrad.addColorStop(0, "#020716");
+    oceanGrad.addColorStop(0.5, "#04112c");
+    oceanGrad.addColorStop(1, "#020716");
+    ctx.fillStyle = oceanGrad;
+    ctx.fillRect(0, 0, 2048, 1024);
+
+    // Subtle Bathymetric Depth Lines
+    ctx.strokeStyle = "rgba(0, 180, 255, 0.05)";
+    ctx.lineWidth = 1;
+    for (let y = 80; y < 1024; y += 75) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.bezierCurveTo(512, y + 25, 1024, y - 25, 2048, y);
+      ctx.stroke();
+    }
+
+    // Latitude & Longitude Graticule Lines (NASA HUD Grid)
+    ctx.strokeStyle = "rgba(0, 240, 255, 0.07)";
+    ctx.lineWidth = 1;
+    for (let lon = 0; lon <= 2048; lon += 128) {
+      ctx.beginPath();
+      ctx.moveTo(lon, 0);
+      ctx.lineTo(lon, 1024);
+      ctx.stroke();
+    }
+    for (let lat = 0; lat <= 1024; lat += 128) {
+      ctx.beginPath();
+      ctx.moveTo(0, lat);
+      ctx.lineTo(2048, lat);
+      ctx.stroke();
+    }
+
+    // Equator & Prime Meridian Emphasis
+    ctx.strokeStyle = "rgba(0, 240, 255, 0.15)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(0, 512); // Equator
+    ctx.lineTo(2048, 512);
+    ctx.stroke();
+
+    // Helper: Map Lat/Lon to Canvas X/Y
+    // lon: -180 to +180 -> x: 0 to 2048
+    // lat: +90 to -90 -> y: 0 to 1024
+    function mapCoords(lon, lat) {
+      return {
+        x: ((lon + 180) / 360) * 2048,
+        y: ((90 - lat) / 180) * 1024
+      };
+    }
+
+    // World Continents (Stylized NASA Vector Landmasses)
+    ctx.fillStyle = "#0c1f38";
+    ctx.strokeStyle = "rgba(56, 189, 248, 0.28)";
+    ctx.lineWidth = 1.5;
+
+    function drawPoly(coords, fill = true) {
+      if (coords.length < 3) return;
+      ctx.beginPath();
+      const p0 = mapCoords(coords[0][0], coords[0][1]);
+      ctx.moveTo(p0.x, p0.y);
+      for (let i = 1; i < coords.length; i++) {
+        const p = mapCoords(coords[i][0], coords[i][1]);
+        ctx.lineTo(p.x, p.y);
+      }
+      ctx.closePath();
+      if (fill) ctx.fill();
+      ctx.stroke();
+    }
+
+    // Eurasia & Indochina Landmass
+    drawPoly([
+      [-10, 36], [0, 52], [30, 70], [80, 72], [140, 72], [170, 65],
+      [140, 35], [120, 25], [110, 20], [105, 10], [100, 2], [95, 15],
+      [80, 12], [70, 25], [60, 22], [50, 28], [40, 15], [35, 32],
+      [25, 35], [15, 40], [0, 42], [-5, 36]
+    ]);
+
+    // Africa
+    drawPoly([
+      [-15, 30], [30, 32], [50, 12], [42, -10], [30, -32], [18, -34],
+      [12, -15], [0, 5], [-15, 12], [-18, 20]
+    ]);
+
+    // Americas
+    drawPoly([
+      [-160, 70], [-100, 72], [-60, 60], [-75, 35], [-80, 25], [-100, 20],
+      [-120, 35], [-130, 50], [-160, 60]
+    ]);
+    drawPoly([
+      [-80, 10], [-50, 0], [-35, -5], [-40, -22], [-65, -55], [-75, -50],
+      [-70, -20], [-80, 0]
+    ]);
+
+    // Australia
+    drawPoly([
+      [115, -20], [140, -12], [152, -25], [148, -38], [130, -38], [115, -34]
+    ]);
+
+    // ==========================================
+    // THAILAND SPECIAL ILLUMINATION & TELEMETRY BEACON
+    // Coordinates: Lat 5.6° - 20.5° N, Lon 97.3° - 105.7° E
+    // ==========================================
+    // Thailand High-Resolution Contour Polygon
+    const thaiPolygon = [
+      [99.8, 20.4], [100.5, 20.1], [101.2, 19.6], [101.0, 18.5], [101.8, 17.5],
+      [102.8, 17.8], [104.5, 17.5], [105.5, 15.5], [105.2, 14.3], [103.0, 14.4],
+      [102.5, 12.5], [101.8, 12.6], [100.9, 13.3], [100.5, 13.5], [100.0, 13.2],
+      [99.9, 11.8], [99.2, 10.0], [100.2, 7.2], [101.2, 6.5], [102.1, 6.2],
+      [101.0, 5.8], [100.1, 6.5], [99.5, 7.5], [98.5, 8.2], [98.6, 9.8],
+      [99.0, 11.2], [99.2, 12.5], [98.8, 14.0], [98.2, 15.2], [97.5, 18.0],
+      [98.5, 19.8], [99.8, 20.4]
+    ];
+
+    // Thailand Luminous Ambient Glow
+    const thaiCenter = mapCoords(100.5, 14.5);
+    const radGlow = ctx.createRadialGradient(thaiCenter.x, thaiCenter.y, 5, thaiCenter.x, thaiCenter.y, 65);
+    radGlow.addColorStop(0, "rgba(0, 240, 255, 0.85)");
+    radGlow.addColorStop(0.35, "rgba(16, 185, 129, 0.6)");
+    radGlow.addColorStop(0.7, "rgba(0, 180, 255, 0.25)");
+    radGlow.addColorStop(1, "rgba(0, 240, 255, 0)");
+    ctx.fillStyle = radGlow;
+    ctx.beginPath();
+    ctx.arc(thaiCenter.x, thaiCenter.y, 65, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Fill Thailand territory in vibrant emerald-cyan
+    ctx.fillStyle = "rgba(0, 240, 255, 0.55)";
+    ctx.strokeStyle = "#00f0ff";
+    ctx.lineWidth = 2.5;
+    drawPoly(thaiPolygon, true);
+
+    // Pulsing Radar Rings over Bangkok
+    const bkk = mapCoords(100.5, 13.75);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(bkk.x, bkk.y, 14, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.strokeStyle = "rgba(0, 240, 255, 0.6)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(bkk.x, bkk.y, 28, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Hotspot City Lights in Thailand
+    const thaiCities = [
+      { name: "BANGKOK", lon: 100.5, lat: 13.75, r: 4 },
+      { name: "PHUKET", lon: 98.39, lat: 7.88, r: 3 },
+      { name: "CHIANG MAI", lon: 98.98, lat: 18.79, r: 3 },
+      { name: "PATTAYA", lon: 100.88, lat: 12.92, r: 2.5 },
+      { name: "SAMUI", lon: 99.98, lat: 9.53, r: 2.5 }
+    ];
+
+    thaiCities.forEach(city => {
+      const p = mapCoords(city.lon, city.lat);
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, city.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "rgba(0, 240, 255, 0.9)";
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, city.r + 3, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+
+    const tex = new THREE.CanvasTexture(texCanvas);
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    return tex;
+  }
+
+  // 8.2 SCENE OBJECTS: EARTH GROUP
+  const earthGroup = new THREE.Group();
+  scene.add(earthGroup);
+
+  const EARTH_RADIUS = 7.0;
+
+  // Earth Globe Mesh
+  const earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 64, 64);
+  const earthMat = new THREE.MeshPhongMaterial({
+    map: createEarthTexture(),
+    bumpScale: 0.05,
+    specular: new THREE.Color(0x0284c7),
+    shininess: 12
   });
-  const wireMesh = new THREE.Mesh(geom, wireMaterial);
-  wireMesh.rotation.x = -Math.PI / 2.6;
-  wireMesh.position.y = -6;
-  scene.add(wireMesh);
+  const earthMesh = new THREE.Mesh(earthGeo, earthMat);
+  earthGroup.add(earthMesh);
 
-  // Smooth mouse coordinates
-  let mouseX = 0;
-  let mouseY = 0;
-  let targetX = 0;
-  let targetY = 0;
+  // Atmospheric Fresnel Rim Glow Sphere
+  const atmoGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.035, 48, 48);
+  const atmoMat = new THREE.ShaderMaterial({
+    uniforms: {},
+    vertexShader: `
+      varying vec3 vNormal;
+      void main() {
+        vNormal = normalize(normalMatrix * normal);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec3 vNormal;
+      void main() {
+        float intensity = pow(0.68 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
+        gl_FragColor = vec4(0.0, 0.94, 1.0, 1.0) * intensity * 1.4;
+      }
+    `,
+    blending: THREE.AdditiveBlending,
+    side: THREE.BackSide,
+    transparent: true
+  });
+  const atmoMesh = new THREE.Mesh(atmoGeo, atmoMat);
+  earthGroup.add(atmoMesh);
 
-  window.addEventListener("mousemove", (e) => {
-    mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-    mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+  // Helper: Convert Lat/Lon to 3D Vector3 on Sphere
+  function latLonToVec3(lat, lon, r) {
+    const phi = (90 - lat) * (Math.PI / 180);
+    const theta = (lon + 180) * (Math.PI / 180);
+    return new THREE.Vector3(
+      -(r * Math.sin(phi) * Math.cos(theta)),
+      r * Math.cos(phi),
+      r * Math.sin(phi) * Math.sin(theta)
+    );
+  }
+
+  // 8.3 THAILAND 3D BEACON & RADAR RINGS IN ORBIT
+  const bkkVec = latLonToVec3(13.75, 100.5, EARTH_RADIUS);
+  const bkkNorm = bkkVec.clone().normalize();
+
+  // Vertical Laser Beacon shooting from Bangkok into orbit
+  const beaconLength = 3.6;
+  const beaconGeo = new THREE.CylinderGeometry(0.04, 0.12, beaconLength, 16);
+  beaconGeo.translate(0, beaconLength / 2, 0);
+  const beaconMat = new THREE.MeshBasicMaterial({
+    color: 0x00f0ff,
+    transparent: true,
+    opacity: 0.85
+  });
+  const beaconMesh = new THREE.Mesh(beaconGeo, beaconMat);
+  beaconMesh.position.copy(bkkVec);
+  beaconMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), bkkNorm);
+  earthGroup.add(beaconMesh);
+
+  // Concentric Radar Target Rings at Thailand
+  const ringGeo1 = new THREE.RingGeometry(0.25, 0.32, 32);
+  const ringMat1 = new THREE.MeshBasicMaterial({ color: 0x00f0ff, side: THREE.DoubleSide, transparent: true, opacity: 0.9 });
+  const ringMesh1 = new THREE.Mesh(ringGeo1, ringMat1);
+  ringMesh1.position.copy(bkkVec.clone().add(bkkNorm.clone().multiplyScalar(0.08)));
+  ringMesh1.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), bkkNorm);
+  earthGroup.add(ringMesh1);
+
+  const ringGeo2 = new THREE.RingGeometry(0.55, 0.62, 32);
+  const ringMat2 = new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide, transparent: true, opacity: 0.6 });
+  const ringMesh2 = new THREE.Mesh(ringGeo2, ringMat2);
+  ringMesh2.position.copy(bkkVec.clone().add(bkkNorm.clone().multiplyScalar(0.12)));
+  ringMesh2.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), bkkNorm);
+  earthGroup.add(ringMesh2);
+
+  // Planetary Orbit Trajectory Rings (NASA Eyes Aesthetic)
+  const orbitGroup = new THREE.Group();
+  scene.add(orbitGroup);
+
+  const orbitCurve1 = new THREE.EllipseCurve(0, 0, 11.5, 11.5, 0, 2 * Math.PI, false, 0);
+  const orbitPts1 = orbitCurve1.getPoints(90);
+  const orbitGeo1 = new THREE.BufferGeometry().setFromPoints(orbitPts1);
+  const orbitMat1 = new THREE.LineBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.18 });
+  const orbitLine1 = new THREE.Line(orbitGeo1, orbitMat1);
+  orbitLine1.rotation.x = Math.PI / 2.8;
+  orbitLine1.rotation.y = -Math.PI / 6;
+  orbitGroup.add(orbitLine1);
+
+  const orbitCurve2 = new THREE.EllipseCurve(0, 0, 14.8, 14.8, 0, 2 * Math.PI, false, 0);
+  const orbitPts2 = orbitCurve2.getPoints(120);
+  const orbitGeo2 = new THREE.BufferGeometry().setFromPoints(orbitPts2);
+  const orbitMat2 = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.12 });
+  const orbitLine2 = new THREE.Line(orbitGeo2, orbitMat2);
+  orbitLine2.rotation.x = -Math.PI / 3.2;
+  orbitLine2.rotation.y = Math.PI / 5;
+  orbitGroup.add(orbitLine2);
+
+  // 8.4 STARFIELD (SMOOTH ROUND STARS // NO SQUARE DOTS)
+  const starGeo = new THREE.BufferGeometry();
+  const starCount = 380;
+  const starPos = new Float32Array(starCount * 3);
+  for (let i = 0; i < starCount * 3; i += 3) {
+    const r = 80 + Math.random() * 80;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(Math.random() * 2 - 1);
+    starPos[i] = r * Math.sin(phi) * Math.cos(theta);
+    starPos[i + 1] = r * Math.sin(phi) * Math.sin(theta);
+    starPos[i + 2] = r * Math.cos(phi);
+  }
+  starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+
+  // Soft circle sprite canvas for stars
+  const starCanvas = document.createElement("canvas");
+  starCanvas.width = 32;
+  starCanvas.height = 32;
+  const sCtx = starCanvas.getContext("2d");
+  const sGrad = sCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
+  sGrad.addColorStop(0, "rgba(255, 255, 255, 1)");
+  sGrad.addColorStop(0.3, "rgba(147, 197, 253, 0.8)");
+  sGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+  sCtx.fillStyle = sGrad;
+  sCtx.fillRect(0, 0, 32, 32);
+  const starTex = new THREE.CanvasTexture(starCanvas);
+
+  const starMat = new THREE.PointsMaterial({
+    size: 1.8,
+    map: starTex,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+  const starField = new THREE.Points(starGeo, starMat);
+  scene.add(starField);
+
+  // 8.5 LIGHTING (SUNLIGHT IN SPACE)
+  const ambientLight = new THREE.AmbientLight(0x1e293b, 1.2);
+  scene.add(ambientLight);
+
+  const sunLight = new THREE.DirectionalLight(0xffffff, 2.4);
+  sunLight.position.set(25, 12, 20);
+  scene.add(sunLight);
+
+  // 8.6 INITIAL ORIENTATION: LOCK DIRECTLY ONTO THAILAND
+  // Thailand coordinates: Lat 13.75° N, Lon 100.5° E
+  const targetRotation = {
+    x: 0.12,
+    y: -Math.PI * 0.52
+  };
+  earthGroup.rotation.x = targetRotation.x;
+  earthGroup.rotation.y = targetRotation.y;
+
+  // 8.7 ORBIT CONTROLS (MOUSE DRAG TO ROTATE & WHEEL TO ZOOM)
+  let isDragging = false;
+  let previousMousePos = { x: 0, y: 0 };
+  let cameraTargetZ = 22;
+  let autoRotate = true;
+
+  canvas.addEventListener("pointerdown", (e) => {
+    isDragging = true;
+    autoRotate = false;
+    previousMousePos = { x: e.clientX, y: e.clientY };
+  });
+
+  window.addEventListener("pointermove", (e) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - previousMousePos.x;
+    const deltaY = e.clientY - previousMousePos.y;
+
+    targetRotation.y += deltaX * 0.005;
+    targetRotation.x = Math.max(-Math.PI / 2.3, Math.min(Math.PI / 2.3, targetRotation.x + deltaY * 0.005));
+
+    previousMousePos = { x: e.clientX, y: e.clientY };
+  });
+
+  window.addEventListener("pointerup", () => {
+    isDragging = false;
+  });
+
+  window.addEventListener("wheel", (e) => {
+    cameraTargetZ = Math.max(12, Math.min(32, cameraTargetZ + e.deltaY * 0.015));
   }, { passive: true });
 
-  // Window Resize Debounce
+  // Focus on Thailand function
+  window.focusThailand = function() {
+    targetRotation.x = 0.12;
+    targetRotation.y = -Math.PI * 0.52;
+    cameraTargetZ = 18;
+    autoRotate = false;
+  };
+
+  // Window Resize
   let resizeTimeout = null;
   window.addEventListener("resize", () => {
     if (resizeTimeout) clearTimeout(resizeTimeout);
@@ -908,25 +1269,40 @@ function initThreeJSBackground() {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       resizeAllCharts();
-    }, 150);
+    }, 120);
   }, { passive: true });
 
-  // 144 FPS Hardware-Accelerated Render Loop (Clean & Smooth)
+  // 8.8 144 FPS RENDER LOOP
+  let clock = new THREE.Clock();
+
   function animate() {
     requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    const time = clock.getElapsedTime();
 
-    // Pure GPU matrix rotation (0 CPU load, 0 square dots)
-    wireMesh.rotation.z += 0.0005;
+    // Gentle auto-idle drift when user is not dragging
+    if (autoRotate && !isDragging) {
+      targetRotation.y += 0.0012;
+    }
 
-    // Fluid mouse parallax
-    targetX += (mouseX * 3.0 - targetX) * 0.06;
-    targetY += (mouseY * 1.8 - targetY) * 0.06;
+    // Smooth inertia interpolation
+    earthGroup.rotation.x += (targetRotation.x - earthGroup.rotation.x) * 0.08;
+    earthGroup.rotation.y += (targetRotation.y - earthGroup.rotation.y) * 0.08;
 
-    camera.position.x = targetX;
-    camera.position.y = -6 + targetY;
-    camera.lookAt(0, 0, 0);
+    // Smooth camera zoom
+    camera.position.z += (cameraTargetZ - camera.position.z) * 0.08;
+
+    // Radar rings pulsating scale
+    const pulse1 = 1 + Math.sin(time * 3.5) * 0.12;
+    ringMesh1.scale.set(pulse1, pulse1, pulse1);
+    const pulse2 = 1 + Math.cos(time * 3.0) * 0.15;
+    ringMesh2.scale.set(pulse2, pulse2, pulse2);
+
+    // Subtle starfield & orbital drift
+    orbitGroup.rotation.z += 0.0004;
+    starField.rotation.y += 0.0001;
 
     renderer.render(scene, camera);
   }
