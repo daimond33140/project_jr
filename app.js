@@ -1760,3 +1760,12 @@ function resizeAllCharts() {
   fulfillmentChartInstance?.resize();
 }
 
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    if (typeof invalidateAllLeafletMaps === "function") {
+      invalidateAllLeafletMaps();
+    }
+  }, 300);
+});
+
+
