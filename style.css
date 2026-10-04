@@ -1224,58 +1224,26 @@ body.loading-active {
 }
 
 /* ==========================================================================
-   14. CUSTOM MAGNETIC CURSOR (DIGITAL AGENCY INTERACTION)
+   14. CLEAN GLOWING MOUSE AURA (NON-CLUTTERED)
    ========================================================================== */
 
-@media (pointer: fine) {
-  body {
-    cursor: default;
-  }
-
-  .cursor-dot {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 6px;
-    height: 6px;
-    background: #38bdf8;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 10000000;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 10px #38bdf8, 0 0 20px rgba(56, 189, 248, 0.8);
-    transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
-  }
-
-  .cursor-ring {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 36px;
-    height: 36px;
-    border: 1.5px solid rgba(56, 189, 248, 0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999999;
-    transform: translate(-50%, -50%);
-    transition: width 0.25s cubic-bezier(0.2, 0, 0, 1), 
-                height 0.25s cubic-bezier(0.2, 0, 0, 1), 
-                border-color 0.25s ease, 
-                background-color 0.25s ease,
-                transform 0.08s linear;
-  }
-
-  .cursor-ring.active {
-    width: 58px;
-    height: 58px;
-    background: rgba(56, 189, 248, 0.12);
-    border-color: #38bdf8;
-    backdrop-filter: blur(2px);
-  }
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, rgba(56, 189, 248, 0.04) 40%, transparent 70%);
+  mix-blend-mode: screen;
+  transition: opacity 0.3s ease;
 }
 
 @media (pointer: coarse) {
-  .cursor-dot, .cursor-ring {
+  .cursor-glow {
     display: none !important;
   }
 }
