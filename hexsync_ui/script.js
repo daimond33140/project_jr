@@ -205,6 +205,7 @@ const projectConfigForm = document.getElementById('projectConfigForm');
 const cfgProjectName = document.getElementById('cfgProjectName');
 const cfgProjectPath = document.getElementById('cfgProjectPath');
 const cfgGithubUrl = document.getElementById('cfgGithubUrl');
+const cfgVercelUrl = document.getElementById('cfgVercelUrl');
 const cfgBranch = document.getElementById('cfgBranch');
 const cfgDebounce = document.getElementById('cfgDebounce');
 const btnBrowseFolder = document.getElementById('btnBrowseFolder');
@@ -313,6 +314,7 @@ projectConfigForm.addEventListener('submit', async (e) => {
     name: cfgProjectName.value.trim(),
     path: cfgProjectPath.value.trim(),
     github_url: cfgGithubUrl.value.trim(),
+    vercel_url: cfgVercelUrl ? cfgVercelUrl.value.trim() : '',
     branch: cfgBranch.value.trim() || 'main',
     debounce: parseInt(cfgDebounce.value) || 5
   };
