@@ -1,14 +1,15 @@
 # -*- mode: python ; coding: utf-8 -*-
-from PyInstaller.utils.hooks import collect_data_files
+from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
-datas = collect_data_files('customtkinter')
+datas = [('hexsync_ui', 'hexsync_ui')] + collect_data_files('webview')
+hiddenimports = ['clr', 'pythonnet', 'webview'] + [s for s in collect_submodules('webview') if 'android' not in s]
 
 a = Analysis(
-    ['hexsync_desktop.py'],
+    ['hexsync_app.py'],
     pathex=[],
     binaries=[],
     datas=datas,
-    hiddenimports=['customtkinter', 'tkinter'],
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
