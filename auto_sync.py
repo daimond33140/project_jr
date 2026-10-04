@@ -22,12 +22,22 @@ CHECK_INTERVAL = 3    # เช็คความเปลี่ยนแปล�
 
 def run_git_command(args):
     try:
+        startupinfo = None
+        creationflags = 0
+        if os.name == "nt":
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = 0
+            creationflags = subprocess.CREATE_NO_WINDOW
+
         res = subprocess.run(
             ["git"] + args,
             capture_output=True,
             text=True,
             encoding='utf-8',
-            errors='ignore'
+            errors='ignore',
+            startupinfo=startupinfo,
+            creationflags=creationflags
         )
         return res.returncode, res.stdout.strip(), res.stderr.strip()
     except Exception as e:

@@ -189,6 +189,8 @@ const toggleWatchIcon = document.getElementById('toggleWatchIcon');
 const toggleWatchText = document.getElementById('toggleWatchText');
 const btnOpenGithub = document.getElementById('btnOpenGithub');
 const linkGithubText = document.getElementById('linkGithubText');
+const btnOpenVercelLive = document.getElementById('btnOpenVercelLive');
+const linkVercelText = document.getElementById('linkVercelText');
 const badgePendingMini = document.getElementById('badgePendingMini');
 const emptyFilesState = document.getElementById('emptyFilesState');
 const fileList = document.getElementById('fileList');
@@ -244,6 +246,24 @@ clearLogsBtn.addEventListener('click', () => {
   terminalLogBody.innerHTML = '';
   lastRenderedLogCount = 0;
 });
+
+if (btnOpenGithub) {
+  btnOpenGithub.addEventListener('click', (e) => {
+    e.preventDefault();
+    const url = btnOpenGithub.getAttribute('href');
+    if (url && url !== '#') {
+      window.openLiveWebsite(url);
+    }
+  });
+}
+
+if (btnOpenVercelLive) {
+  btnOpenVercelLive.addEventListener('click', (e) => {
+    e.preventDefault();
+    const url = btnOpenVercelLive.getAttribute('href') || 'https://vercel.com';
+    window.openLiveWebsite(url);
+  });
+}
 
 // Modal Events
 openConfigBtn.addEventListener('click', () => {
@@ -406,6 +426,18 @@ async function fetchStatus() {
       activeRepoUrlDisplay.href = data.github_url;
       btnOpenGithub.href = data.github_url;
       linkGithubText.textContent = data.repo_name || data.github_url;
+    }
+
+    if (btnOpenVercelLive && linkVercelText) {
+      if (data.vercel_connected && data.vercel_url) {
+        btnOpenVercelLive.href = data.vercel_url;
+        linkVercelText.innerHTML = `<span style="color:#00f0ff;">🟢 LIVE:</span> ${escapeHtml(data.vercel_url.replace('https://', ''))}`;
+        btnOpenVercelLive.setAttribute('title', `เข้าสู่เว็บจริง Vercel: ${data.vercel_url}`);
+      } else {
+        btnOpenVercelLive.href = 'https://vercel.com';
+        linkVercelText.innerHTML = `<span style="color:#8b949e;">⚪ ยังไม่เชื่อม Vercel</span>`;
+        btnOpenVercelLive.setAttribute('title', 'เปิด Vercel Console เพื่อเชื่อมต่อโปรเจกต์');
+      }
     }
 
     if (!isSyncing) {
@@ -622,12 +654,29 @@ if (githubUsernameInput) {
   });
 }
 
+window.openLiveWebsite = async function(url) {
+  if (!url) return;
+  playCyberSound('sync');
+  try {
+    await fetch('/api/open_browser', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: url })
+    });
+  } catch (err) {
+    console.warn('Backend open_browser error:', err);
+  }
+  try {
+    window.open(url, '_blank');
+  } catch (e) {}
+};
+
 async function fetchGithubRepos() {
   const username = (githubUsernameInput.value || 'daimond33140').trim();
   if (!username) return;
 
   playCyberSound('click');
-  githubReposList.innerHTML = '<div class="empty-state">⏳ กำลังตรวจสอบ Repositories จาก GitHub...</div>';
+  githubReposList.innerHTML = '<div class="empty-state">⏳ กำลังตรวจสอบ Repositories และสถานะ Vercel...</div>';
   repoCountLabel.textContent = 'กำลังตรวจสอบ...';
 
   try {
@@ -646,8 +695,12 @@ async function fetchGithubRepos() {
     githubReposList.innerHTML = data.repos.map(r => {
       const cloneUrl = r.clone_url || `https://github.com/${r.full_name}.git`;
       const branch = r.default_branch || 'main';
+      const isVercelConnected = !!r.vercel_connected;
+      const vercelUrl = r.vercel_url || `https://${r.name.toLowerCase().replace(/_/g, '-')}.vercel.app`;
+      const importUrl = r.vercel_import_url || `https://vercel.com/new/import?s=https://github.com/${encodeURIComponent(username)}/${encodeURIComponent(r.name)}`;
+
       return `
-        <div class="repo-card">
+        <div class="repo-card ${isVercelConnected ? 'vercel-active' : ''}">
           <div class="repo-top">
             <div class="repo-name">
               <span>📦</span>
@@ -663,10 +716,41 @@ async function fetchGithubRepos() {
             <span class="repo-badge">🕒 ${escapeHtml(r.updated_at)}</span>
           </div>
 
+          <!-- สถานะ Vercel -->
+          <div class="repo-vercel-box ${isVercelConnected ? 'is-connected' : 'is-unconnected'}">
+            <div class="vercel-box-header">
+              <span class="vercel-dot ${isVercelConnected ? 'dot-live' : 'dot-off'}"></span>
+              <span class="vercel-box-title">${isVercelConnected ? 'เชื่อมกับ VERCEL แล้ว (LIVE)' : 'ยังไม่ได้เชื่อมต่อกับ VERCEL'}</span>
+            </div>
+            ${isVercelConnected ? `
+              <div class="vercel-url-preview" onclick="openLiveWebsite('${escapeHtml(vercelUrl)}')" title="คลิกเพื่อเข้าสู่เว็บจริง: ${escapeHtml(vercelUrl)}">
+                <span class="v-url-icon">🌐</span>
+                <span class="v-url-text">${escapeHtml(vercelUrl.replace('https://', ''))}</span>
+                <span class="v-jump-arrow">↗</span>
+              </div>
+            ` : `
+              <div class="vercel-empty-hint">ยังไม่มีการ Deploy บน Vercel</div>
+            `}
+          </div>
+
+          <!-- ปุ่มการทำงาน -->
           <div class="repo-card-actions">
-            <button class="repo-use-btn" onclick="selectRepoForActiveProject('${escapeHtml(cloneUrl)}', '${escapeHtml(branch)}', '${escapeHtml(r.name)}')">
+            <button class="repo-use-btn" title="กำหนดให้โปรเจกต์ปัจจุบันเชื่อมกับ Repo นี้" onclick="selectRepoForActiveProject('${escapeHtml(cloneUrl)}', '${escapeHtml(branch)}', '${escapeHtml(r.name)}')">
               <span>🔗 เชื่อมกับโปรเจกต์นี้</span>
             </button>
+            ${isVercelConnected ? `
+              <button class="repo-live-btn" title="เด้งเปิดหน้าเว็บจริงบน Vercel ทันที" onclick="openLiveWebsite('${escapeHtml(vercelUrl)}')">
+                <span class="btn-live-icon">🚀</span>
+                <span>เข้าสู่เว็บจริง</span>
+                <span class="btn-jump-arrow">↗</span>
+              </button>
+            ` : `
+              <button class="repo-vercel-btn" title="เปิดหน้า Vercel เพื่อเชื่อมต่อกับ Repo นี้" onclick="openLiveWebsite('${escapeHtml(importUrl)}')">
+                <span class="btn-live-icon">▲</span>
+                <span>เชื่อมต่อ Vercel</span>
+                <span class="btn-jump-arrow">↗</span>
+              </button>
+            `}
           </div>
         </div>
       `;

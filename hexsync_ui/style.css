@@ -1374,32 +1374,199 @@ body {
   border-color: rgba(0, 240, 255, 0.3);
 }
 
-.repo-card-actions {
+.repo-card.vercel-active::before {
+  background: linear-gradient(180deg, #00f0ff, #0070f3);
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+.repo-card.vercel-active {
+  border-color: rgba(0, 240, 255, 0.3);
+}
+
+.repo-card.vercel-active:hover {
+  border-color: #00f0ff;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+}
+
+/* Vercel Status Box */
+.repo-vercel-box {
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.repo-vercel-box.is-connected {
+  background: rgba(0, 240, 255, 0.06);
+  border-color: rgba(0, 240, 255, 0.35);
+}
+
+.repo-vercel-box.is-unconnected {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.vercel-box-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.is-connected .vercel-box-header {
+  color: #00f0ff;
+}
+
+.is-unconnected .vercel-box-header {
+  color: #8b949e;
+}
+
+.vercel-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.vercel-dot.dot-live {
+  background: #00f0ff;
+  box-shadow: 0 0 8px #00f0ff;
+  animation: pulseDot 1.4s infinite alternate;
+}
+
+.vercel-dot.dot-off {
+  background: #475569;
+}
+
+.vercel-url-preview {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: #a5f3fc;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.vercel-url-preview:hover {
+  color: #ffffff;
+  text-shadow: 0 0 8px #00f0ff;
+}
+
+.v-jump-arrow {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.vercel-empty-hint {
+  font-size: 11px;
+  color: #64748b;
+  font-family: var(--font-sans);
+}
+
+.repo-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
 
 .repo-use-btn {
-  flex: 1;
-  background: var(--red-neon);
-  border: none;
-  color: #fff;
+  background: rgba(255, 0, 60, 0.2);
+  border: 1px solid rgba(255, 0, 60, 0.6);
+  color: #ffccd5;
   font-family: var(--font-display);
   font-size: 11px;
   letter-spacing: 0.5px;
-  padding: 9px 12px;
-  border-radius: 4px;
+  padding: 9px 8px;
+  border-radius: 5px;
   cursor: pointer;
   font-weight: 700;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 5px;
+  white-space: nowrap;
 }
 
 .repo-use-btn:hover {
-  background: #ff2a5c;
+  background: var(--red-neon);
+  border-color: var(--red-neon);
+  color: #fff;
   box-shadow: 0 0 14px #ff003c;
+  transform: translateY(-1px);
+}
+
+/* Button เข้าสู่เว็บจริง (Vercel Live) */
+.repo-live-btn {
+  background: linear-gradient(135deg, #00d2ff, #0070f3);
+  border: 1px solid #00f0ff;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 9px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
+  white-space: nowrap;
+}
+
+.repo-live-btn:hover {
+  background: linear-gradient(135deg, #00f0ff, #0088ff);
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.8);
+  transform: translateY(-1px);
+}
+
+.btn-arrow-jump, .btn-jump-arrow {
+  font-size: 11px;
+  font-weight: 900;
+}
+
+/* Button เชื่อมต่อ Vercel */
+.repo-vercel-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e2e8f0;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 9px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.repo-vercel-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
 }
 

@@ -20,6 +20,7 @@ import os
 import sys
 import uuid
 import webbrowser
+import concurrent.futures
 
 # Ensure stdout and stderr are safely handled in PyInstaller windowed mode
 if sys.stdout is None:
@@ -140,17 +141,82 @@ def run_git_in_path(args, cwd):
     if not os.path.exists(cwd):
         return -1, "", f"Directory does not exist: {cwd}"
     try:
+        startupinfo = None
+        creationflags = 0
+        if os.name == "nt":
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = 0
+            creationflags = subprocess.CREATE_NO_WINDOW
+
         res = subprocess.run(
             ["git"] + args,
             cwd=cwd,
             capture_output=True,
             text=True,
             encoding='utf-8',
-            errors='ignore'
+            errors='ignore',
+            startupinfo=startupinfo,
+            creationflags=creationflags
         )
         return res.returncode, res.stdout.strip(), res.stderr.strip()
     except Exception as e:
         return -1, "", str(e)
+
+_vercel_cache = {}
+_vercel_cache_time = {}
+
+def check_repo_vercel(owner, repo_name):
+    if not owner or not repo_name:
+        return {"connected": False, "status": "NOT_CONNECTED", "url": None, "environment": None}
+    cache_key = f"{owner}/{repo_name}".lower()
+    now = time.time()
+    if cache_key in _vercel_cache and (now - _vercel_cache_time.get(cache_key, 0)) < 60:
+        return _vercel_cache[cache_key]
+
+    result = {
+        "connected": False,
+        "status": "NOT_CONNECTED",
+        "url": None,
+        "environment": None
+    }
+
+    try:
+        url = f"https://api.github.com/repos/{owner}/{repo_name}/deployments?per_page=3"
+        req = urllib.request.Request(url, headers={"User-Agent": "HexSyncTH-Desktop/2.0"})
+        with urllib.request.urlopen(req, timeout=3.0) as resp:
+            deps = json.loads(resp.read().decode('utf-8'))
+            if deps and isinstance(deps, list) and len(deps) > 0:
+                first_dep = deps[0]
+                dep_id = first_dep.get("id")
+                target_url = None
+                if dep_id:
+                    st_url = f"https://api.github.com/repos/{owner}/{repo_name}/deployments/{dep_id}/statuses?per_page=1"
+                    st_req = urllib.request.Request(st_url, headers={"User-Agent": "HexSyncTH-Desktop/2.0"})
+                    try:
+                        with urllib.request.urlopen(st_req, timeout=2.5) as st_resp:
+                            statuses = json.loads(st_resp.read().decode('utf-8'))
+                            if statuses and isinstance(statuses, list) and len(statuses) > 0:
+                                target_url = statuses[0].get("target_url") or statuses[0].get("environment_url")
+                    except Exception:
+                        pass
+
+                if not target_url:
+                    clean_slug = repo_name.lower().replace("_", "-")
+                    target_url = f"https://{clean_slug}.vercel.app"
+
+                result = {
+                    "connected": True,
+                    "status": "LIVE",
+                    "url": target_url,
+                    "environment": first_dep.get("environment", "Production")
+                }
+    except Exception:
+        pass
+
+    _vercel_cache[cache_key] = result
+    _vercel_cache_time[cache_key] = now
+    return result
 
 def ensure_git_setup(proj):
     cwd = proj["path"]
@@ -320,6 +386,11 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
             if proj.get("github_url"):
                 clean_repo = proj["github_url"].replace(".git", "").split("github.com/")[-1]
 
+            active_vercel = None
+            if clean_repo and "/" in clean_repo:
+                parts = clean_repo.split("/")
+                active_vercel = check_repo_vercel(parts[0], parts[1])
+
             with state_lock:
                 payload = {
                     **app_state,
@@ -330,7 +401,10 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
                     "repo_name": clean_repo,
                     "branch": proj.get("branch", "main"),
                     "debounce_seconds": proj.get("debounce", 5),
-                    "projects": config_data.get("projects", [])
+                    "projects": config_data.get("projects", []),
+                    "vercel_info": active_vercel,
+                    "vercel_url": active_vercel.get("url") if active_vercel else None,
+                    "vercel_connected": active_vercel.get("connected", False) if active_vercel else False
                 }
             self.wfile.write(json.dumps(payload, ensure_ascii=False).encode('utf-8'))
 
@@ -345,10 +419,31 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
                 with urllib.request.urlopen(req, timeout=12) as response:
                     raw_data = response.read().decode("utf-8")
                     repos_json = json.loads(raw_data)
+
+                    # Concurrently check Vercel status for top repos
+                    vercel_map = {}
+                    repos_to_check = [r.get("name") for r in repos_json[:20] if r.get("name")]
+                    try:
+                        with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
+                            future_to_repo = {
+                                executor.submit(check_repo_vercel, username, r_name): r_name
+                                for r_name in repos_to_check
+                            }
+                            for future in concurrent.futures.as_completed(future_to_repo, timeout=5.0):
+                                r_name = future_to_repo[future]
+                                try:
+                                    vercel_map[r_name] = future.result()
+                                except Exception:
+                                    vercel_map[r_name] = {"connected": False, "status": "NOT_CONNECTED", "url": None}
+                    except Exception:
+                        pass
+
                     clean_repos = []
                     for r in repos_json:
+                        r_name = r.get("name", "")
+                        v_info = vercel_map.get(r_name, {"connected": False, "status": "NOT_CONNECTED", "url": None})
                         clean_repos.append({
-                            "name": r.get("name"),
+                            "name": r_name,
                             "full_name": r.get("full_name"),
                             "html_url": r.get("html_url"),
                             "clone_url": r.get("clone_url"),
@@ -356,7 +451,11 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
                             "default_branch": r.get("default_branch") or "main",
                             "language": r.get("language") or "General",
                             "stars": r.get("stargazers_count", 0),
-                            "updated_at": r.get("updated_at", "")[:10]
+                            "updated_at": r.get("updated_at", "")[:10],
+                            "vercel_connected": v_info.get("connected", False),
+                            "vercel_status": v_info.get("status", "NOT_CONNECTED"),
+                            "vercel_url": v_info.get("url"),
+                            "vercel_import_url": f"https://vercel.com/new/import?s=https://github.com/{username}/{r_name}"
                         })
                     self._send_json({"success": True, "username": username, "repos": clean_repos})
             except Exception as e:
@@ -493,6 +592,18 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
                     config_data["active_project_id"] = config_data["projects"][0]["id"]
                 save_config(config_data)
             self._send_json({"success": True})
+
+        elif parsed.path == "/api/open_browser":
+            target = req_data.get("url", "").strip()
+            if target:
+                try:
+                    webbrowser.open(target)
+                    log_event(f"🌐 เปิดเว็บเบราว์เซอร์: {target}", "info")
+                    self._send_json({"success": True, "url": target})
+                except Exception as e:
+                    self._send_json({"success": False, "error": str(e)})
+            else:
+                self._send_json({"success": False, "error": "No URL provided"})
 
         else:
             self.send_response(404)
