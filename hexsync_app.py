@@ -20,10 +20,26 @@ import sys
 import uuid
 import webbrowser
 
-# Set UTF-8 encoding for Windows terminal
-if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
+# Ensure stdout and stderr are safely handled in PyInstaller windowed mode
+if sys.stdout is None:
+    try:
+        sys.stdout = open(os.devnull, "w", encoding="utf-8")
+    except Exception:
+        pass
+elif hasattr(sys.stdout, 'encoding') and sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
     try:
         sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
+if sys.stderr is None:
+    try:
+        sys.stderr = open(os.devnull, "w", encoding="utf-8")
+    except Exception:
+        pass
+elif hasattr(sys.stderr, 'encoding') and sys.stderr.encoding and sys.stderr.encoding.lower() != 'utf-8':
+    try:
+        sys.stderr.reconfigure(encoding='utf-8')
     except Exception:
         pass
 
