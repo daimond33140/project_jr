@@ -58,10 +58,16 @@ function getChartColors() {
 
 // Initialize Application
 document.addEventListener("DOMContentLoaded", () => {
-  // Load saved theme or default to clean light
-  const savedTheme = localStorage.getItem("theme") || "light";
+  // Default to sleek dark presentation theme (Zajno style)
+  const savedTheme = localStorage.getItem("theme") || "dark";
   document.documentElement.setAttribute("data-theme", savedTheme);
   updateThemeButtonUI(savedTheme);
+
+  // Initialize 3D Presentation & Zajno Interaction Modules
+  initThreeJSBackground();
+  runPreloader();
+  init3DCardTilt();
+  initCustomCursor();
 
   initCharts();
   renderGeoMap();
