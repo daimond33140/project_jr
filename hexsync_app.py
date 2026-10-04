@@ -525,20 +525,40 @@ def select_folder_dialog():
     t.join(timeout=30)
     return result[0] if result else None
 
-def open_app_window(url):
-    edge_paths = [
-        r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-        r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
-        os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\Edge\Application\msedge.exe")
-    ]
-    for p in edge_paths:
-        if os.path.exists(p):
+class WindowApi:
+    def __init__(self):
+        self._window = None
+        self._is_max = False
+
+    def set_window(self, win):
+        self._window = win
+
+    def minimize(self):
+        if self._window:
+            self._window.minimize()
+
+    def toggle_maximize(self):
+        if self._window:
             try:
-                subprocess.Popen([p, f"--app={url}", "--window-size=1120,780", "--window-position=100,60"])
-                return
+                if self._is_max:
+                    self._window.restore()
+                    self._is_max = False
+                else:
+                    self._window.maximize()
+                    self._is_max = True
+            except Exception:
+                try:
+                    self._window.toggle_fullscreen()
+                except Exception:
+                    pass
+
+    def close(self):
+        if self._window:
+            try:
+                self._window.destroy()
             except Exception:
                 pass
-    webbrowser.open(url)
+        os._exit(0)
 
 def main():
     # Setup initial project git
@@ -568,17 +588,46 @@ def main():
         app_state["port"] = port
 
     app_url = f"http://127.0.0.1:{port}"
-    safe_print("=" * 65)
-    safe_print(f" 🚀 HexSyncTH Multi-Project Engine — Online: {app_url}")
-    safe_print("=" * 65)
 
-    threading.Timer(0.8, lambda: open_app_window(app_url)).start()
+    # Start server in background thread
+    server_thread = threading.Thread(target=server.serve_forever, daemon=True)
+    server_thread.start()
 
+    # Launch Native Frameless Desktop Window via pywebview
     try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        safe_print("\n🛑 ปิดโปรแกรม HexSyncTH เรียบร้อยแล้ว")
-        server.server_close()
+        import webview
+        api = WindowApi()
+        window = webview.create_window(
+            title="HexSyncTH Cyberpunk Auto Sync",
+            url=app_url,
+            width=1220,
+            height=820,
+            min_size=(980, 650),
+            frameless=True,
+            easy_drag=True,
+            js_api=api,
+            background_color="#070709",
+            text_select=False,
+            zoomable=False
+        )
+        api.set_window(window)
+        webview.start(private_mode=False)
+    except Exception as e:
+        safe_print(f"pywebview failed: {e}")
+        webbrowser.open(app_url)
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            pass
+    finally:
+        try:
+            server.shutdown()
+            server.server_close()
+        except Exception:
+            pass
+        os._exit(0)
 
 if __name__ == "__main__":
     main()
+
