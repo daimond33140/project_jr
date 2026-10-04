@@ -1428,10 +1428,14 @@ function initCustomCursor() {
 }
 
 // ==========================================
-// 12. 144 FPS VIEW SWITCHER (CATEGORY SELECTOR)
+// 12. NASA RIGHT DOCK & HUD PANEL SWITCHER (144 FPS)
 // ==========================================
 function setupViewSwitcher() {
-  const buttons = document.querySelectorAll(".switcher-btn");
+  const dockButtons = document.querySelectorAll(".dock-btn[data-view]");
+  const hudContainer = document.getElementById("nasa-hud-panel-container");
+  const hudTitle = document.getElementById("hud-panel-active-title");
+  const hudCloseBtn = document.getElementById("hud-panel-close-btn");
+
   const secTrend = document.getElementById("sec-trend");
   const secGeo = document.getElementById("sec-geo");
   const secComp = document.getElementById("sec-comparison");
@@ -1441,50 +1445,100 @@ function setupViewSwitcher() {
 
   const allSections = [secTrend, secGeo, secComp, secTiers, secTable];
 
-  buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      buttons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      const view = btn.getAttribute("data-view");
-
-      // Reset visibility & full width
-      allSections.forEach(s => {
-        if (s) {
-          s.classList.remove("view-hidden", "view-full-width");
-        }
-      });
-      if (secKpis) secKpis.classList.remove("view-hidden");
-
-      if (view === "all") {
-        // Show all normally
-      } else if (view === "trend") {
-        allSections.forEach(s => s?.classList.add("view-hidden"));
-        secTrend?.classList.remove("view-hidden");
-        secTrend?.classList.add("view-full-width");
-        secTrend?.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else if (view === "geo") {
-        allSections.forEach(s => s?.classList.add("view-hidden"));
-        secGeo?.classList.remove("view-hidden");
-        secGeo?.classList.add("view-full-width");
-        secGeo?.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else if (view === "rank") {
-        allSections.forEach(s => s?.classList.add("view-hidden"));
-        secComp?.classList.remove("view-hidden");
-        secTiers?.classList.remove("view-hidden");
-        secComp?.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else if (view === "table") {
-        allSections.forEach(s => s?.classList.add("view-hidden"));
-        secTable?.classList.remove("view-hidden");
-        secTable?.scrollIntoView({ behavior: "smooth", block: "start" });
+  function setActiveView(view) {
+    dockButtons.forEach(b => {
+      if (b.getAttribute("data-view") === view) {
+        b.classList.add("active");
+      } else {
+        b.classList.remove("active");
       }
+    });
 
-      // Instant chart resize
-      setTimeout(() => {
-        resizeAllCharts();
-      }, 60);
+    if (view === "orbit") {
+      // 3D Full Orbit Mode: Minimize HUD panels for full-screen exploration
+      if (hudContainer) hudContainer.classList.add("hud-collapsed");
+      if (window.focusThailand) window.focusThailand();
+      return;
+    }
+
+    // Open HUD panel drawer
+    if (hudContainer) hudContainer.classList.remove("hud-collapsed");
+
+    // Reset visibility & full-width
+    allSections.forEach(s => {
+      if (s) s.classList.remove("view-hidden", "view-full-width");
+    });
+    if (secKpis) secKpis.classList.remove("view-hidden");
+
+    if (view === "overview") {
+      if (hudTitle) hudTitle.textContent = "ภาพรวมตัวชี้วัดเศรษฐกิจท่องเที่ยวไทย (Overview KPIs)";
+      // Show all normally
+    } else if (view === "trend") {
+      if (hudTitle) hudTitle.textContent = "แนวโน้มรายได้การท่องเที่ยวรายเดือน 50 เดือน (CLO1: Time-Series Trends)";
+      allSections.forEach(s => s?.classList.add("view-hidden"));
+      secTrend?.classList.remove("view-hidden");
+      secTrend?.classList.add("view-full-width");
+    } else if (view === "geo") {
+      if (hudTitle) hudTitle.textContent = "แผนที่สถิติการท่องเที่ยว 5 ภูมิภาค (CLO1: Geographical Visualization)";
+      allSections.forEach(s => s?.classList.add("view-hidden"));
+      secGeo?.classList.remove("view-hidden");
+      secGeo?.classList.add("view-full-width");
+    } else if (view === "rank") {
+      if (hudTitle) hudTitle.textContent = "เปรียบเทียบ 10 อันดับจังหวัด & การจัดกลุ่มเมือง (CLO1: Rankings & Tiers)";
+      allSections.forEach(s => s?.classList.add("view-hidden"));
+      secComp?.classList.remove("view-hidden");
+      secTiers?.classList.remove("view-hidden");
+    } else if (view === "table") {
+      if (hudTitle) hudTitle.textContent = "ฐานข้อมูลสถิติการท่องเที่ยว 77 จังหวัด (PLO4/PLO5: Official MOTS Dataset)";
+      allSections.forEach(s => s?.classList.add("view-hidden"));
+      secTable?.classList.remove("view-hidden");
+      secTable?.classList.add("view-full-width");
+    }
+
+    // Smooth scroll to top of panel container
+    hudContainer?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // Instant chart resize
+    setTimeout(() => {
+      resizeAllCharts();
+    }, 70);
+  }
+
+  // Right Dock button clicks
+  dockButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const view = btn.getAttribute("data-view");
+      setActiveView(view);
     });
   });
+
+  // Minimize HUD to 3D Orbit
+  hudCloseBtn?.addEventListener("click", () => {
+    setActiveView("orbit");
+  });
+
+  // Telemetry HUD card buttons
+  document.getElementById("btn-focus-thailand")?.addEventListener("click", () => {
+    setActiveView("orbit");
+    if (window.focusThailand) window.focusThailand();
+  });
+
+  document.getElementById("btn-open-overview")?.addEventListener("click", () => {
+    setActiveView("overview");
+  });
+
+  // Right Dock Storytelling button
+  document.getElementById("dock-btn-story")?.addEventListener("click", () => {
+    const modal = document.getElementById("storytelling-modal");
+    if (modal) {
+      modal.classList.add("show");
+      updateStorytellingModal(0);
+      if (window.lucide) window.lucide.createIcons();
+    }
+  });
+
+  // Set default view to Overview on load
+  setActiveView("overview");
 }
 
 // ==========================================
