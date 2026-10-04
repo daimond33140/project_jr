@@ -2563,3 +2563,22 @@ button, a, select, input, [role="button"], .switcher-btn, .kpi-card, .btn, .map-
 
 
 
+
+.compare-group-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.compare-inputs-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+/* Ensure HUD panel container is cleanly hidden when in comparison mode */
+.nasa-hud-panel-container.hud-collapsed,
+.nasa-hud-panel-container.view-hidden {
+  display: none !important;
+}

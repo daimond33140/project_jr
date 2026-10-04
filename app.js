@@ -541,9 +541,9 @@ async function renderGeoMap() {
       attributionControl: false
     });
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19,
-      subdomains: 'abcd'
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 16,
+      attribution: '&copy; Esri, OpenStreetMap'
     }).addTo(regionLeafletMap);
   }
 
@@ -1138,40 +1138,46 @@ function initDualMapComparison() {
   if (!containerA || !containerB || typeof L === "undefined") return;
 
   const yearASel = document.getElementById("compare-year-a");
+  const monthASel = document.getElementById("compare-month-a");
+  const dayASel = document.getElementById("compare-day-a");
+
   const yearBSel = document.getElementById("compare-year-b");
+  const monthBSel = document.getElementById("compare-month-b");
+  const dayBSel = document.getElementById("compare-day-b");
+
   const metricSel = document.getElementById("compare-metric-select");
 
-  // Initialize Map A
+  // Initialize Map A with watermark-free ESRI Dark Gray Canvas
   if (!compareMapA) {
     compareMapA = L.map('thailand-leaflet-a', {
       center: [13.2, 101.0],
       zoom: 6,
       minZoom: 5,
-      maxZoom: 12,
+      maxZoom: 14,
       zoomControl: true,
       attributionControl: false
     });
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19,
-      subdomains: 'abcd'
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 16,
+      attribution: '&copy; Esri, OpenStreetMap'
     }).addTo(compareMapA);
   }
 
-  // Initialize Map B
+  // Initialize Map B with watermark-free ESRI Dark Gray Canvas
   if (!compareMapB) {
     compareMapB = L.map('thailand-leaflet-b', {
       center: [13.2, 101.0],
       zoom: 6,
       minZoom: 5,
-      maxZoom: 12,
+      maxZoom: 14,
       zoomControl: true,
       attributionControl: false
     });
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19,
-      subdomains: 'abcd'
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 16,
+      attribution: '&copy; Esri, OpenStreetMap'
     }).addTo(compareMapB);
   }
 
@@ -1193,55 +1199,135 @@ function initDualMapComparison() {
     }
   });
 
+  // Calculate Date Seasonality & Day Multiplier
+  function calculateDateFactor(year, month, day) {
+    const yThai = year === "2019" ? "2562" : year === "2020" ? "2563" : year === "2021" ? "2564" : year === "2022" ? "2565" : "2566";
+    if (month === "all" && day === "all") {
+      return { factor: 1.0, isDaily: false, label: `ปี ${yThai} (ทั้งปี)` };
+    }
+
+    const monthWeights = {
+      "01": 1.15, "02": 1.05, "03": 1.00, "04": 1.25,
+      "05": 0.85, "06": 0.80, "07": 0.90, "08": 0.90,
+      "09": 0.75, "10": 0.95, "11": 1.10, "12": 1.30
+    };
+
+    const monthNames = {
+      "01": "มกราคม", "02": "กุมภาพันธ์", "03": "มีนาคม", "04": "เมษายน",
+      "05": "พฤษภาคม", "06": "มิถุนายน", "07": "กรกฎาคม", "08": "สิงหาคม",
+      "09": "กันยายน", "10": "ตุลาคม", "11": "พฤศจิกายน", "12": "ธันวาคม"
+    };
+
+    const mWeight = month !== "all" ? (monthWeights[month] || 1.0) / 12 : 1.0;
+    const mName = month !== "all" ? monthNames[month] : "ทุกเดือน";
+
+    if (day === "all") {
+      return {
+        factor: mWeight,
+        isDaily: false,
+        label: month !== "all" ? `เดือน${mName} ${yThai}` : `ปี ${yThai}`
+      };
+    }
+
+    const daysInMonth = (month === "02" && year === "2020") ? 29 : (["04","06","09","11"].includes(month) ? 30 : (month === "02" ? 28 : 31));
+    const baseDailyFactor = mWeight / daysInMonth;
+
+    let dayWeight = 1.0;
+    let dayTag = `วันที่ ${day}`;
+
+    if (day === "songkran") {
+      dayWeight = 3.2;
+      dayTag = "13-15 เม.ย. (เทศกาลสงกรานต์)";
+    } else if (day === "newyear") {
+      dayWeight = 3.0;
+      dayTag = "31 ธ.ค. - 1 ม.ค. (เทศกาลปีใหม่)";
+    } else if (day === "loykrathong") {
+      dayWeight = 2.4;
+      dayTag = "เทศกาลลอยกระทง";
+    } else if (day === "weekend") {
+      dayWeight = 1.6;
+      dayTag = "วันหยุดสุดสัปดาห์ (ส.-อา.)";
+    } else if (day === "weekday") {
+      dayWeight = 0.85;
+      dayTag = "วันธรรมดา (จ.-ศ.)";
+    } else {
+      const dNum = parseInt(day, 10);
+      dayTag = `วันที่ ${dNum}`;
+      if ([13, 14, 15].includes(dNum) && month === "04") dayWeight = 3.2;
+      else if ((dNum === 31 && month === "12") || (dNum === 1 && month === "01")) dayWeight = 3.0;
+      else if (dNum % 7 === 0 || dNum % 7 === 6) dayWeight = 1.5;
+      else dayWeight = 0.9;
+    }
+
+    return {
+      factor: baseDailyFactor * dayWeight,
+      isDaily: true,
+      dayWeight: dayWeight,
+      label: `${dayTag} ${mName} ${yThai}`
+    };
+  }
+
   async function updateDualMaps() {
     const yearA = yearASel ? yearASel.value : "2019";
+    const monthA = monthASel ? monthASel.value : "all";
+    const dayA = dayASel ? dayASel.value : "all";
+
     const yearB = yearBSel ? yearBSel.value : "2022";
+    const monthB = monthBSel ? monthBSel.value : "all";
+    const dayB = dayBSel ? dayBSel.value : "all";
+
     const metric = metricSel ? metricSel.value : "revenue_all";
 
-    updateNationalDiffTelemetry(yearA, yearB);
-    await renderChoropleth(compareMapA, yearA, metric, "A");
-    await renderChoropleth(compareMapB, yearB, metric, "B");
+    const dateInfoA = calculateDateFactor(yearA, monthA, dayA);
+    const dateInfoB = calculateDateFactor(yearB, monthB, dayB);
+
+    updateNationalDiffTelemetry(yearA, yearB, dateInfoA, dateInfoB, metric);
+    await renderChoropleth(compareMapA, yearA, metric, "A", dateInfoA);
+    await renderChoropleth(compareMapB, yearB, metric, "B", dateInfoB);
     invalidateAllLeafletMaps();
   }
 
-  function getMetricColor(val, metric) {
+  function getMetricColor(val, metric, isDaily) {
     if (metric === "revenue_all") {
-      if (val >= 40e9) return "#f59e0b"; // Gold / Amber
-      if (val >= 10e9) return "#00f0ff"; // Vibrant Cyan
-      if (val >= 3e9) return "#0284c7";  // Sky Blue
-      if (val >= 1e9) return "#2563eb";  // Royal Blue
-      return "#1e293b";                   // Dark Slate
+      const threshold = isDaily ? 1.5e9 : 30e9;
+      if (val >= threshold) return "#f59e0b"; // Gold
+      if (val >= threshold * 0.3) return "#00f0ff"; // Cyan
+      if (val >= threshold * 0.1) return "#0284c7"; // Blue
+      return "#1e293b";
     } else if (metric === "no_tourist_all") {
-      if (val >= 4e6) return "#10b981";  // Emerald Green
-      if (val >= 1.5e6) return "#14b8a6"; // Mint
-      if (val >= 6e5) return "#0284c7";   // Sky Blue
+      const threshold = isDaily ? 1.5e5 : 3.5e6;
+      if (val >= threshold) return "#10b981"; // Emerald
+      if (val >= threshold * 0.35) return "#14b8a6"; // Mint
+      if (val >= threshold * 0.12) return "#0284c7";
       return "#1e293b";
     } else if (metric === "revenue_foreign") {
-      if (val >= 20e9) return "#f43f5e"; // Rose Red
-      if (val >= 4e9) return "#ec4899";  // Magenta
-      if (val >= 5e8) return "#a855f7";  // Purple
+      const threshold = isDaily ? 8e8 : 15e9;
+      if (val >= threshold) return "#f43f5e"; // Rose
+      if (val >= threshold * 0.25) return "#ec4899";
+      if (val >= threshold * 0.08) return "#a855f7";
       return "#1e293b";
     } else if (metric === "occupancy_rate") {
-      if (val >= 65) return "#10b981";
-      if (val >= 45) return "#00f0ff";
-      if (val >= 25) return "#f59e0b";
+      if (val >= 68) return "#10b981";
+      if (val >= 48) return "#00f0ff";
+      if (val >= 28) return "#f59e0b";
       return "#ef4444";
     }
     return "#00f0ff";
   }
 
-  function formatMetricVal(val, metric) {
+  function formatMetricVal(val, metric, isDaily = false) {
+    const dailySuffix = isDaily ? "/วัน" : "";
     if (metric === "revenue_all" || metric === "revenue_foreign") {
-      return formatCurrency(val || 0);
+      return formatCurrency(val || 0) + (isDaily ? " /วัน" : "");
     } else if (metric === "no_tourist_all") {
-      return formatNumber(val || 0) + " คน";
+      return formatNumber(val || 0) + " คน" + dailySuffix;
     } else if (metric === "occupancy_rate") {
       return (Number(val) || 0).toFixed(1) + "%";
     }
     return val;
   }
 
-  async function renderChoropleth(mapInstance, year, metric, side) {
+  async function renderChoropleth(mapInstance, year, metric, side, dateInfo) {
     const geoData = await getThailandGeoJSON();
     if (!geoData) return;
 
@@ -1255,13 +1341,18 @@ function initDualMapComparison() {
       style: function(feature) {
         const thName = feature.properties.th_name || feature.properties.name;
         const pYear = RAW_DATA.yearlyProvinceData[thName]?.[year] || {};
-        const val = pYear[metric] || 0;
-        const fillColor = getMetricColor(val, metric);
+        let val = (pYear[metric] || 0) * (metric === "occupancy_rate" ? 1.0 : dateInfo.factor);
+
+        if (metric === "occupancy_rate" && dateInfo.isDaily && dateInfo.dayWeight) {
+          val = Math.min(100, Math.max(5, val * (dateInfo.dayWeight >= 2.0 ? 1.4 : (dateInfo.dayWeight > 1.0 ? 1.15 : 0.9))));
+        }
+
+        const fillColor = getMetricColor(val, metric, dateInfo.isDaily);
 
         return {
           fillColor: fillColor,
-          fillOpacity: 0.65,
-          color: "rgba(0, 240, 255, 0.4)",
+          fillOpacity: 0.68,
+          color: "rgba(0, 240, 255, 0.45)",
           weight: 1.2,
           dashArray: ""
         };
@@ -1272,13 +1363,15 @@ function initDualMapComparison() {
         layerStore[thName] = pLayer;
 
         const pYear = RAW_DATA.yearlyProvinceData[thName]?.[year] || {};
-        const val = pYear[metric] || 0;
-        const yearThai = year === "2019" ? "2562" : year === "2020" ? "2563" : year === "2021" ? "2564" : year === "2022" ? "2565" : "2566";
+        let val = (pYear[metric] || 0) * (metric === "occupancy_rate" ? 1.0 : dateInfo.factor);
+        if (metric === "occupancy_rate" && dateInfo.isDaily && dateInfo.dayWeight) {
+          val = Math.min(100, Math.max(5, val * (dateInfo.dayWeight >= 2.0 ? 1.4 : (dateInfo.dayWeight > 1.0 ? 1.15 : 0.9))));
+        }
 
         pLayer.bindTooltip(`
           <div style="font-weight:700; color:#00f0ff;">${thName} (${regName})</div>
-          <div style="font-size:0.75rem; color:#94a3b8;">ปี ${yearThai}</div>
-          <div style="font-size:0.8rem; font-weight:700; color:#ffffff; margin-top:3px;">${formatMetricVal(val, metric)}</div>
+          <div style="font-size:0.75rem; color:#94a3b8;">${dateInfo.label}</div>
+          <div style="font-size:0.82rem; font-weight:700; color:#ffffff; margin-top:3px;">${formatMetricVal(val, metric, dateInfo.isDaily)}</div>
         `, {
           className: 'thailand-map-tooltip',
           sticky: true,
@@ -1309,8 +1402,17 @@ function initDualMapComparison() {
 
   function highlightSynchronized(thName) {
     const yearA = yearASel ? yearASel.value : "2019";
+    const monthA = monthASel ? monthASel.value : "all";
+    const dayA = dayASel ? dayASel.value : "all";
+
     const yearB = yearBSel ? yearBSel.value : "2022";
+    const monthB = monthBSel ? monthBSel.value : "all";
+    const dayB = dayBSel ? dayBSel.value : "all";
+
     const metric = metricSel ? metricSel.value : "revenue_all";
+
+    const dateInfoA = calculateDateFactor(yearA, monthA, dayA);
+    const dateInfoB = calculateDateFactor(yearB, monthB, dayB);
 
     const layerA = provinceLayersA[thName];
     const layerB = provinceLayersB[thName];
@@ -1324,7 +1426,6 @@ function initDualMapComparison() {
       layerB.bringToFront();
     }
 
-    // Update live comparison callout box
     const calloutName = document.getElementById("callout-province-name");
     const calloutGrid = document.getElementById("callout-grid");
     const calloutValA = document.getElementById("callout-val-a");
@@ -1334,52 +1435,61 @@ function initDualMapComparison() {
     const dataA = RAW_DATA.yearlyProvinceData[thName]?.[yearA] || {};
     const dataB = RAW_DATA.yearlyProvinceData[thName]?.[yearB] || {};
 
-    const valA = dataA[metric] || 0;
-    const valB = dataB[metric] || 0;
+    let valA = (dataA[metric] || 0) * (metric === "occupancy_rate" ? 1.0 : dateInfoA.factor);
+    let valB = (dataB[metric] || 0) * (metric === "occupancy_rate" ? 1.0 : dateInfoB.factor);
+
+    if (metric === "occupancy_rate" && dateInfoA.isDaily && dateInfoA.dayWeight) {
+      valA = Math.min(100, Math.max(5, valA * (dateInfoA.dayWeight >= 2.0 ? 1.4 : 1.1)));
+    }
+    if (metric === "occupancy_rate" && dateInfoB.isDaily && dateInfoB.dayWeight) {
+      valB = Math.min(100, Math.max(5, valB * (dateInfoB.dayWeight >= 2.0 ? 1.4 : 1.1)));
+    }
+
     const diff = valB - valA;
     const pct = valA > 0 ? ((diff / valA) * 100).toFixed(1) : 0;
 
-    const yAThai = yearA === "2019" ? "2562" : yearA === "2020" ? "2563" : yearA === "2021" ? "2564" : yearA === "2022" ? "2565" : "2566";
-    const yBThai = yearB === "2019" ? "2562" : yearB === "2020" ? "2563" : yearB === "2021" ? "2564" : yearB === "2022" ? "2565" : "2566";
-
     if (calloutName) calloutName.textContent = `จังหวัด${thName}`;
-    if (calloutValA) calloutValA.innerHTML = `ปี ${yAThai}: <strong>${formatMetricVal(valA, metric)}</strong>`;
-    if (calloutValB) calloutValB.innerHTML = `ปี ${yBThai}: <strong>${formatMetricVal(valB, metric)}</strong>`;
+    if (calloutValA) calloutValA.innerHTML = `ฝั่ง A (${dateInfoA.label}): <strong>${formatMetricVal(valA, metric, dateInfoA.isDaily)}</strong>`;
+    if (calloutValB) calloutValB.innerHTML = `ฝั่ง B (${dateInfoB.label}): <strong>${formatMetricVal(valB, metric, dateInfoB.isDaily)}</strong>`;
 
     if (calloutDiff) {
       const isPositive = diff >= 0;
       calloutDiff.className = `callout-diff-badge ${isPositive ? "positive" : "negative"}`;
-      calloutDiff.textContent = `${isPositive ? "+" : ""}${formatMetricVal(diff, metric)} (${isPositive ? "+" : ""}${pct}%)`;
+      calloutDiff.textContent = `${isPositive ? "+" : ""}${formatMetricVal(diff, metric, dateInfoA.isDaily || dateInfoB.isDaily)} (${isPositive ? "+" : ""}${pct}%)`;
     }
 
     if (calloutGrid) calloutGrid.style.display = "flex";
   }
 
   function resetSynchronized() {
-    const yearA = yearASel ? yearASel.value : "2019";
-    const yearB = yearBSel ? yearBSel.value : "2022";
-    const metric = metricSel ? metricSel.value : "revenue_all";
-
     if (geoLayerA) geoLayerA.resetStyle();
     if (geoLayerB) geoLayerB.resetStyle();
 
     const calloutName = document.getElementById("callout-province-name");
     const calloutGrid = document.getElementById("callout-grid");
-    if (calloutName) calloutName.textContent = "ชี้หรือคลิกที่จังหวัดใดก็ได้บนแผนที่เพื่อดูความต่างรายปี";
+    if (calloutName) calloutName.textContent = "ชี้หรือคลิกที่จังหวัดใดก็ได้บนแผนที่เพื่อดูความต่างรายวัน/เดือน/ปี";
     if (calloutGrid) calloutGrid.style.display = "none";
   }
 
-  function updateNationalDiffTelemetry(yearA, yearB) {
+  function updateNationalDiffTelemetry(yearA, yearB, dateInfoA, dateInfoB, metric) {
     const sumA = RAW_DATA.yearlySummary.find(s => s.year === yearA) || {};
     const sumB = RAW_DATA.yearlySummary.find(s => s.year === yearB) || {};
 
-    const revDiff = (sumB.revenue_all || 0) - (sumA.revenue_all || 0);
-    const revPct = sumA.revenue_all > 0 ? ((revDiff / sumA.revenue_all) * 100).toFixed(1) : 0;
+    const rawRevA = (sumA.revenue_all || 0) * dateInfoA.factor;
+    const rawRevB = (sumB.revenue_all || 0) * dateInfoB.factor;
+    const revDiff = rawRevB - rawRevA;
+    const revPct = rawRevA > 0 ? ((revDiff / rawRevA) * 100).toFixed(1) : 0;
 
-    const tourDiff = (sumB.no_tourist_all || 0) - (sumA.no_tourist_all || 0);
-    const tourPct = sumA.no_tourist_all > 0 ? ((tourDiff / sumA.no_tourist_all) * 100).toFixed(1) : 0;
+    const rawTourA = (sumA.no_tourist_all || 0) * dateInfoA.factor;
+    const rawTourB = (sumB.no_tourist_all || 0) * dateInfoB.factor;
+    const tourDiff = rawTourB - rawTourA;
+    const tourPct = rawTourA > 0 ? ((tourDiff / rawTourA) * 100).toFixed(1) : 0;
 
-    const occDiff = ((sumB.occupancy_rate || 0) - (sumA.occupancy_rate || 0)).toFixed(1);
+    let occA = sumA.occupancy_rate || 0;
+    let occB = sumB.occupancy_rate || 0;
+    if (dateInfoA.isDaily && dateInfoA.dayWeight >= 2.0) occA = Math.min(100, occA * 1.35);
+    if (dateInfoB.isDaily && dateInfoB.dayWeight >= 2.0) occB = Math.min(100, occB * 1.35);
+    const occDiff = (occB - occA).toFixed(1);
 
     const fshareA = sumA.revenue_all > 0 ? ((sumA.revenue_foreign / sumA.revenue_all) * 100).toFixed(1) : 0;
     const fshareB = sumB.revenue_all > 0 ? ((sumB.revenue_foreign / sumB.revenue_all) * 100).toFixed(1) : 0;
@@ -1402,33 +1512,35 @@ function initDualMapComparison() {
     const diffFsharePct = document.getElementById("diff-fshare-pct");
     const diffFshareSub = document.getElementById("diff-fshare-sub");
 
-    if (diffRevVal) diffRevVal.textContent = (revDiff >= 0 ? "+" : "") + formatShortCurrency(revDiff);
+    const dailySuffix = (dateInfoA.isDaily || dateInfoB.isDaily) ? "/วัน" : "";
+
+    if (diffRevVal) diffRevVal.textContent = (revDiff >= 0 ? "+" : "") + formatShortCurrency(revDiff) + dailySuffix;
     if (diffRevPct) {
       diffRevPct.textContent = `${revDiff >= 0 ? "+" : ""}${revPct}%`;
       diffRevPct.className = `diff-pct ${revDiff >= 0 ? "positive" : "negative"}`;
     }
-    if (diffRevSub) diffRevSub.textContent = `ปี ${sumA.year_thai} (${formatShortCurrency(sumA.revenue_all)}) → ปี ${sumB.year_thai} (${formatShortCurrency(sumB.revenue_all)})`;
+    if (diffRevSub) diffRevSub.textContent = `${dateInfoA.label} (${formatShortCurrency(rawRevA)}) → ${dateInfoB.label} (${formatShortCurrency(rawRevB)})`;
 
-    if (diffTourVal) diffTourVal.textContent = (tourDiff >= 0 ? "+" : "") + formatNumber(tourDiff) + " คน";
+    if (diffTourVal) diffTourVal.textContent = (tourDiff >= 0 ? "+" : "") + formatNumber(tourDiff) + " คน" + dailySuffix;
     if (diffTourPct) {
       diffTourPct.textContent = `${tourDiff >= 0 ? "+" : ""}${tourPct}%`;
       diffTourPct.className = `diff-pct ${tourDiff >= 0 ? "positive" : "negative"}`;
     }
-    if (diffTourSub) diffTourSub.textContent = `ปี ${sumA.year_thai} (${formatNumber(sumA.no_tourist_all)}) → ปี ${sumB.year_thai} (${formatNumber(sumB.no_tourist_all)} คน)`;
+    if (diffTourSub) diffTourSub.textContent = `${dateInfoA.label} (${formatNumber(rawTourA)}) → ${dateInfoB.label} (${formatNumber(rawTourB)} คน)`;
 
     if (diffOccVal) diffOccVal.textContent = `${occDiff >= 0 ? "+" : ""}${occDiff}%`;
     if (diffOccPct) {
       diffOccPct.textContent = occDiff >= 0 ? "ขยายตัว" : "หดตัว";
       diffOccPct.className = `diff-pct ${occDiff >= 0 ? "positive" : "negative"}`;
     }
-    if (diffOccSub) diffOccSub.textContent = `ปี ${sumA.year_thai} (${sumA.occupancy_rate}%) → ปี ${sumB.year_thai} (${sumB.occupancy_rate}%)`;
+    if (diffOccSub) diffOccSub.textContent = `${dateInfoA.label} (${occA.toFixed(1)}%) → ${dateInfoB.label} (${occB.toFixed(1)}%)`;
 
     if (diffFshareVal) diffFshareVal.textContent = `${fshareDiff >= 0 ? "+" : ""}${fshareDiff}%`;
     if (diffFsharePct) {
       diffFsharePct.textContent = fshareDiff >= 0 ? "เพิ่มขึ้น" : "ลดลง";
       diffFsharePct.className = `diff-pct ${fshareDiff >= 0 ? "positive" : "negative"}`;
     }
-    if (diffFshareSub) diffFshareSub.textContent = `ปี ${sumA.year_thai} (${fshareA}%) → ปี ${sumB.year_thai} (${fshareB}%)`;
+    if (diffFshareSub) diffFshareSub.textContent = `สัดส่วนต่างชาติ: ${fshareA}% → ${fshareB}%`;
 
     // Map Column Titles
     const mapAYearTitle = document.getElementById("map-a-year-title");
@@ -1436,14 +1548,20 @@ function initDualMapComparison() {
     const mapBYearTitle = document.getElementById("map-b-year-title");
     const mapBStatPill = document.getElementById("map-b-stat-pill");
 
-    if (mapAYearTitle) mapAYearTitle.textContent = `ประเทศไทย ปี ${sumA.year_thai}`;
-    if (mapAStatPill) mapAStatPill.textContent = `รวม: ${formatShortCurrency(sumA.revenue_all)}`;
-    if (mapBYearTitle) mapBYearTitle.textContent = `ประเทศไทย ปี ${sumB.year_thai}`;
-    if (mapBStatPill) mapBStatPill.textContent = `รวม: ${formatShortCurrency(sumB.revenue_all)}`;
+    if (mapAYearTitle) mapAYearTitle.textContent = `ประเทศไทย: ${dateInfoA.label}`;
+    if (mapAStatPill) mapAStatPill.textContent = `รวม: ${formatShortCurrency(rawRevA)}${dailySuffix}`;
+    if (mapBYearTitle) mapBYearTitle.textContent = `ประเทศไทย: ${dateInfoB.label}`;
+    if (mapBStatPill) mapBStatPill.textContent = `รวม: ${formatShortCurrency(rawRevB)}${dailySuffix}`;
   }
 
   yearASel?.addEventListener("change", updateDualMaps);
+  monthASel?.addEventListener("change", updateDualMaps);
+  dayASel?.addEventListener("change", updateDualMaps);
+
   yearBSel?.addEventListener("change", updateDualMaps);
+  monthBSel?.addEventListener("change", updateDualMaps);
+  dayBSel?.addEventListener("change", updateDualMaps);
+
   metricSel?.addEventListener("change", updateDualMaps);
 
   // Initial update
@@ -1643,6 +1761,7 @@ function setupViewSwitcher() {
   const hudContainer = document.getElementById("nasa-hud-panel-container");
   const hudTitle = document.getElementById("hud-panel-active-title");
   const hudCloseBtn = document.getElementById("hud-panel-close-btn");
+  const secDual = document.getElementById("sec-dual-compare");
 
   const secTrend = document.getElementById("sec-trend");
   const secGeo = document.getElementById("sec-geo");
@@ -1662,31 +1781,24 @@ function setupViewSwitcher() {
       }
     });
 
-    if (view === "orbit") {
-      // 3D Full Orbit Mode: Minimize HUD panels for full-screen exploration
-      if (hudContainer) hudContainer.classList.add("hud-collapsed");
-      if (window.focusThailand) window.focusThailand();
+    if (view === "dual-compare") {
+      // Show ONLY Thailand Dual Comparison Map; hide other sections
+      if (secDual) secDual.style.display = "flex";
+      if (hudContainer) hudContainer.style.display = "none";
+      secDual?.scrollIntoView({ behavior: "smooth", block: "start" });
+      invalidateAllLeafletMaps();
       return;
     }
 
-    // Open HUD panel drawer
-    if (hudContainer) hudContainer.classList.remove("hud-collapsed");
+    // Hide Dual Map Comparison when navigating to other sections via left dock
+    if (secDual) secDual.style.display = "none";
+    if (hudContainer) hudContainer.style.display = "flex";
 
     // Reset visibility & full-width
     allSections.forEach(s => {
       if (s) s.classList.remove("view-hidden", "view-full-width");
     });
     if (secKpis) secKpis.classList.remove("view-hidden");
-
-    if (view === "dual-compare") {
-      const secDual = document.getElementById("sec-dual-compare");
-      secDual?.scrollIntoView({ behavior: "smooth", block: "start" });
-      setTimeout(() => {
-        compareMapA?.invalidateSize();
-        compareMapB?.invalidateSize();
-      }, 150);
-      return;
-    }
 
     if (view === "overview") {
       if (hudTitle) hudTitle.textContent = "ภาพรวมตัวชี้วัดเศรษฐกิจท่องเที่ยวไทย (Overview KPIs)";
@@ -1699,10 +1811,14 @@ function setupViewSwitcher() {
     } else if (view === "geo") {
       if (hudTitle) hudTitle.textContent = "แผนที่สถิติการท่องเที่ยว 5 ภูมิภาค (CLO1: Geographical Visualization)";
       allSections.forEach(s => s?.classList.add("view-hidden"));
+      if (secKpis) secKpis.classList.add("view-hidden");
       secGeo?.classList.remove("view-hidden");
       secGeo?.classList.add("view-full-width");
       setTimeout(() => {
-        regionLeafletMap?.invalidateSize();
+        if (regionLeafletMap) {
+          regionLeafletMap.invalidateSize();
+          regionLeafletMap.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
+        }
       }, 150);
     } else if (view === "rank") {
       if (hudTitle) hudTitle.textContent = "เปรียบเทียบ 10 อันดับจังหวัด & การจัดกลุ่มเมือง (CLO1: Rankings & Tiers)";
@@ -1725,7 +1841,7 @@ function setupViewSwitcher() {
     }, 70);
   }
 
-  // Right Dock button clicks
+  // Left Dock button clicks
   dockButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const view = btn.getAttribute("data-view");
@@ -1733,25 +1849,9 @@ function setupViewSwitcher() {
     });
   });
 
-  // Minimize HUD to 3D Orbit
+  // Close HUD button -> return to dual-compare
   hudCloseBtn?.addEventListener("click", () => {
     setActiveView("dual-compare");
-  });
-
-  // Telemetry HUD card buttons
-  document.getElementById("btn-focus-thailand")?.addEventListener("click", () => {
-    setActiveView("dual-compare");
-    if (window.focusThailand) window.focusThailand();
-  });
-
-  document.getElementById("btn-open-overview")?.addEventListener("click", () => {
-    setActiveView("overview");
-  });
-
-  // Toggle minimize/expand telemetry card
-  document.getElementById("btn-toggle-telemetry")?.addEventListener("click", () => {
-    const hudCard = document.getElementById("thailand-telemetry-hud");
-    hudCard?.classList.toggle("collapsed");
   });
 
   // Left Dock Storytelling button
@@ -1764,13 +1864,10 @@ function setupViewSwitcher() {
     }
   });
 
-  // Default to 3D Orbit view so space globe is 100% visible and unblocked
+  // Default to dual-compare view: ONLY Thailand Map is displayed on load
   setActiveView("dual-compare");
 }
 
-// ==========================================
-// 13. CHART RESIZE UTILITY
-// ==========================================
 function resizeAllCharts() {
   trendChartInstance?.resize();
   categoryChartInstance?.resize();
