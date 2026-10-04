@@ -1087,33 +1087,74 @@ function init3DCardTilt() {
 }
 
 // ==========================================
-// 11. CLEAN GLOWING MOUSE AURA (NON-CLUTTERED)
+// 11. NEON CURSOR INITIALIZER (HARDWARE-ACCELERATED)
 // ==========================================
 function initCustomCursor() {
-  const glow = document.getElementById("cursor-glow");
-  if (!glow) return;
-
-  let mouseX = -500;
-  let mouseY = -500;
-  let glowX = -500;
-  let glowY = -500;
-
-  window.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-
-  function renderCursorGlow() {
-    glowX += (mouseX - glowX) * 0.15;
-    glowY += (mouseY - glowY) * 0.15;
-    glow.style.transform = `translate(${glowX}px, ${glowY}px)`;
-    requestAnimationFrame(renderCursorGlow);
-  }
-  requestAnimationFrame(renderCursorGlow);
+  // Cursor is rendered via native GPU-accelerated SVG in CSS for instant 144Hz+ response
 }
 
 // ==========================================
-// 12. CHART RESIZE UTILITY
+// 12. 144 FPS VIEW SWITCHER (CATEGORY SELECTOR)
+// ==========================================
+function setupViewSwitcher() {
+  const buttons = document.querySelectorAll(".switcher-btn");
+  const secTrend = document.getElementById("sec-trend");
+  const secGeo = document.getElementById("sec-geo");
+  const secComp = document.getElementById("sec-comparison");
+  const secTiers = document.getElementById("sec-tiers");
+  const secTable = document.getElementById("sec-table");
+  const secKpis = document.getElementById("sec-kpis");
+
+  const allSections = [secTrend, secGeo, secComp, secTiers, secTable];
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      buttons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const view = btn.getAttribute("data-view");
+
+      // Reset visibility & full width
+      allSections.forEach(s => {
+        if (s) {
+          s.classList.remove("view-hidden", "view-full-width");
+        }
+      });
+      if (secKpis) secKpis.classList.remove("view-hidden");
+
+      if (view === "all") {
+        // Show all normally
+      } else if (view === "trend") {
+        allSections.forEach(s => s?.classList.add("view-hidden"));
+        secTrend?.classList.remove("view-hidden");
+        secTrend?.classList.add("view-full-width");
+        secTrend?.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else if (view === "geo") {
+        allSections.forEach(s => s?.classList.add("view-hidden"));
+        secGeo?.classList.remove("view-hidden");
+        secGeo?.classList.add("view-full-width");
+        secGeo?.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else if (view === "rank") {
+        allSections.forEach(s => s?.classList.add("view-hidden"));
+        secComp?.classList.remove("view-hidden");
+        secTiers?.classList.remove("view-hidden");
+        secComp?.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else if (view === "table") {
+        allSections.forEach(s => s?.classList.add("view-hidden"));
+        secTable?.classList.remove("view-hidden");
+        secTable?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      // Instant chart resize
+      setTimeout(() => {
+        resizeAllCharts();
+      }, 60);
+    });
+  });
+}
+
+// ==========================================
+// 13. CHART RESIZE UTILITY
 // ==========================================
 function resizeAllCharts() {
   trendChartInstance?.resize();
