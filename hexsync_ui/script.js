@@ -674,93 +674,114 @@ window.openLiveWebsite = async function(url) {
   } catch (e) {}
 };
 
+const clientReposCache = {};
+
+function renderRepoCards(repos, username) {
+  repoCountLabel.textContent = `พบ ${repos.length} Repositories ใน @${username}`;
+  githubReposList.innerHTML = repos.map(r => {
+    const cloneUrl = r.clone_url || `https://github.com/${r.full_name || (username + '/' + r.name)}.git`;
+    const branch = r.default_branch || 'main';
+    const isVercelConnected = !!r.vercel_connected;
+    const vercelUrl = r.vercel_url || `https://${r.name.toLowerCase().replace(/_/g, '')}.vercel.app`;
+    const importUrl = r.vercel_import_url || `https://vercel.com/new/import?s=https://github.com/${encodeURIComponent(username)}/${encodeURIComponent(r.name)}`;
+
+    return `
+      <div class="repo-card ${isVercelConnected ? 'vercel-active' : ''}">
+        <div class="repo-top">
+          <div class="repo-name">
+            <span>📦</span>
+            <span>${escapeHtml(r.name)}</span>
+          </div>
+          <div class="repo-desc">${escapeHtml(r.description)}</div>
+        </div>
+
+        <div class="repo-meta">
+          <span class="repo-badge branch-badge">🌿 ${escapeHtml(branch)}</span>
+          <span class="repo-badge">💻 ${escapeHtml(r.language)}</span>
+          ${r.stars > 0 ? `<span class="repo-badge">⭐ ${r.stars}</span>` : ''}
+          <span class="repo-badge">🕒 ${escapeHtml(r.updated_at)}</span>
+        </div>
+
+        <!-- สถานะ Vercel -->
+        <div class="repo-vercel-box ${isVercelConnected ? 'is-connected' : 'is-unconnected'}">
+          <div class="vercel-box-header">
+            <span class="vercel-dot ${isVercelConnected ? 'dot-live' : 'dot-off'}"></span>
+            <span class="vercel-box-title">${isVercelConnected ? 'เชื่อมกับ VERCEL แล้ว (LIVE)' : 'ยังไม่ได้เชื่อมต่อกับ VERCEL'}</span>
+          </div>
+          ${isVercelConnected ? `
+            <div class="vercel-url-preview" onclick="openLiveWebsite('${escapeHtml(vercelUrl)}')" title="คลิกเพื่อเข้าสู่เว็บจริง: ${escapeHtml(vercelUrl)}">
+              <span class="v-url-icon">🌐</span>
+              <span class="v-url-text">${escapeHtml(vercelUrl.replace('https://', ''))}</span>
+              <span class="v-jump-arrow">↗</span>
+            </div>
+          ` : `
+            <div class="vercel-empty-hint">ยังไม่มีการ Deploy บน Vercel</div>
+          `}
+        </div>
+
+        <!-- ปุ่มการทำงาน -->
+        <div class="repo-card-actions">
+          <button class="repo-use-btn" title="กำหนดให้โปรเจกต์ปัจจุบันเชื่อมกับ Repo นี้" onclick="selectRepoForActiveProject('${escapeHtml(cloneUrl)}', '${escapeHtml(branch)}', '${escapeHtml(r.name)}')">
+            <span>🔗 เชื่อมกับโปรเจกต์นี้</span>
+          </button>
+          ${isVercelConnected ? `
+            <button class="repo-live-btn" title="เด้งเปิดหน้าเว็บจริงบน Vercel ทันที" onclick="openLiveWebsite('${escapeHtml(vercelUrl)}')">
+              <span class="btn-live-icon">🚀</span>
+              <span>เข้าสู่เว็บจริง</span>
+              <span class="btn-jump-arrow">↗</span>
+            </button>
+          ` : `
+            <button class="repo-vercel-btn" title="เปิดหน้า Vercel เพื่อเชื่อมต่อกับ Repo นี้" onclick="openLiveWebsite('${escapeHtml(importUrl)}')">
+              <span class="btn-live-icon">▲</span>
+              <span>เชื่อมต่อ Vercel</span>
+              <span class="btn-jump-arrow">↗</span>
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 async function fetchGithubRepos() {
-  const username = (githubUsernameInput.value || 'daimond33140').trim();
+  const rawInput = githubUsernameInput ? githubUsernameInput.value : '';
+  const username = (rawInput || 'daimond33140').trim();
   if (!username) return;
 
   playCyberSound('click');
-  githubReposList.innerHTML = '<div class="empty-state">⏳ กำลังตรวจสอบ Repositories และสถานะ Vercel...</div>';
-  repoCountLabel.textContent = 'กำลังตรวจสอบ...';
+
+  // If already in client cache, render immediately without waiting!
+  if (clientReposCache[username.toLowerCase()] && clientReposCache[username.toLowerCase()].length > 0) {
+    renderRepoCards(clientReposCache[username.toLowerCase()], username);
+  } else {
+    githubReposList.innerHTML = '<div class="empty-state">⏳ กำลังตรวจสอบ Repositories และสถานะ Vercel...</div>';
+    repoCountLabel.textContent = 'กำลังตรวจสอบ...';
+  }
 
   try {
     const res = await fetch(`/api/github_repos?username=${encodeURIComponent(username)}`);
     const data = await res.json();
 
-    if (!data.success || !data.repos || data.repos.length === 0) {
-      githubReposList.innerHTML = `<div class="empty-state">❌ ไม่พบ Repositories ในบัญชี "${escapeHtml(username)}"</div>`;
-      repoCountLabel.textContent = 'พบ 0 Repositories';
-      return;
+    if (data.success && data.repos && data.repos.length > 0) {
+      playCyberSound('success');
+      clientReposCache[username.toLowerCase()] = data.repos;
+      renderRepoCards(data.repos, data.username || username);
+    } else {
+      if (clientReposCache[username.toLowerCase()]) {
+        // Keep showing cached data
+        renderRepoCards(clientReposCache[username.toLowerCase()], username);
+      } else {
+        githubReposList.innerHTML = `<div class="empty-state">❌ ไม่พบ Repositories ในบัญชี "${escapeHtml(username)}"</div>`;
+        repoCountLabel.textContent = 'พบ 0 Repositories';
+      }
     }
-
-    playCyberSound('success');
-    repoCountLabel.textContent = `พบ ${data.repos.length} Repositories ใน @${data.username}`;
-
-    githubReposList.innerHTML = data.repos.map(r => {
-      const cloneUrl = r.clone_url || `https://github.com/${r.full_name}.git`;
-      const branch = r.default_branch || 'main';
-      const isVercelConnected = !!r.vercel_connected;
-      const vercelUrl = r.vercel_url || `https://${r.name.toLowerCase().replace(/_/g, '-')}.vercel.app`;
-      const importUrl = r.vercel_import_url || `https://vercel.com/new/import?s=https://github.com/${encodeURIComponent(username)}/${encodeURIComponent(r.name)}`;
-
-      return `
-        <div class="repo-card ${isVercelConnected ? 'vercel-active' : ''}">
-          <div class="repo-top">
-            <div class="repo-name">
-              <span>📦</span>
-              <span>${escapeHtml(r.name)}</span>
-            </div>
-            <div class="repo-desc">${escapeHtml(r.description)}</div>
-          </div>
-
-          <div class="repo-meta">
-            <span class="repo-badge branch-badge">🌿 ${escapeHtml(branch)}</span>
-            <span class="repo-badge">💻 ${escapeHtml(r.language)}</span>
-            ${r.stars > 0 ? `<span class="repo-badge">⭐ ${r.stars}</span>` : ''}
-            <span class="repo-badge">🕒 ${escapeHtml(r.updated_at)}</span>
-          </div>
-
-          <!-- สถานะ Vercel -->
-          <div class="repo-vercel-box ${isVercelConnected ? 'is-connected' : 'is-unconnected'}">
-            <div class="vercel-box-header">
-              <span class="vercel-dot ${isVercelConnected ? 'dot-live' : 'dot-off'}"></span>
-              <span class="vercel-box-title">${isVercelConnected ? 'เชื่อมกับ VERCEL แล้ว (LIVE)' : 'ยังไม่ได้เชื่อมต่อกับ VERCEL'}</span>
-            </div>
-            ${isVercelConnected ? `
-              <div class="vercel-url-preview" onclick="openLiveWebsite('${escapeHtml(vercelUrl)}')" title="คลิกเพื่อเข้าสู่เว็บจริง: ${escapeHtml(vercelUrl)}">
-                <span class="v-url-icon">🌐</span>
-                <span class="v-url-text">${escapeHtml(vercelUrl.replace('https://', ''))}</span>
-                <span class="v-jump-arrow">↗</span>
-              </div>
-            ` : `
-              <div class="vercel-empty-hint">ยังไม่มีการ Deploy บน Vercel</div>
-            `}
-          </div>
-
-          <!-- ปุ่มการทำงาน -->
-          <div class="repo-card-actions">
-            <button class="repo-use-btn" title="กำหนดให้โปรเจกต์ปัจจุบันเชื่อมกับ Repo นี้" onclick="selectRepoForActiveProject('${escapeHtml(cloneUrl)}', '${escapeHtml(branch)}', '${escapeHtml(r.name)}')">
-              <span>🔗 เชื่อมกับโปรเจกต์นี้</span>
-            </button>
-            ${isVercelConnected ? `
-              <button class="repo-live-btn" title="เด้งเปิดหน้าเว็บจริงบน Vercel ทันที" onclick="openLiveWebsite('${escapeHtml(vercelUrl)}')">
-                <span class="btn-live-icon">🚀</span>
-                <span>เข้าสู่เว็บจริง</span>
-                <span class="btn-jump-arrow">↗</span>
-              </button>
-            ` : `
-              <button class="repo-vercel-btn" title="เปิดหน้า Vercel เพื่อเชื่อมต่อกับ Repo นี้" onclick="openLiveWebsite('${escapeHtml(importUrl)}')">
-                <span class="btn-live-icon">▲</span>
-                <span>เชื่อมต่อ Vercel</span>
-                <span class="btn-jump-arrow">↗</span>
-              </button>
-            `}
-          </div>
-        </div>
-      `;
-    }).join('');
   } catch (err) {
     console.error('Fetch github repos error:', err);
-    githubReposList.innerHTML = '<div class="empty-state">⚠️ ไม่สามารถเชื่อมต่อกับ GitHub ได้</div>';
+    if (clientReposCache[username.toLowerCase()]) {
+      renderRepoCards(clientReposCache[username.toLowerCase()], username);
+    } else {
+      githubReposList.innerHTML = '<div class="empty-state">⚠️ ไม่สามารถเชื่อมต่อกับ GitHub ได้</div>';
+    }
   }
 }
 

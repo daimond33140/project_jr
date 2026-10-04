@@ -254,6 +254,56 @@ def check_repo_vercel(owner, repo_name):
     _vercel_cache_time[cache_key] = now
     return res
 
+_github_repos_cache = {}
+_github_repos_cache_time = {}
+
+def scrape_github_profile_repos(username):
+    url = f"https://github.com/{username}?tab=repositories"
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+    doc = urllib.request.urlopen(req, timeout=10).read().decode("utf-8")
+    
+    names = re.findall(r'itemprop="name codeRepository"[^>]*>\s*([^\s<]+)', doc)
+    seen = set()
+    clean_names = []
+    for n in names:
+        n_clean = n.strip()
+        if n_clean and n_clean not in seen:
+            seen.add(n_clean)
+            clean_names.append(n_clean)
+
+    repos = []
+    import html as html_module
+    for name in clean_names:
+        desc = "Repository บน GitHub"
+        lang = "General"
+        
+        pattern_desc = rf'href="/{username}/{name}"[\s\S]*?itemprop="description">\s*([^<]+)'
+        m_desc = re.search(pattern_desc, doc)
+        if m_desc:
+            desc = html_module.unescape(m_desc.group(1).strip())
+
+        pattern_lang = rf'href="/{username}/{name}"[\s\S]*?itemprop="programmingLanguage">\s*([^<]+)'
+        m_lang = re.search(pattern_lang, doc)
+        if m_lang:
+            lang = m_lang.group(1).strip()
+
+        branch = "main"
+        if name in ("Web-Hunter", "Shinon"):
+            branch = "master"
+
+        repos.append({
+            "name": name,
+            "full_name": f"{username}/{name}",
+            "html_url": f"https://github.com/{username}/{name}",
+            "clone_url": f"https://github.com/{username}/{name}.git",
+            "description": desc,
+            "default_branch": branch,
+            "language": lang,
+            "stars": 0,
+            "updated_at": "Active"
+        })
+    return repos
+
 def ensure_git_setup(proj):
     cwd = proj["path"]
     if not os.path.exists(cwd):
@@ -456,37 +506,24 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
             username = query.get("username", ["daimond33140"])[0].strip()
             if not username:
                 username = "daimond33140"
+
+            now = time.time()
+            u_key = username.lower()
+            if u_key in _github_repos_cache and (now - _github_repos_cache_time.get(u_key, 0)) < 600:
+                self._send_json({"success": True, "username": username, "repos": _github_repos_cache[u_key]})
+                return
+
+            raw_repos = []
+            # Layer 1: GitHub REST API
             try:
                 url = f"https://api.github.com/users/{username}/repos?sort=updated&per_page=100"
                 req = urllib.request.Request(url, headers={"User-Agent": "HexSyncTH-Desktop/2.0"})
-                with urllib.request.urlopen(req, timeout=12) as response:
+                with urllib.request.urlopen(req, timeout=5) as response:
                     raw_data = response.read().decode("utf-8")
                     repos_json = json.loads(raw_data)
-
-                    # Concurrently check Vercel status for top repos
-                    vercel_map = {}
-                    repos_to_check = [r.get("name") for r in repos_json[:20] if r.get("name")]
-                    try:
-                        with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
-                            future_to_repo = {
-                                executor.submit(check_repo_vercel, username, r_name): r_name
-                                for r_name in repos_to_check
-                            }
-                            for future in concurrent.futures.as_completed(future_to_repo, timeout=5.0):
-                                r_name = future_to_repo[future]
-                                try:
-                                    vercel_map[r_name] = future.result()
-                                except Exception:
-                                    vercel_map[r_name] = {"connected": False, "status": "NOT_CONNECTED", "url": None}
-                    except Exception:
-                        pass
-
-                    clean_repos = []
                     for r in repos_json:
-                        r_name = r.get("name", "")
-                        v_info = vercel_map.get(r_name, {"connected": False, "status": "NOT_CONNECTED", "url": None})
-                        clean_repos.append({
-                            "name": r_name,
+                        raw_repos.append({
+                            "name": r.get("name"),
                             "full_name": r.get("full_name"),
                             "html_url": r.get("html_url"),
                             "clone_url": r.get("clone_url"),
@@ -494,15 +531,44 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
                             "default_branch": r.get("default_branch") or "main",
                             "language": r.get("language") or "General",
                             "stars": r.get("stargazers_count", 0),
-                            "updated_at": r.get("updated_at", "")[:10],
-                            "vercel_connected": v_info.get("connected", False),
-                            "vercel_status": v_info.get("status", "NOT_CONNECTED"),
-                            "vercel_url": v_info.get("url"),
-                            "vercel_import_url": f"https://vercel.com/new/import?s=https://github.com/{username}/{r_name}"
+                            "updated_at": r.get("updated_at", "")[:10]
                         })
-                    self._send_json({"success": True, "username": username, "repos": clean_repos})
             except Exception as e:
-                self._send_json({"success": False, "error": str(e), "repos": []})
+                log_event(f"⚠️ GitHub API ({e}) — กำลังใช้ Fallback ดึงข้อมูล Repositories...", "warn")
+
+            # Layer 2: Fallback to GitHub Web Profile scraping
+            if not raw_repos:
+                try:
+                    raw_repos = scrape_github_profile_repos(username)
+                    if raw_repos:
+                        log_event(f"✨ Fallback สำเร็จ: พบ {len(raw_repos)} Repositories ของ @{username}", "success")
+                except Exception as e:
+                    log_event(f"❌ Fallback scrape error: {e}", "error")
+
+            # Layer 3: Use older cache if available
+            if not raw_repos and u_key in _github_repos_cache:
+                raw_repos = _github_repos_cache[u_key]
+
+            if not raw_repos:
+                self._send_json({"success": False, "error": "ไม่พบ Repositories หรือติด Rate Limit ของ GitHub", "repos": []})
+                return
+
+            # Attach Vercel status for each repo
+            clean_repos = []
+            for r in raw_repos:
+                r_name = r.get("name", "")
+                v_info = check_repo_vercel(username, r_name)
+                clean_repos.append({
+                    **r,
+                    "vercel_connected": v_info.get("connected", False),
+                    "vercel_status": v_info.get("status", "NOT_CONNECTED"),
+                    "vercel_url": v_info.get("url"),
+                    "vercel_import_url": f"https://vercel.com/new/import?s=https://github.com/{username}/{r_name}"
+                })
+
+            _github_repos_cache[u_key] = clean_repos
+            _github_repos_cache_time[u_key] = now
+            self._send_json({"success": True, "username": username, "repos": clean_repos})
 
         elif parsed.path == "/api/config":
             self.send_response(200)
