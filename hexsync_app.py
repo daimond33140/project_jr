@@ -116,6 +116,13 @@ def get_active_project():
             return config_data["projects"][0]
         return None
 
+def safe_print(*args, **kwargs):
+    try:
+        if sys.stdout is not None:
+            print(*args, **kwargs)
+    except Exception:
+        pass
+
 def log_event(message, level="info"):
     now_str = datetime.datetime.now().strftime("%H:%M:%S")
     with state_lock:
@@ -126,7 +133,7 @@ def log_event(message, level="info"):
         })
         if len(app_state["logs"]) > 200:
             app_state["logs"] = app_state["logs"][-200:]
-    print(f"[{now_str}] [{level.upper()}] {message}")
+    safe_print(f"[{now_str}] [{level.upper()}] {message}")
 
 def run_git_in_path(args, cwd):
     if not os.path.exists(cwd):
