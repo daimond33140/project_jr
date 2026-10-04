@@ -1656,3 +1656,111 @@ button, a, select, input, [role="button"], .switcher-btn, .kpi-card, .btn, .map-
   }
 }
 
+/* ==========================================================================
+   18. 144 FPS VIEW SWITCHER BAR (SEPARATE VIEW SELECTOR)
+   ========================================================================== */
+
+.view-switcher-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 1.25rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  position: relative;
+  z-index: 3;
+}
+
+.switcher-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.switcher-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.switcher-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.15s cubic-bezier(0.2, 0, 0, 1);
+  outline: none;
+}
+
+.switcher-btn:hover {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+  transform: translateY(-1px);
+}
+
+.switcher-btn.active {
+  background: linear-gradient(135deg, #0284c7, #2563eb);
+  color: #ffffff;
+  border-color: rgba(56, 189, 248, 0.8);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+}
+
+.f12-hint-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.25rem 0.65rem;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+.f12-hint-badge kbd {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 0.7rem;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+/* Visibility states for 144 FPS view mode */
+.view-hidden {
+  display: none !important;
+}
+
+.view-full-width {
+  grid-column: span 12 !important;
+}
+
+.view-full-width .geo-wrapper {
+  height: 480px;
+}
+
+.view-full-width .thailand-map-svg-container {
+  height: 460px;
+}
+
+
