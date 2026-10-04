@@ -1044,6 +1044,23 @@ function runPreloader() {
     }
   }, 26);
 
+  // Safety fail-safe: Ensure preloader NEVER stays stuck at 0%
+  setTimeout(() => {
+    if (currentPercent < 100) {
+      currentPercent = 100;
+      barFill.style.width = "100%";
+      percentVal.textContent = "100%";
+      if (statusText) statusText.textContent = "DATA READY // กรุณากดยืนยันเพื่อเข้าสู่การนำเสนอ (CLICK ENTER TO PROCEED)";
+      if (actionsBox) actionsBox.classList.add("ready");
+      if (window.lucide) window.lucide.createIcons();
+      if (enterBtn) {
+        enterBtn.onclick = () => {
+          finishPreloader();
+        };
+      }
+    }
+  }, 2200);
+
   function finishPreloader() {
     preloader.classList.add("revealed");
     setTimeout(() => {
