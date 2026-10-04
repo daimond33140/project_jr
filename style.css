@@ -1570,25 +1570,52 @@ body.loading-active {
 .btn-enter-presentation {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.9rem 2.2rem;
-  background: linear-gradient(135deg, #0284c7, #2563eb);
-  color: #ffffff;
-  border: 1px solid rgba(56, 189, 248, 0.6);
+  gap: 0.85rem;
+  padding: 1.05rem 2.6rem;
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #4f46e5 100%);
+  color: #ffffff !important;
+  border: 2px solid rgba(255, 255, 255, 0.9);
   border-radius: 9999px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.95rem;
+  font-family: 'Prompt', 'Space Grotesk', sans-serif;
+  font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   cursor: pointer;
-  box-shadow: 0 0 30px rgba(56, 189, 248, 0.45);
+  box-shadow: 0 0 35px rgba(56, 189, 248, 0.8), 0 0 15px rgba(255, 255, 255, 0.4);
   transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+  animation: enterPulseGlow 2s infinite alternate;
+}
+
+@keyframes enterPulseGlow {
+  0% {
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.6), 0 0 10px rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.75);
+  }
+  100% {
+    box-shadow: 0 0 45px rgba(56, 189, 248, 0.95), 0 0 25px rgba(99, 102, 241, 0.8);
+    border-color: #ffffff;
+  }
 }
 
 .btn-enter-presentation:hover {
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 0 50px rgba(56, 189, 248, 0.75);
+  transform: scale(1.05) translateY(-3px);
+  background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 50%, #6366f1 100%);
+  box-shadow: 0 0 55px rgba(56, 189, 248, 1), 0 0 30px rgba(255, 255, 255, 0.9);
   border-color: #ffffff;
+}
+
+.enter-btn-label {
+  color: #ffffff !important;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  font-size: 1.05rem;
+}
+
+.btn-icon-left, .btn-arrow {
+  color: #ffffff !important;
+  width: 20px;
+  height: 20px;
 }
 
 /* Split Curtains Reveal */
@@ -1630,32 +1657,6 @@ body.loading-active {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-}
-
-/* ==========================================================================
-   17. REPLAY INTRO BUTTON & ZAJNO HEADER BADGES
-   ========================================================================== */
-
-.btn-replay-intro {
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  color: #38bdf8;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.85rem;
-  border-radius: var(--radius-md);
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-replay-intro:hover {
-  background: rgba(56, 189, 248, 0.25);
-  border-color: #38bdf8;
-  transform: translateY(-1px);
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
 }
 
 @media (max-width: 640px) {
