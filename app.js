@@ -1012,15 +1012,11 @@ function runPreloader() {
     if (currentPercent >= 100) {
       clearInterval(preloaderTimer);
       if (actionsBox) actionsBox.classList.add("ready");
+      if (statusText) statusText.textContent = "DATA READY // กรุณากดยืนยันเพื่อเข้าสู่การนำเสนอ (CLICK ENTER TO PROCEED)";
 
-      // Auto dismiss after 800ms or on click
-      const autoDismiss = setTimeout(() => {
-        finishPreloader();
-      }, 850);
-
+      // Do NOT auto dismiss - wait for user click confirmation
       if (enterBtn) {
         enterBtn.onclick = () => {
-          clearTimeout(autoDismiss);
           finishPreloader();
         };
       }
@@ -1035,10 +1031,6 @@ function runPreloader() {
       resizeAllCharts();
     }, 900);
   }
-}
-
-function replayPresentationIntro() {
-  runPreloader();
 }
 
 // ==========================================
