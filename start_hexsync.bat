@@ -6,7 +6,11 @@ echo =========================================================
 echo    HexSyncTH Auto Sync - Next-Gen Deployment Engine
 echo =========================================================
 echo.
-echo  [*] Starting Cyberpunk UI and Background Git Watcher...
-echo.
-python hexsync_app.py
+if exist "HexSyncTH_AutoSync.exe" (
+    echo  [*] Starting Standalone Executable (HexSyncTH_AutoSync.exe)...
+    HexSyncTH_AutoSync.exe
+) else (
+    echo  [*] Starting Python Engine (hexsync_app.py)...
+    python hexsync_app.py
+)
 pause
