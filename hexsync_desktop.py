@@ -539,35 +539,38 @@ class HexSyncApp(ctk.CTk):
         self.status_pill.grid(row=0, column=2, padx=16, pady=12, sticky="e")
 
     def create_dashboard(self):
-        dash = ctk.CTkFrame(self, fg_color="#161a23", corner_radius=0)
-        dash.grid(row=1, column=0, sticky="ew", padx=16, pady=(12, 6))
-        dash.grid_columnconfigure((0, 1, 2, 3), weight=1)
+        dash = ctk.CTkFrame(self, fg_color="#161a23", corner_radius=10)
+        dash.grid(row=1, column=0, sticky="ew", padx=16, pady=(10, 6))
+        dash.grid_columnconfigure(0, weight=1)
 
-        # 4 Metric Cards
-        self.card_status = self.make_metric_card(dash, 0, "SYSTEM STATUS", "ARMED", "#00d2ff")
-        self.card_syncs = self.make_metric_card(dash, 1, "TOTAL SYNCS", "0", "#2ea043")
-        self.card_pending = self.make_metric_card(dash, 2, "PENDING CHANGES", "0 files", "#e3b341")
-        self.card_last = self.make_metric_card(dash, 3, "LAST SYNC", "--:--:--", "#a371f7")
+        # Row 0: 4 Metric Cards
+        cards_row = ctk.CTkFrame(dash, fg_color="transparent")
+        cards_row.grid(row=0, column=0, sticky="ew", padx=8, pady=(8, 4))
+        cards_row.grid_columnconfigure((0, 1, 2, 3), weight=1)
 
-        # Project Selector Strip & Action Buttons
-        strip = ctk.CTkFrame(self, fg_color="#1c202c", corner_radius=8)
-        strip.grid(row=1, column=0, sticky="ew", padx=16, pady=(110, 6))
+        self.card_status = self.make_metric_card(cards_row, 0, "SYSTEM STATUS", "ARMED", "#00d2ff")
+        self.card_syncs = self.make_metric_card(cards_row, 1, "TOTAL SYNCS", "0", "#2ea043")
+        self.card_pending = self.make_metric_card(cards_row, 2, "PENDING CHANGES", "0 ไฟล์", "#e3b341")
+        self.card_last = self.make_metric_card(cards_row, 3, "LAST SYNC", "--:--:--", "#a371f7")
+
+        # Row 1: Project Selector Strip & Action Buttons
+        strip = ctk.CTkFrame(dash, fg_color="#1c202c", corner_radius=8)
+        strip.grid(row=1, column=0, sticky="ew", padx=8, pady=4)
         strip.grid_columnconfigure(1, weight=1)
 
         # Project Dropdown Selector
-        ctk.CTkLabel(strip, text="📁 โปรเจกต์:", font=ctk.CTkFont(size=12, weight="bold")).grid(row=0, column=0, padx=(12, 6), pady=10)
+        ctk.CTkLabel(strip, text="📁 โปรเจกต์:", font=ctk.CTkFont(size=12, weight="bold")).grid(row=0, column=0, padx=(12, 6), pady=8)
         self.project_combo = ctk.CTkComboBox(
             strip, 
             values=self.get_project_titles(), 
-            width=260, 
+            width=280, 
             command=self.on_project_selected
         )
-        self.project_combo.grid(row=0, column=1, sticky="w", padx=0, pady=10)
-        self.set_current_combo_value()
+        self.project_combo.grid(row=0, column=1, sticky="w", padx=0, pady=8)
 
         # Action Buttons
         btn_box = ctk.CTkFrame(strip, fg_color="transparent")
-        btn_box.grid(row=0, column=2, padx=12, pady=10, sticky="e")
+        btn_box.grid(row=0, column=2, padx=8, pady=8, sticky="e")
 
         self.btn_sync = ctk.CTkButton(
             btn_box,
@@ -575,7 +578,7 @@ class HexSyncApp(ctk.CTk):
             font=ctk.CTkFont(size=12, weight="bold"),
             fg_color="#238636",
             hover_color="#2ea043",
-            width=120,
+            width=115,
             command=self.trigger_manual_sync
         )
         self.btn_sync.pack(side="left", padx=4)
@@ -586,7 +589,7 @@ class HexSyncApp(ctk.CTk):
             font=ctk.CTkFont(size=12),
             fg_color="#30363d",
             hover_color="#484f58",
-            width=90,
+            width=85,
             command=self.toggle_watching
         )
         self.btn_pause.pack(side="left", padx=4)
@@ -597,9 +600,9 @@ class HexSyncApp(ctk.CTk):
             font=ctk.CTkFont(size=12),
             fg_color="#21262d",
             hover_color="#30363d",
-            width=105,
+            width=100,
             command=self.open_current_folder
-        ) .pack(side="left", padx=4)
+        ).pack(side="left", padx=4)
 
         ctk.CTkButton(
             btn_box,
@@ -607,7 +610,7 @@ class HexSyncApp(ctk.CTk):
             font=ctk.CTkFont(size=12),
             fg_color="#21262d",
             hover_color="#30363d",
-            width=110,
+            width=105,
             command=self.open_current_repo
         ).pack(side="left", padx=4)
 
@@ -621,9 +624,9 @@ class HexSyncApp(ctk.CTk):
             command=self.open_manage_dialog
         ).pack(side="left", padx=4)
 
-        # Sub-bar: Project Path & Debounce Countdown Bar
-        meta_strip = ctk.CTkFrame(self, fg_color="#141720", corner_radius=6)
-        meta_strip.grid(row=1, column=0, sticky="ew", padx=16, pady=(170, 6))
+        # Row 2: Sub-bar: Project Path & Debounce Countdown Bar
+        meta_strip = ctk.CTkFrame(dash, fg_color="#141720", corner_radius=6)
+        meta_strip.grid(row=2, column=0, sticky="ew", padx=8, pady=(4, 8))
         meta_strip.grid_columnconfigure(1, weight=1)
 
         self.lbl_path_info = ctk.CTkLabel(
@@ -638,6 +641,8 @@ class HexSyncApp(ctk.CTk):
         self.progress_bar = ctk.CTkProgressBar(meta_strip, height=8, corner_radius=4, progress_color="#00d2ff")
         self.progress_bar.grid(row=0, column=1, padx=(10, 12), pady=6, sticky="ew")
         self.progress_bar.set(0.0)
+
+        self.set_current_combo_value()
 
     def make_metric_card(self, parent, col, title, initial_val, color):
         card = ctk.CTkFrame(parent, fg_color="#1d222e", corner_radius=8)
