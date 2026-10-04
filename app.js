@@ -500,7 +500,7 @@ function initRegionDonutChart() {
 let regionLeafletMap = null;
 let regionGeoLayer = null;
 
-function renderGeoMap() {
+async function renderGeoMap() {
   const mapContainer = document.getElementById("thailand-region-leaflet");
   const rankingList = document.getElementById("region-ranking-list");
   if (!mapContainer || !rankingList) return;
@@ -554,7 +554,7 @@ function renderGeoMap() {
     "east": "#10b981"
   };
 
-  const geoData = window.THAILAND_GEOJSON;
+  const geoData = await getThailandGeoJSON();
   if (!geoData) return;
 
   if (regionGeoLayer) {
@@ -1049,7 +1049,8 @@ function runPreloader() {
       preloader.classList.add("preloader-hidden");
       document.body.classList.remove("loading-active");
       resizeAllCharts();
-    }, 900);
+      invalidateAllLeafletMaps();
+    }, 600);
   }
 }
 
@@ -1079,6 +1080,39 @@ let geoLayerB = null;
 let provinceLayersA = {};
 let provinceLayersB = {};
 let pmodalChartInstance = null;
+
+async function getThailandGeoJSON() {
+  if (window.THAILAND_GEOJSON && window.THAILAND_GEOJSON.features) {
+    return window.THAILAND_GEOJSON;
+  }
+  try {
+    const res = await fetch('thailand.json?v=20261004_v3');
+    const data = await res.json();
+    window.THAILAND_GEOJSON = data;
+    return data;
+  } catch (err) {
+    console.error("Error loading GeoJSON:", err);
+    return null;
+  }
+}
+
+function invalidateAllLeafletMaps() {
+  setTimeout(() => {
+    if (compareMapA) {
+      compareMapA.invalidateSize();
+      compareMapA.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
+    }
+    if (compareMapB) {
+      compareMapB.invalidateSize();
+      compareMapB.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
+    }
+    if (regionLeafletMap) {
+      regionLeafletMap.invalidateSize();
+      regionLeafletMap.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
+    }
+  }, 100);
+}
+
 
 function initDualMapComparison() {
   const containerA = document.getElementById("thailand-leaflet-a");
@@ -1147,8 +1181,9 @@ function initDualMapComparison() {
     const metric = metricSel ? metricSel.value : "revenue_all";
 
     updateNationalDiffTelemetry(yearA, yearB);
-    renderChoropleth(compareMapA, yearA, metric, "A");
-    renderChoropleth(compareMapB, yearB, metric, "B");
+    await renderChoropleth(compareMapA, yearA, metric, "A");
+    await renderChoropleth(compareMapB, yearB, metric, "B");
+    invalidateAllLeafletMaps();
   }
 
   function getMetricColor(val, metric) {
@@ -1188,8 +1223,8 @@ function initDualMapComparison() {
     return val;
   }
 
-  function renderChoropleth(mapInstance, year, metric, side) {
-    const geoData = window.THAILAND_GEOJSON;
+  async function renderChoropleth(mapInstance, year, metric, side) {
+    const geoData = await getThailandGeoJSON();
     if (!geoData) return;
 
     if (side === "A" && geoLayerA) mapInstance.removeLayer(geoLayerA);
@@ -1220,7 +1255,7 @@ function initDualMapComparison() {
 
         const pYear = RAW_DATA.yearlyProvinceData[thName]?.[year] || {};
         const val = pYear[metric] || 0;
-        const yearThai = year === "2019" ? "2562" : year === "2020" ? "2563" : year === "2021" ? "2564" : year === "2562" ? "2565" : year === "2563" ? "2566" : year;
+        const yearThai = year === "2019" ? "2562" : year === "2020" ? "2563" : year === "2021" ? "2564" : year === "2022" ? "2565" : "2566";
 
         pLayer.bindTooltip(`
           <div style="font-weight:700; color:#00f0ff;">${thName} (${regName})</div>
