@@ -1,12 +1,14 @@
 # -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import collect_data_files
 
+datas = collect_data_files('customtkinter')
 
 a = Analysis(
-    ['hexsync_app.py'],
+    ['hexsync_desktop.py'],
     pathex=[],
     binaries=[],
-    datas=[('hexsync_ui', 'hexsync_ui')],
-    hiddenimports=[],
+    datas=datas,
+    hiddenimports=['customtkinter', 'tkinter'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -29,7 +31,7 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
