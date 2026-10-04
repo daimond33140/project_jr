@@ -81,8 +81,7 @@
       <!-- Action Button after 100% -->
       <div class="preloader-actions" id="preloader-actions">
         <button id="btn-enter-presentation" class="btn-enter-presentation" aria-label="Enter Presentation">
-          <i data-lucide="sparkles" class="btn-icon-left"></i>
-          <span class="enter-btn-label">ยืนยันเข้าสู่การนำเสนอ (ENTER PRESENTATION)</span>
+          <span class="enter-btn-label">Enter</span>
           <i data-lucide="arrow-right" class="btn-arrow"></i>
         </button>
       </div>
@@ -100,9 +99,6 @@
   <div class="ambient-glow glow-1"></div>
   <div class="ambient-glow glow-2"></div>
   <div class="architectural-grid"></div>
-
-  <!-- Clean Glowing Cursor Aura (Non-cluttered) -->
-  <div id="cursor-glow" class="cursor-glow"></div>
 
   <!-- ========================================================
        3. MAIN APPLICATION CONTAINER
@@ -132,14 +128,9 @@
           <i data-lucide="sun" id="theme-icon"></i>
           <span id="theme-label">Light Mode</span>
         </button>
-        <button id="storytelling-btn" class="btn btn-primary">
-          <i data-lucide="book-open"></i>
-          <span>การเล่าเรื่องด้วยข้อมูล (Storytelling)</span>
-        </button>
-        <button id="rubric-btn" class="btn btn-secondary">
-          <i data-lucide="check-circle-2"></i>
-          <span>เกณฑ์คะแนน (CLOs)</span>
-        </button>
+        <!-- Storytelling & Rubric hidden from header per user request; triggered via F12 key -->
+        <button id="storytelling-btn" class="btn btn-primary" style="display: none;" aria-hidden="true"></button>
+        <button id="rubric-btn" class="btn btn-secondary" style="display: none;" aria-hidden="true"></button>
         <button id="export-btn" class="btn btn-outline" title="ส่งออกรายงานข้อมูลจริง">
           <i data-lucide="download"></i>
           <span>Export CSV</span>
