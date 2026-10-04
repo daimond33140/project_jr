@@ -648,6 +648,20 @@ class HexSyncHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 self._send_json({"success": False, "error": "No URL provided"})
 
+        elif parsed.path == "/api/set_vercel_url":
+            v_url = req_data.get("vercel_url", "").strip()
+            proj = get_active_project()
+            if proj and v_url:
+                if not v_url.startswith("http://") and not v_url.startswith("https://"):
+                    v_url = "https://" + v_url
+                with state_lock:
+                    proj["vercel_url"] = v_url
+                    save_config(config_data)
+                log_event(f"🌐 บันทึก Vercel Production Domain: {v_url}", "success")
+                self._send_json({"success": True, "vercel_url": v_url})
+            else:
+                self._send_json({"success": False, "error": "Invalid URL or project"})
+
         else:
             self.send_response(404)
             self.end_headers()
