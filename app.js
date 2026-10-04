@@ -816,6 +816,11 @@ function setupEventListeners() {
   document.getElementById("export-btn")?.addEventListener("click", () => {
     exportToCsv();
   });
+
+  // Replay Presentation Intro
+  document.getElementById("btn-replay-intro")?.addEventListener("click", () => {
+    replayPresentationIntro();
+  });
 }
 
 // 7. CSV EXPORT UTILITY (REAL MOTS DATA)
@@ -835,3 +840,297 @@ function exportToCsv() {
   link.click();
   document.body.removeChild(link);
 }
+
+// ==========================================
+// 8. 3D THREE.JS WEBGL BACKGROUND (INSPIRED BY ZAJNO)
+// ==========================================
+function initThreeJSBackground() {
+  const canvas = document.getElementById("webgl-3d-bg");
+  if (!canvas || typeof THREE === "undefined") return;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, -9, 24);
+
+  const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // 3D Terrain Wave Plane
+  const geom = new THREE.PlaneGeometry(75, 50, 52, 40);
+
+  // Wireframe Mesh
+  const wireMaterial = new THREE.MeshBasicMaterial({
+    color: 0x0284c7,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.14
+  });
+  const wireMesh = new THREE.Mesh(geom, wireMaterial);
+  wireMesh.rotation.x = -Math.PI / 2.5;
+  wireMesh.position.y = -6;
+  scene.add(wireMesh);
+
+  // Particle Vertices (Points)
+  const pointsMaterial = new THREE.PointsMaterial({
+    color: 0x38bdf8,
+    size: 0.18,
+    transparent: true,
+    opacity: 0.85,
+    blending: THREE.AdditiveBlending
+  });
+  const pointsMesh = new THREE.Points(geom, pointsMaterial);
+  pointsMesh.rotation.x = -Math.PI / 2.5;
+  pointsMesh.position.y = -6;
+  scene.add(pointsMesh);
+
+  // Floating 3D Geometric Accents
+  const icoGeom = new THREE.IcosahedronGeometry(3.6, 1);
+  const icoMat = new THREE.MeshBasicMaterial({
+    color: 0x818cf8,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.22
+  });
+  const icosahedron = new THREE.Mesh(icoGeom, icoMat);
+  icosahedron.position.set(24, 6, -8);
+  scene.add(icosahedron);
+
+  const octaGeom = new THREE.OctahedronGeometry(2.4, 0);
+  const octaMat = new THREE.MeshBasicMaterial({
+    color: 0x38bdf8,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.28
+  });
+  const octahedron = new THREE.Mesh(octaGeom, octaMat);
+  octahedron.position.set(-22, -2, -6);
+  scene.add(octahedron);
+
+  // Mouse Parallax coordinates
+  let mouseX = 0;
+  let mouseY = 0;
+  let targetX = 0;
+  let targetY = 0;
+
+  window.addEventListener("mousemove", (e) => {
+    mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+    mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+  });
+
+  // Window Resize
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    resizeAllCharts();
+  });
+
+  // Animation Loop
+  const clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const elapsedTime = clock.getElapsedTime();
+
+    // Undulate wave vertices dynamically
+    const p = geom.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const u = p.getX(i);
+      const v = p.getY(i);
+      const wave1 = Math.sin(u * 0.18 + elapsedTime * 1.1) * Math.cos(v * 0.22 + elapsedTime * 0.85) * 2.2;
+      const wave2 = Math.sin(u * 0.07 + v * 0.09 + elapsedTime * 1.4) * 1.1;
+      p.setZ(i, wave1 + wave2);
+    }
+    p.needsUpdate = true;
+
+    // Rotate geometric shapes
+    icosahedron.rotation.x = elapsedTime * 0.18;
+    icosahedron.rotation.y = elapsedTime * 0.25;
+    octahedron.rotation.y = -elapsedTime * 0.22;
+    octahedron.rotation.z = elapsedTime * 0.14;
+
+    // Smooth camera mouse parallax
+    targetX += (mouseX * 3.5 - targetX) * 0.04;
+    targetY += (mouseY * 2.2 - targetY) * 0.04;
+
+    camera.position.x = targetX;
+    camera.position.y = -9 + targetY;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+}
+
+// ==========================================
+// 9. PRELOADER & STREAMING BAR (HEXSYNCTH PRESENTATION)
+// ==========================================
+let preloaderTimer = null;
+
+function runPreloader() {
+  const preloader = document.getElementById("hex-preloader");
+  const barFill = document.getElementById("stream-bar-fill");
+  const percentVal = document.getElementById("stream-percent-val");
+  const statusText = document.getElementById("stream-status-text");
+  const actionsBox = document.getElementById("preloader-actions");
+  const enterBtn = document.getElementById("btn-enter-presentation");
+
+  if (!preloader || !barFill || !percentVal) return;
+
+  // Reset state
+  document.body.classList.add("loading-active");
+  preloader.classList.remove("revealed", "preloader-hidden");
+  if (actionsBox) actionsBox.classList.remove("ready");
+  barFill.style.width = "0%";
+  percentVal.textContent = "0%";
+
+  const stages = [
+    { pct: 15, msg: "INITIALIZING THREE.JS 3D WEBGL GRAPHICS..." },
+    { pct: 35, msg: "STREAMING MOTS 30,800 TOURISM RECORDS (2562-2566)..." },
+    { pct: 60, msg: "CALCULATING 50-MONTH PROVINCIAL TIER MATRICES..." },
+    { pct: 85, msg: "CALIBRATING 5-REGION GEOGRAPHIC VISUALIZATIONS..." },
+    { pct: 95, msg: "BUILDING INTERACTIVE DATA STORYTELLING PIPELINE..." },
+    { pct: 100, msg: "SYSTEM READY // HEXSYNCTH PRESENTATION ONLINE" }
+  ];
+
+  let currentPercent = 0;
+  if (preloaderTimer) clearInterval(preloaderTimer);
+
+  preloaderTimer = setInterval(() => {
+    // Variable step increment for natural streaming telemetry
+    const step = Math.max(1, Math.floor(Math.random() * 4) + 1);
+    currentPercent = Math.min(100, currentPercent + step);
+
+    barFill.style.width = currentPercent + "%";
+    percentVal.textContent = currentPercent + "%";
+
+    for (let i = stages.length - 1; i >= 0; i--) {
+      if (currentPercent >= stages[i].pct) {
+        if (statusText) statusText.textContent = stages[i].msg;
+        break;
+      }
+    }
+
+    if (currentPercent >= 100) {
+      clearInterval(preloaderTimer);
+      if (actionsBox) actionsBox.classList.add("ready");
+
+      // Auto dismiss after 800ms or on click
+      const autoDismiss = setTimeout(() => {
+        finishPreloader();
+      }, 850);
+
+      if (enterBtn) {
+        enterBtn.onclick = () => {
+          clearTimeout(autoDismiss);
+          finishPreloader();
+        };
+      }
+    }
+  }, 26);
+
+  function finishPreloader() {
+    preloader.classList.add("revealed");
+    setTimeout(() => {
+      preloader.classList.add("preloader-hidden");
+      document.body.classList.remove("loading-active");
+      resizeAllCharts();
+    }, 900);
+  }
+}
+
+function replayPresentationIntro() {
+  runPreloader();
+}
+
+// ==========================================
+// 10. 3D CARD PERSPECTIVE TILT & DYNAMIC GLARE
+// ==========================================
+function init3DCardTilt() {
+  const tiltCards = document.querySelectorAll("[data-tilt], .kpi-card, .chart-card, .stat-summary-card, .table-card");
+
+  tiltCards.forEach(card => {
+    // Ensure glare overlay exists
+    if (!card.querySelector(".card-glare")) {
+      const glare = document.createElement("div");
+      glare.className = "card-glare";
+      card.appendChild(glare);
+    }
+
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // Restrict tilt angle to 5.5 degrees for elegant subtle perspective
+      const rotX = -((y - centerY) / centerY) * 5.5;
+      const rotY = ((x - centerX) / centerX) * 5.5;
+
+      card.style.transform = `perspective(1100px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateZ(8px)`;
+      card.style.setProperty("--mouse-x", `${x}px`);
+      card.style.setProperty("--mouse-y", `${y}px`);
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "perspective(1100px) rotateX(0deg) rotateY(0deg) translateZ(0px)";
+    });
+  });
+}
+
+// ==========================================
+// 11. CUSTOM MAGNETIC CURSOR ENGINE
+// ==========================================
+function initCustomCursor() {
+  const dot = document.getElementById("custom-cursor-dot");
+  const ring = document.getElementById("custom-cursor-ring");
+  if (!dot || !ring) return;
+
+  let mouseX = -100;
+  let mouseY = -100;
+  let ringX = -100;
+  let ringY = -100;
+
+  window.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+  });
+
+  function renderCursor() {
+    ringX += (mouseX - ringX) * 0.16;
+    ringY += (mouseY - ringY) * 0.16;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+    requestAnimationFrame(renderCursor);
+  }
+  requestAnimationFrame(renderCursor);
+
+  // Magnetic hover states on buttons, links, cards, filters
+  const hoverTargets = "button, a, select, input, .kpi-card, .btn, .map-region-btn, tr, .topic-tag, .btn-replay-intro, .btn-intro-replay";
+  document.addEventListener("mouseover", (e) => {
+    if (e.target.closest(hoverTargets)) {
+      ring.classList.add("active");
+    }
+  });
+
+  document.addEventListener("mouseout", (e) => {
+    if (e.target.closest(hoverTargets)) {
+      ring.classList.remove("active");
+    }
+  });
+}
+
+// ==========================================
+// 12. CHART RESIZE UTILITY
+// ==========================================
+function resizeAllCharts() {
+  trendChartInstance?.resize();
+  categoryChartInstance?.resize();
+  rfmChartInstance?.resize();
+  fulfillmentChartInstance?.resize();
+}
+
