@@ -289,6 +289,41 @@
     </div>
   </div>
 
+  <!-- GitHub Repo Explorer & Selector Modal -->
+  <div class="cyber-modal-overlay" id="githubModalOverlay">
+    <div class="cyber-modal github-modal">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="cyber-tag red-tag">GITHUB://EXPLORER</span>
+          <h3>ตรวจสอบและเลือกโปรเจกต์บน GITHUB</h3>
+        </div>
+        <button id="closeGithubModalBtn" class="close-modal-btn">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="github-search-bar">
+          <div class="search-input-wrap">
+            <span class="input-icon">👤</span>
+            <input type="text" id="githubUsernameInput" class="cyber-input" placeholder="GitHub Username เช่น daimond33140" value="daimond33140">
+          </div>
+          <button id="fetchReposBtn" class="cyber-btn primary-red-btn fetch-btn">
+            <span class="btn-icon">⚡</span>
+            <span>ตรวจสอบ REPOS</span>
+          </button>
+        </div>
+
+        <div class="github-repos-header">
+          <span id="repoCountLabel">พบ 0 Repositories</span>
+          <span class="auto-link-hint">เลือกโปรเจกต์ที่ต้องการเพื่อเชื่อมต่อทันที</span>
+        </div>
+
+        <div id="githubReposList" class="github-repos-grid">
+          <div class="empty-state">กดปุ่ม "ตรวจสอบ REPOS" เพื่อค้นหาโปรเจกต์ทั้งหมดในบัญชี GitHub</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
