@@ -2408,7 +2408,9 @@ function setupViewSwitcher() {
   const hudContainer = document.getElementById("nasa-hud-panel-container");
   const hudTitle = document.getElementById("hud-panel-active-title");
   const hudCloseBtn = document.getElementById("hud-panel-close-btn");
+  const secSingle = document.getElementById("sec-single-map");
   const secDual = document.getElementById("sec-dual-compare");
+  let lastActiveMapSec = secSingle;
 
   const secTrend = document.getElementById("sec-trend");
   const secGeo = document.getElementById("sec-geo");
@@ -2437,7 +2439,7 @@ function setupViewSwitcher() {
     { id: "sec-table", view: "table" }
   ];
 
-  let currentActiveMode = "dual-compare"; // "dual-compare" | "dashboard"
+  let currentActiveMode = "map"; // "map" | "dashboard"
   let isProgrammaticScroll = false;
   let scrollReleaseTimer = null;
 
@@ -2452,19 +2454,27 @@ function setupViewSwitcher() {
   }
 
   function switchToView(view) {
-    if (view === "dual-compare") {
-      currentActiveMode = "dual-compare";
+    if (view === "dual-compare" || view === "single-map" || view === "map") {
+      currentActiveMode = "map";
       setDockActive("dual-compare");
-      if (secDual) secDual.style.display = "flex";
+      const targetSec = (lastActiveMapSec && lastActiveMapSec.style.display !== "none") ? lastActiveMapSec : (secSingle || secDual);
+      if (targetSec) targetSec.style.display = "flex";
       if (hudContainer) hudContainer.style.display = "none";
-      secDual?.scrollIntoView({ behavior: "smooth", block: "start" });
+      targetSec?.scrollIntoView({ behavior: "smooth", block: "start" });
       invalidateAllLeafletMaps();
       return;
     }
 
     // Entering the unified dashboard mode: all sections are visible together
     currentActiveMode = "dashboard";
-    if (secDual) secDual.style.display = "none";
+    if (secSingle) {
+      if (secSingle.style.display !== "none") lastActiveMapSec = secSingle;
+      secSingle.style.display = "none";
+    }
+    if (secDual) {
+      if (secDual.style.display !== "none") lastActiveMapSec = secDual;
+      secDual.style.display = "none";
+    }
     if (hudContainer) hudContainer.style.display = "flex";
 
     // Ensure all sections are visible together without hiding any
