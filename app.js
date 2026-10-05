@@ -1162,6 +1162,11 @@ let provinceLayersA = {};
 let provinceLayersB = {};
 let pmodalChartInstance = null;
 
+// Single Thailand Map Explorer Variables
+let singleLeafletMap = null;
+let singleGeoLayer = null;
+let singleProvinceLayers = {};
+
 async function getThailandGeoJSON() {
   if (window.THAILAND_GEOJSON && window.THAILAND_GEOJSON.features) {
     return window.THAILAND_GEOJSON;
@@ -1179,6 +1184,10 @@ async function getThailandGeoJSON() {
 
 function invalidateAllLeafletMaps() {
   setTimeout(() => {
+    if (singleLeafletMap) {
+      singleLeafletMap.invalidateSize();
+      singleLeafletMap.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
+    }
     if (compareMapA) {
       compareMapA.invalidateSize();
       compareMapA.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
@@ -1192,6 +1201,412 @@ function invalidateAllLeafletMaps() {
       regionLeafletMap.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
     }
   }, 100);
+}
+
+// ==========================================
+// 13.5 SINGLE THAILAND MAP EXPLORER (สะสมทุกปี / เลือกช่วงปี พร้อมเกณฑ์สี)
+// ==========================================
+function initSingleMap() {
+  const container = document.getElementById("thailand-leaflet-single");
+  if (!container || typeof L === "undefined") return;
+
+  if (!singleLeafletMap) {
+    singleLeafletMap = L.map('thailand-leaflet-single', {
+      center: [13.2, 101.0],
+      zoom: 6,
+      minZoom: 5,
+      maxZoom: 14,
+      zoomControl: true,
+      attributionControl: false
+    });
+
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 16,
+      attribution: '&copy; Esri, OpenStreetMap'
+    }).addTo(singleLeafletMap);
+
+    singleLeafletMap.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
+  }
+
+  const presetSel = document.getElementById("single-year-preset");
+  const customWrap = document.getElementById("single-custom-range-wrap");
+  const startYearSel = document.getElementById("single-year-start");
+  const endYearSel = document.getElementById("single-year-end");
+  const metricSel = document.getElementById("single-metric-select");
+  const monthSel = document.getElementById("single-month-select");
+
+  presetSel?.addEventListener("change", (e) => {
+    if (e.target.value === "custom") {
+      if (customWrap) customWrap.style.display = "flex";
+    } else {
+      if (customWrap) customWrap.style.display = "none";
+    }
+    updateSingleMap();
+  });
+
+  startYearSel?.addEventListener("change", () => updateSingleMap());
+  endYearSel?.addEventListener("change", () => updateSingleMap());
+  metricSel?.addEventListener("change", () => updateSingleMap());
+  monthSel?.addEventListener("change", () => updateSingleMap());
+
+  // Setup Tab Mode Switcher
+  setupMapModeSwitcher();
+
+  // Initial render
+  updateSingleMap();
+}
+
+function setupMapModeSwitcher() {
+  const btnSingle = document.getElementById("view-single-map-tab");
+  const btnDual = document.getElementById("view-dual-map-tab");
+  const secSingle = document.getElementById("sec-single-map");
+  const secDual = document.getElementById("sec-dual-compare");
+
+  btnSingle?.addEventListener("click", () => {
+    btnSingle.classList.add("active");
+    btnDual?.classList.remove("active");
+    if (secSingle) secSingle.style.display = "flex";
+    if (secDual) secDual.style.display = "none";
+
+    setTimeout(() => {
+      if (singleLeafletMap) {
+        singleLeafletMap.invalidateSize();
+        singleLeafletMap.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
+      }
+    }, 80);
+  });
+
+  btnDual?.addEventListener("click", () => {
+    btnDual.classList.add("active");
+    btnSingle?.classList.remove("active");
+    if (secDual) secDual.style.display = "flex";
+    if (secSingle) secSingle.style.display = "none";
+
+    setTimeout(() => {
+      if (compareMapA) {
+        compareMapA.invalidateSize();
+        compareMapA.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
+      }
+      if (compareMapB) {
+        compareMapB.invalidateSize();
+        compareMapB.fitBounds([[5.6, 97.3], [20.5, 105.7]], { padding: [10, 10] });
+      }
+    }, 80);
+  });
+}
+
+function getSingleMapThresholds(metric, yearCount = 5, mFactor = 1.0) {
+  const scale = (yearCount >= 1 ? yearCount : 1) * mFactor;
+
+  if (metric === "revenue_all" || metric === "revenue_foreign") {
+    const isForeign = metric === "revenue_foreign";
+    const subScale = isForeign ? 0.6 : 1.0;
+    const baseScale = scale * subScale;
+
+    const t6 = 5e9 * baseScale;
+    const t5 = 2e9 * baseScale;
+    const t4 = 1e9 * baseScale;
+    const t3 = 5e8 * baseScale;
+    const t2 = 2e8 * baseScale;
+
+    const fmt = (v) => {
+      if (v >= 1e9) return (v / 1e9).toFixed(0) + " พันล้าน";
+      return (v / 1e6).toFixed(0) + " ล้าน";
+    };
+
+    return [
+      { min: t6, label: `≥ ${fmt(t6)} (มากสุด)`, color: "#eab308", name: "ระดับ 1: สูงสุด" },
+      { min: t5, max: t6, label: `${fmt(t5)} - ${fmt(t6)}`, color: "#f97316", name: "ระดับ 2: สูง" },
+      { min: t4, max: t5, label: `${fmt(t4)} - ${fmt(t5)}`, color: "#06b6d4", name: "ระดับ 3: ปานกลาง-สูง" },
+      { min: t3, max: t4, label: `${fmt(t3)} - ${fmt(t4)}`, color: "#0284c7", name: "ระดับ 4: ปานกลาง" },
+      { min: t2, max: t3, label: `${fmt(t2)} - ${fmt(t3)}`, color: "#2563eb", name: "ระดับ 5: น้อย" },
+      { min: 0, max: t2, label: `< ${fmt(t2)} (น้อยสุด)`, color: "#1e293b", name: "ระดับ 6: น้อยที่สุด" }
+    ];
+  } else if (metric === "no_tourist_all") {
+    const t6 = 5e6 * scale;
+    const t5 = 2e6 * scale;
+    const t4 = 1e6 * scale;
+    const t3 = 5e5 * scale;
+    const t2 = 2e5 * scale;
+
+    const fmtP = (v) => {
+      if (v >= 1e6) return (v / 1e6).toFixed(1) + " ล้านคน";
+      return (v / 1e3).toFixed(0) + " แสนคน";
+    };
+
+    return [
+      { min: t6, label: `≥ ${fmtP(t6)} (มากสุด)`, color: "#eab308", name: "ระดับ 1: สูงสุด" },
+      { min: t5, max: t6, label: `${fmtP(t5)} - ${fmtP(t6)}`, color: "#f97316", name: "ระดับ 2: สูง" },
+      { min: t4, max: t5, label: `${fmtP(t4)} - ${fmtP(t5)}`, color: "#06b6d4", name: "ระดับ 3: ปานกลาง-สูง" },
+      { min: t3, max: t4, label: `${fmtP(t3)} - ${fmtP(t4)}`, color: "#0284c7", name: "ระดับ 4: ปานกลาง" },
+      { min: t2, max: t3, label: `${fmtP(t2)} - ${fmtP(t3)}`, color: "#2563eb", name: "ระดับ 5: น้อย" },
+      { min: 0, max: t2, label: `< ${fmtP(t2)} (น้อยสุด)`, color: "#1e293b", name: "ระดับ 6: น้อยที่สุด" }
+    ];
+  } else if (metric === "occupancy_rate") {
+    return [
+      { min: 70, label: "≥ 70% (สูงมาก)", color: "#eab308", name: "ระดับ 1: สูงมาก" },
+      { min: 60, max: 70, label: "60% - 70%", color: "#10b981", name: "ระดับ 2: ดี" },
+      { min: 50, max: 60, label: "50% - 60%", color: "#06b6d4", name: "ระดับ 3: ปานกลาง" },
+      { min: 40, max: 50, label: "40% - 50%", color: "#0284c7", name: "ระดับ 4: ปานกลาง-ต่ำ" },
+      { min: 30, max: 40, label: "30% - 40%", color: "#f97316", name: "ระดับ 5: ต่ำ" },
+      { min: 0, max: 30, label: "< 30% (วิกฤต/ต่ำสุด)", color: "#ef4444", name: "ระดับ 6: วิกฤต" }
+    ];
+  }
+}
+
+async function updateSingleMap() {
+  if (!singleLeafletMap || typeof L === "undefined") return;
+
+  const presetSel = document.getElementById("single-year-preset");
+  const startYearSel = document.getElementById("single-year-start");
+  const endYearSel = document.getElementById("single-year-end");
+  const metricSel = document.getElementById("single-metric-select");
+  const monthSel = document.getElementById("single-month-select");
+
+  const preset = presetSel ? presetSel.value : "all";
+  const metric = metricSel ? metricSel.value : "revenue_all";
+  const month = monthSel ? monthSel.value : "all";
+
+  let years = [];
+  let horizonLabel = "";
+
+  if (preset === "all" || preset === "2019-2023") {
+    years = ["2019", "2020", "2021", "2022", "2023"];
+    horizonLabel = "ดูทุกปีรวมจนปัจจุบัน (2562 - 2566)";
+  } else if (preset === "2019-2021") {
+    years = ["2019", "2020", "2021"];
+    horizonLabel = "ปี 2562 - 2564 (ช่วงก่อนและโควิดระบาด)";
+  } else if (preset === "2022-2023") {
+    years = ["2022", "2023"];
+    horizonLabel = "ปี 2565 - 2566 (เปิดประเทศและฟื้นตัว)";
+  } else if (preset === "custom") {
+    const s = parseInt(startYearSel ? startYearSel.value : "2019", 10);
+    const e = parseInt(endYearSel ? endYearSel.value : "2023", 10);
+    const minYear = Math.min(s, e);
+    const maxYear = Math.max(s, e);
+    for (let y = minYear; y <= maxYear; y++) years.push(String(y));
+    const sThai = minYear === 2019 ? "2562" : minYear === 2020 ? "2563" : minYear === 2021 ? "2564" : minYear === 2022 ? "2565" : "2566";
+    const eThai = maxYear === 2019 ? "2562" : maxYear === 2020 ? "2563" : maxYear === 2021 ? "2564" : maxYear === 2022 ? "2565" : "2566";
+    horizonLabel = minYear === maxYear ? `ปี ${sThai}` : `ปี ${sThai} - ${eThai}`;
+  } else {
+    years = [preset];
+    const yThai = preset === "2019" ? "2562" : preset === "2020" ? "2563" : preset === "2021" ? "2564" : preset === "2022" ? "2565" : "2566";
+    horizonLabel = `ปี ${yThai}`;
+  }
+
+  const monthNames = {
+    "01": "มกราคม", "02": "กุมภาพันธ์", "03": "มีนาคม", "04": "เมษายน",
+    "05": "พฤษภาคม", "06": "มิถุนายน", "07": "กรกฎาคม", "08": "สิงหาคม",
+    "09": "กันยายน", "10": "ตุลาคม", "11": "พฤศจิกายน", "12": "ธันวาคม"
+  };
+  const monthWeights = {
+    "01": 1.15, "02": 1.05, "03": 1.00, "04": 1.25,
+    "05": 0.85, "06": 0.80, "07": 0.90, "08": 0.90,
+    "09": 0.75, "10": 0.95, "11": 1.10, "12": 1.30
+  };
+  const mFactor = month !== "all" ? (monthWeights[month] || 1.0) / 12 : 1.0;
+  if (month !== "all") {
+    horizonLabel += ` (เดือน${monthNames[month]})`;
+  }
+
+  const provValues = {};
+  let nationalTotal = 0;
+  let maxProvince = { name: "-", val: 0 };
+
+  for (const [thName, pData] of Object.entries(RAW_DATA.yearlyProvinceData)) {
+    let pSum = 0;
+    let occSum = 0;
+    let validYears = 0;
+
+    for (const yr of years) {
+      if (pData[yr]) {
+        if (metric === "occupancy_rate") {
+          occSum += (pData[yr][metric] || 0);
+          validYears++;
+        } else {
+          pSum += (pData[yr][metric] || 0) * mFactor;
+        }
+      }
+    }
+
+    const val = metric === "occupancy_rate" ? (validYears > 0 ? occSum / validYears : 0) : pSum;
+    provValues[thName] = val;
+    nationalTotal += val;
+
+    if (val > maxProvince.val) {
+      maxProvince = { name: thName, val: val };
+    }
+  }
+
+  const sorted = Object.entries(provValues).sort((a, b) => b[1] - a[1]);
+  const rankings = {};
+  sorted.forEach(([name, val], idx) => {
+    rankings[name] = {
+      rank: idx + 1,
+      val,
+      share: nationalTotal > 0 ? ((val / nationalTotal) * 100).toFixed(1) : 0
+    };
+  });
+
+  const thresholds = getSingleMapThresholds(metric, years.length, mFactor);
+  const topTierThreshold = thresholds[0].min;
+  const topTierProvinces = sorted.filter(p => p[1] >= topTierThreshold);
+
+  // Update KPI Summary Cards
+  const hLblEl = document.getElementById("single-horizon-label");
+  if (hLblEl) hLblEl.textContent = horizonLabel;
+
+  const totalEl = document.getElementById("single-kpi-total");
+  const unitEl = document.getElementById("single-kpi-unit");
+  if (totalEl) {
+    if (metric === "occupancy_rate") {
+      const avgOcc = nationalTotal / 77;
+      totalEl.textContent = avgOcc.toFixed(1) + "%";
+      if (unitEl) unitEl.textContent = "อัตราเข้าพักเฉลี่ยทั้งประเทศ";
+    } else if (metric === "no_tourist_all") {
+      totalEl.textContent = formatNumber(nationalTotal) + " คน";
+      if (unitEl) unitEl.textContent = "ผู้มาเยือนรวมทั้งประเทศ";
+    } else {
+      totalEl.textContent = formatCurrency(nationalTotal);
+      if (unitEl) unitEl.textContent = "รายได้รวมทั้งประเทศสะสม";
+    }
+  }
+
+  const topEl = document.getElementById("single-kpi-top");
+  const topShareEl = document.getElementById("single-kpi-top-share");
+  if (topEl) {
+    topEl.textContent = `${maxProvince.name} ${formatMetricVal(maxProvince.val, metric)}`;
+  }
+  if (topShareEl) {
+    topShareEl.textContent = nationalTotal > 0 ? `ครองส่วนแบ่ง ${((maxProvince.val / nationalTotal) * 100).toFixed(1)}%` : "-";
+  }
+
+  const avgEl = document.getElementById("single-kpi-avg");
+  if (avgEl) {
+    avgEl.textContent = formatMetricVal(nationalTotal / 77, metric);
+  }
+
+  const tierCountEl = document.getElementById("single-kpi-tier-count");
+  const tierNamesEl = document.getElementById("single-kpi-tier-names");
+  if (tierCountEl) {
+    tierCountEl.textContent = `${topTierProvinces.length} จังหวัด`;
+  }
+  if (tierNamesEl) {
+    tierNamesEl.textContent = topTierProvinces.slice(0, 4).map(p => p[0]).join(", ") + (topTierProvinces.length > 4 ? " ฯลฯ" : "");
+  }
+
+  // Render Map Legend Overlay (Bottom-Right)
+  const legendEl = document.getElementById("map-legend-single");
+  if (legendEl) {
+    const metricTitles = {
+      revenue_all: "รายได้รวม (ล้านบาท)",
+      no_tourist_all: "จำนวนผู้มาเยือน (คน)",
+      revenue_foreign: "รายได้จากต่างชาติ (ล้านบาท)",
+      occupancy_rate: "อัตราเข้าพักโรงแรม (%)"
+    };
+
+    const itemsHtml = thresholds.map(t => `
+      <div class="map-legend-item" title="${t.name}">
+        <span class="legend-color-box" style="background-color: ${t.color};"></span>
+        <span class="legend-label-text">${t.label}</span>
+      </div>
+    `).join('');
+
+    legendEl.innerHTML = `
+      <div class="map-legend-title">
+        <i data-lucide="layers"></i>
+        <span>เกณฑ์สีระดับข้อมูล</span>
+      </div>
+      <div class="map-legend-subtitle">${metricTitles[metric] || "เกณฑ์สี"} (${horizonLabel})</div>
+      <div class="map-legend-list">
+        ${itemsHtml}
+      </div>
+    `;
+
+    if (window.lucide) lucide.createIcons({ root: legendEl });
+  }
+
+  // Render GeoJSON Layer
+  const geoData = await getThailandGeoJSON();
+  if (!geoData) return;
+
+  if (singleGeoLayer) {
+    singleLeafletMap.removeLayer(singleGeoLayer);
+  }
+  for (let k in singleProvinceLayers) delete singleProvinceLayers[k];
+
+  singleGeoLayer = L.geoJSON(geoData, {
+    style: function(feature) {
+      const thName = feature.properties.th_name || feature.properties.name;
+      const val = provValues[thName] || 0;
+
+      let color = thresholds[thresholds.length - 1].color;
+      for (const t of thresholds) {
+        if (t.min !== undefined && t.max !== undefined) {
+          if (val >= t.min && val < t.max) { color = t.color; break; }
+        } else if (t.min !== undefined) {
+          if (val >= t.min) { color = t.color; break; }
+        } else if (t.max !== undefined) {
+          if (val < t.max) { color = t.color; break; }
+        }
+      }
+
+      return {
+        fillColor: color,
+        fillOpacity: 0.85,
+        color: "rgba(0, 240, 255, 0.45)",
+        weight: 1.2,
+        dashArray: ""
+      };
+    },
+    onEachFeature: function(feature, layer) {
+      const thName = feature.properties.th_name || feature.properties.name;
+      const regName = feature.properties.region_name || "";
+      singleProvinceLayers[thName] = layer;
+
+      const rInfo = rankings[thName] || { rank: "-", val: 0, share: 0 };
+
+      layer.bindTooltip(`
+        <div style="font-weight:700; color:#00f0ff;">${thName} (${regName})</div>
+        <div style="font-size:0.75rem; color:#94a3b8;">${horizonLabel}</div>
+        <div style="font-size:0.85rem; font-weight:700; color:#ffffff; margin-top:3px;">
+          ${formatMetricVal(rInfo.val, metric)}
+        </div>
+        <div style="font-size:0.72rem; color:#fbbf24; margin-top:2px;">
+          อันดับที่ ${rInfo.rank} ของประเทศ (สัดส่วน ${rInfo.share}%)
+        </div>
+      `, {
+        className: 'thailand-map-tooltip',
+        sticky: true,
+        direction: 'top'
+      });
+
+      layer.on({
+        mouseover: function(e) {
+          layer.setStyle({ weight: 3.2, color: "#ffffff", fillOpacity: 0.95 });
+          const calloutEl = document.getElementById("single-callout-text");
+          if (calloutEl) {
+            calloutEl.innerHTML = `<strong>จังหวัด${thName} (${regName})</strong> | ${horizonLabel}: <span style="color:#00f0ff; font-weight:700;">${formatMetricVal(rInfo.val, metric)}</span> | อันดับที่ <strong>${rInfo.rank}</strong> จาก 77 จังหวัด (สัดส่วน ${rInfo.share}%)`;
+          }
+        },
+        mouseout: function(e) {
+          singleGeoLayer.resetStyle(e.target);
+          e.target?.closeTooltip();
+          const calloutEl = document.getElementById("single-callout-text");
+          if (calloutEl) {
+            calloutEl.textContent = "ชี้หรือคลิกที่จังหวัดใดก็ได้บนแผนที่เพื่อดูสถิติเจาะลึก";
+          }
+        },
+        click: function() {
+          openProvinceDetailModal(thName);
+        }
+      });
+    }
+  }).addTo(singleLeafletMap);
+
+  setTimeout(() => {
+    singleLeafletMap.invalidateSize();
+  }, 70);
 }
 
 
