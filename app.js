@@ -1349,32 +1349,177 @@ function initDualMapComparison() {
     invalidateAllLeafletMaps();
   }
 
-  function getMetricColor(val, metric, isDaily) {
-    if (metric === "revenue_all") {
-      const threshold = isDaily ? 1.5e9 : 30e9;
-      if (val >= threshold) return "#f59e0b"; // Gold
-      if (val >= threshold * 0.3) return "#00f0ff"; // Cyan
-      if (val >= threshold * 0.1) return "#0284c7"; // Blue
-      return "#1e293b";
+  function getMetricThresholds(metric, dateInfo) {
+    const isDaily = dateInfo.isDaily;
+    const factor = isDaily ? (dateInfo.factor || 1.0) : 1.0;
+
+    if (metric === "revenue_all" || metric === "revenue_foreign") {
+      const isForeign = metric === "revenue_foreign";
+      const scale = isForeign ? 0.6 : 1.0;
+      const t6 = 5e9 * factor * scale;
+      const t5 = 2e9 * factor * scale;
+      const t4 = 1e9 * factor * scale;
+      const t3 = 5e8 * factor * scale;
+      const t2 = 2e8 * factor * scale;
+
+      const fmt = (v) => isDaily ? (v >= 1e9 ? (v / 1e9).toFixed(1) + " พันล้าน/วัน" : (v / 1e6).toFixed(1) + " ล้าน/วัน") : (v >= 1e9 ? (v / 1e9).toFixed(0) + ",000 ล้าน" : (v / 1e6).toFixed(0) + " ล้าน");
+
+      return [
+        {
+          min: t6,
+          label: isDaily ? `≥ ${fmt(t6)} (มากสุด)` : "≥ 5,000 ล้าน (มากสุด)",
+          color: "#eab308", // เหลืองเข้มประกายทอง (Vivid Gold)
+          name: "ระดับ 1: มากที่สุด (Top Tier)"
+        },
+        {
+          min: t5,
+          max: t6,
+          label: isDaily ? `${fmt(t5)} - ${fmt(t6)}` : "2,000 - 5,000 ล้าน",
+          color: "#f97316", // ส้มอำพัน (Amber)
+          name: "ระดับ 2: สูง (High Tier)"
+        },
+        {
+          min: t4,
+          max: t5,
+          label: isDaily ? `${fmt(t4)} - ${fmt(t5)}` : "1,000 - 2,000 ล้าน",
+          color: "#06b6d4", // ฟ้าสว่างเทอร์ควอยซ์ (Cyan)
+          name: "ระดับ 3: ปานกลางค่อนข้างสูง"
+        },
+        {
+          min: t3,
+          max: t4,
+          label: isDaily ? `${fmt(t3)} - ${fmt(t4)}` : "500 - 1,000 ล้าน",
+          color: "#0284c7", // ฟ้าคราม (Ocean Blue)
+          name: "ระดับ 4: ปานกลาง (Mid Tier)"
+        },
+        {
+          min: t2,
+          max: t3,
+          label: isDaily ? `${fmt(t2)} - ${fmt(t3)}` : "200 - 500 ล้าน",
+          color: "#2563eb", // น้ำเงินสด (Cobalt Blue)
+          name: "ระดับ 5: น้อย (Low Tier)"
+        },
+        {
+          min: 0,
+          max: t2,
+          label: isDaily ? `< ${fmt(t2)} (น้อยสุด)` : "< 200 ล้าน (น้อยสุด)",
+          color: "#1e293b", // กรมท่าเข้ม (Deep Slate Navy)
+          name: "ระดับ 6: น้อยที่สุด (Base Tier)"
+        }
+      ];
     } else if (metric === "no_tourist_all") {
-      const threshold = isDaily ? 1.5e5 : 3.5e6;
-      if (val >= threshold) return "#10b981"; // Emerald
-      if (val >= threshold * 0.35) return "#14b8a6"; // Mint
-      if (val >= threshold * 0.12) return "#0284c7";
-      return "#1e293b";
-    } else if (metric === "revenue_foreign") {
-      const threshold = isDaily ? 8e8 : 15e9;
-      if (val >= threshold) return "#f43f5e"; // Rose
-      if (val >= threshold * 0.25) return "#ec4899";
-      if (val >= threshold * 0.08) return "#a855f7";
-      return "#1e293b";
+      const t6 = 5e6 * factor;
+      const t5 = 2e6 * factor;
+      const t4 = 1e6 * factor;
+      const t3 = 5e5 * factor;
+      const t2 = 2e5 * factor;
+
+      const fmtP = (v) => isDaily ? (v >= 1e6 ? (v / 1e6).toFixed(1) + "M คน/วัน" : (v / 1e3).toFixed(0) + "k คน/วัน") : (v >= 1e6 ? (v / 1e6).toFixed(1) + " ล้านคน" : (v / 1e3).toFixed(0) + " แสนคน");
+
+      return [
+        {
+          min: t6,
+          label: isDaily ? `≥ ${fmtP(t6)} (มากสุด)` : "≥ 5.0 ล้านคน (มากสุด)",
+          color: "#eab308",
+          name: "ระดับ 1: มากที่สุด"
+        },
+        {
+          min: t5,
+          max: t6,
+          label: isDaily ? `${fmtP(t5)} - ${fmtP(t6)}` : "2.0 - 5.0 ล้านคน",
+          color: "#f97316",
+          name: "ระดับ 2: สูง"
+        },
+        {
+          min: t4,
+          max: t5,
+          label: isDaily ? `${fmtP(t4)} - ${fmtP(t5)}` : "1.0 - 2.0 ล้านคน",
+          color: "#06b6d4",
+          name: "ระดับ 3: ปานกลางค่อนข้างสูง"
+        },
+        {
+          min: t3,
+          max: t4,
+          label: isDaily ? `${fmtP(t3)} - ${fmtP(t4)}` : "500,000 - 1.0 ล้านคน",
+          color: "#0284c7",
+          name: "ระดับ 4: ปานกลาง"
+        },
+        {
+          min: t2,
+          max: t3,
+          label: isDaily ? `${fmtP(t2)} - ${fmtP(t3)}` : "200,000 - 500,000 คน",
+          color: "#2563eb",
+          name: "ระดับ 5: น้อย"
+        },
+        {
+          min: 0,
+          max: t2,
+          label: isDaily ? `< ${fmtP(t2)} (น้อยสุด)` : "< 200,000 คน (น้อยสุด)",
+          color: "#1e293b",
+          name: "ระดับ 6: น้อยที่สุด"
+        }
+      ];
     } else if (metric === "occupancy_rate") {
-      if (val >= 68) return "#10b981";
-      if (val >= 48) return "#00f0ff";
-      if (val >= 28) return "#f59e0b";
-      return "#ef4444";
+      return [
+        { min: 70, label: "≥ 70% (สูงมาก)", color: "#eab308", name: "ระดับ 1: หนาแน่นสูงมาก" },
+        { min: 60, max: 70, label: "60% - 70%", color: "#10b981", name: "ระดับ 2: ดี" },
+        { min: 50, max: 60, label: "50% - 60%", color: "#06b6d4", name: "ระดับ 3: ปานกลาง" },
+        { min: 40, max: 50, label: "40% - 50%", color: "#0284c7", name: "ระดับ 4: ปานกลาง-ต่ำ" },
+        { min: 30, max: 40, label: "30% - 40%", color: "#f97316", name: "ระดับ 5: ต่ำ" },
+        { min: 0, max: 30, label: "< 30% (วิกฤต/ต่ำสุด)", color: "#ef4444", name: "ระดับ 6: วิกฤต" }
+      ];
     }
-    return "#00f0ff";
+  }
+
+  function getMetricColor(val, metric, dateInfo) {
+    const thresholds = getMetricThresholds(metric, dateInfo);
+    for (const t of thresholds) {
+      if (t.min !== undefined && t.max !== undefined) {
+        if (val >= t.min && val < t.max) return t.color;
+      } else if (t.min !== undefined) {
+        if (val >= t.min) return t.color;
+      } else if (t.max !== undefined) {
+        if (val < t.max) return t.color;
+      }
+    }
+    return thresholds[thresholds.length - 1].color;
+  }
+
+  function updateMapLegend(side, metric, dateInfo) {
+    const legendEl = document.getElementById(`map-legend-${side.toLowerCase()}`);
+    if (!legendEl) return;
+
+    const thresholds = getMetricThresholds(metric, dateInfo);
+    const metricTitles = {
+      revenue_all: "รายได้รวม (ล้านบาท)",
+      no_tourist_all: "จำนวนผู้มาเยือน (คน)",
+      revenue_foreign: "รายได้จากต่างชาติ (ล้านบาท)",
+      occupancy_rate: "อัตราเข้าพักโรงแรม (%)"
+    };
+
+    const titleText = metricTitles[metric] || "เกณฑ์สี";
+
+    const itemsHtml = thresholds.map((t) => `
+      <div class="map-legend-item" title="${t.name}">
+        <span class="legend-color-box" style="background-color: ${t.color};"></span>
+        <span class="legend-label-text">${t.label}</span>
+      </div>
+    `).join('');
+
+    legendEl.innerHTML = `
+      <div class="map-legend-title">
+        <i data-lucide="layers"></i>
+        <span>เกณฑ์สีระดับข้อมูล</span>
+      </div>
+      <div class="map-legend-subtitle">${titleText}</div>
+      <div class="map-legend-list">
+        ${itemsHtml}
+      </div>
+    `;
+
+    if (window.lucide) {
+      lucide.createIcons({ root: legendEl });
+    }
   }
 
   function formatMetricVal(val, metric, isDaily = false) {
@@ -1409,11 +1554,11 @@ function initDualMapComparison() {
           val = Math.min(100, Math.max(5, val * (dateInfo.dayWeight >= 2.0 ? 1.4 : (dateInfo.dayWeight > 1.0 ? 1.15 : 0.9))));
         }
 
-        const fillColor = getMetricColor(val, metric, dateInfo.isDaily);
+        const fillColor = getMetricColor(val, metric, dateInfo);
 
         return {
           fillColor: fillColor,
-          fillOpacity: 0.68,
+          fillOpacity: 0.82,
           color: "rgba(0, 240, 255, 0.45)",
           weight: 1.2,
           dashArray: ""
@@ -1457,6 +1602,8 @@ function initDualMapComparison() {
 
     if (side === "A") geoLayerA = layer;
     if (side === "B") geoLayerB = layer;
+
+    updateMapLegend(side, metric, dateInfo);
 
     setTimeout(() => {
       mapInstance.invalidateSize();
