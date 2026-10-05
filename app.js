@@ -1604,9 +1604,20 @@ async function updateSingleMap() {
     }
   }).addTo(singleLeafletMap);
 
+  if (singleGeoLayer) {
+    try {
+      singleLeafletMap.fitBounds(singleGeoLayer.getBounds(), { padding: [15, 15] });
+    } catch (e) {}
+  }
+
   setTimeout(() => {
     singleLeafletMap.invalidateSize();
-  }, 70);
+    if (singleGeoLayer) {
+      try {
+        singleLeafletMap.fitBounds(singleGeoLayer.getBounds(), { padding: [15, 15] });
+      } catch (e) {}
+    }
+  }, 120);
 }
 
 
