@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCustomCursor();
 
   initCharts();
+  initSingleMap();
   initDualMapComparison();
   renderGeoMap();
   renderTable(RAW_DATA.provinces);
