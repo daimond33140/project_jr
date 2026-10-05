@@ -1,18 +1,24 @@
 import os
+import sys
 import time
 import subprocess
 from datetime import datetime
+
+# Ensure UTF-8 output on Windows
+if sys.platform == 'win32':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
 
 WATCH_EXTS = {'.html', '.js', '.css', '.json', '.md'}
 IGNORE_DIRS = {'.git', '.github', 'scratch', 'node_modules'}
 DEBOUNCE_SECONDS = 3
 
 print("=" * 60)
-print("🚀 HexSyncTH - Git Auto Sync & Push Watcher Running...")
-print("📁 Monitoring changes in project files...")
+print("[HexSyncTH] Git Auto Sync & Push Watcher Running...")
+print("[HexSyncTH] Monitoring changes in project files...")
 print("=" * 60)
-
-last_mtimes = {}
 
 def get_files():
     files = {}
@@ -66,7 +72,7 @@ while True:
             print(push_res.stdout.strip())
             if push_res.stderr.strip():
                 print(push_res.stderr.strip())
-            print(f"✅ Synced and pushed to GitHub successfully at {timestamp}!\n")
+            print(f"[SUCCESS] Synced and pushed to GitHub successfully at {timestamp}!\n")
 
     except KeyboardInterrupt:
         print("\nAuto sync stopped.")
