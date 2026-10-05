@@ -76,37 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateStorytellingModal(0);
 });
 
-function updateThemeButtonUI(theme) {
-  const btn = document.getElementById("theme-toggle-btn");
-  if (!btn) return;
-  if (theme === "dark") {
-    btn.innerHTML = `<i data-lucide="sun"></i><span id="theme-label">Light Mode</span>`;
-  } else {
-    btn.innerHTML = `<i data-lucide="moon"></i><span id="theme-label">Dark Mode</span>`;
-  }
-  lucide.createIcons();
-}
-
-function toggleTheme() {
-  const current = document.documentElement.getAttribute("data-theme") || "light";
-  const newTheme = current === "dark" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", newTheme);
-  localStorage.setItem("theme", newTheme);
-  updateThemeButtonUI(newTheme);
-
-  // Rebuild charts with theme palette
-  trendChartInstance?.dispose();
-  categoryChartInstance?.dispose();
-  rfmChartInstance?.dispose();
-  fulfillmentChartInstance?.dispose();
-
-  trendChartInstance = null;
-  categoryChartInstance = null;
-  rfmChartInstance = null;
-  fulfillmentChartInstance = null;
-
-  initCharts();
-}
+function updateThemeButtonUI() {}
+function toggleTheme() {}
 
 // ==========================================
 // 1. CHART INITIALIZATIONS (ECHARTS)
