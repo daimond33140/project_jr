@@ -146,8 +146,158 @@
       </div>
     </header>
 
+    <!-- TOP MAP MODE SWITCHER BAR (สลับระหว่าง แผนที่เดี่ยวภาพรวม vs เปรียบเทียบ 2 ฝั่ง) -->
+    <div class="map-view-switcher-bar">
+      <button id="view-single-map-tab" class="map-mode-tab active" title="ดูแผนที่เดี่ยววิเคราะห์ภาพรวม">
+        <i data-lucide="map"></i>
+        <span>แผนที่เดี่ยวภาพรวมประเทศ (Single Map View)</span>
+        <span class="mode-badge">เลือกช่วงปี / สะสมทุกปี</span>
+      </button>
+      <button id="view-dual-map-tab" class="map-mode-tab" title="ดูเปรียบเทียบสถิติ 2 ฝั่ง">
+        <i data-lucide="git-compare"></i>
+        <span>เปรียบเทียบสถิติ 2 ฝั่ง (Dual Map Comparison)</span>
+        <span class="mode-badge">คู่ขนาน A vs B</span>
+      </button>
+    </div>
+
+    <!-- SINGLE THAILAND MAP EXPLORER (แผนที่เดี่ยวสะสมทุกปี / เลือกช่วงปี พร้อมเกณฑ์สีที่มุมล่างขวา) -->
+    <section class="card single-map-section" id="sec-single-map" data-tilt>
+      <div class="card-glare"></div>
+
+      <!-- Single Map Header & Control Bar -->
+      <div class="single-map-header-bar">
+        <div class="single-title-group">
+          <div class="single-badge-icon"><i data-lucide="map-pin"></i></div>
+          <div>
+            <h2 class="single-main-title">แผนที่เดี่ยววิเคราะห์สถิติท่องเที่ยวเชิงพื้นที่ (Single Thailand Map Explorer)</h2>
+            <p class="single-sub-title">แสดงข้อมูลทั้งประเทศ 77 จังหวัด พร้อมเกณฑ์สี สามารถเลือกช่วงปีสะสม หรือดูทุกปีรวมจนถึงปัจจุบัน</p>
+          </div>
+        </div>
+
+        <div class="single-controls">
+          <!-- Year Range Filter -->
+          <div class="single-control-box">
+            <span class="single-control-tag"><i data-lucide="calendar"></i> ช่วงปีที่แสดง:</span>
+            <div class="single-inputs-row">
+              <select id="single-year-preset" class="single-dropdown">
+                <option value="all" selected>ดูทุกปีรวมจนปัจจุบัน (2562 - 2566)</option>
+                <option value="2019-2023">ปี 2562 - 2566 (5 ปีเต็ม)</option>
+                <option value="2019-2021">ปี 2562 - 2564 (ก่อนและช่วงโควิด)</option>
+                <option value="2022-2023">ปี 2565 - 2566 (เปิดประเทศและฟื้นตัว)</option>
+                <option value="custom">กำหนดช่วงปีเอง (Custom Range)...</option>
+                <option value="2019">เฉพาะปี 2562 (ก่อนโควิด)</option>
+                <option value="2020">เฉพาะปี 2563 (ปีแรกของโควิด)</option>
+                <option value="2021">เฉพาะปี 2564 (วิกฤตระบาดสูงสุด)</option>
+                <option value="2022">เฉพาะปี 2565 (เริ่มเปิดประเทศ)</option>
+                <option value="2023">เฉพาะปี 2566 (ฟื้นตัวต่อเนื่อง)</option>
+              </select>
+
+              <!-- Custom Start/End Dropdowns (shown if custom) -->
+              <div id="single-custom-range-wrap" class="custom-range-wrap" style="display: none;">
+                <span class="range-sep">จาก</span>
+                <select id="single-year-start" class="single-dropdown sm">
+                  <option value="2019" selected>ปี 2562</option>
+                  <option value="2020">ปี 2563</option>
+                  <option value="2021">ปี 2564</option>
+                  <option value="2022">ปี 2565</option>
+                  <option value="2023">ปี 2566</option>
+                </select>
+                <span class="range-sep">ถึง</span>
+                <select id="single-year-end" class="single-dropdown sm">
+                  <option value="2019">ปี 2562</option>
+                  <option value="2020">ปี 2563</option>
+                  <option value="2021">ปี 2564</option>
+                  <option value="2022">ปี 2565</option>
+                  <option value="2023" selected>ปี 2566</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metric Selector (ดูอะไร) -->
+          <div class="single-control-box">
+            <span class="single-control-tag"><i data-lucide="layers"></i> ดูตัวชี้วัด (ดูอะไร):</span>
+            <div class="single-inputs-row">
+              <select id="single-metric-select" class="single-dropdown">
+                <option value="revenue_all" selected>รายได้รวม (Total Revenue)</option>
+                <option value="no_tourist_all">จำนวนผู้มาเยือน (Tourists)</option>
+                <option value="revenue_foreign">รายได้จากต่างชาติ (Foreign Revenue)</option>
+                <option value="occupancy_rate">อัตราเข้าพักโรงแรม (Occupancy Rate)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Month Selector -->
+          <div class="single-control-box">
+            <span class="single-control-tag"><i data-lucide="clock"></i> เดือน:</span>
+            <div class="single-inputs-row">
+              <select id="single-month-select" class="single-dropdown">
+                <option value="all" selected>ทุกเดือน (ทั้งปี)</option>
+                <option value="01">ม.ค. (มกราคม)</option>
+                <option value="02">ก.พ. (กุมภาพันธ์)</option>
+                <option value="03">มี.ค. (มีนาคม)</option>
+                <option value="04">เม.ย. (เมษายน)</option>
+                <option value="05">พ.ค. (พฤษภาคม)</option>
+                <option value="06">มิ.ย. (มิถุนายน)</option>
+                <option value="07">ก.ค. (กรกฎาคม)</option>
+                <option value="08">ส.ค. (สิงหาคม)</option>
+                <option value="09">ก.ย. (กันยายน)</option>
+                <option value="10">ต.ค. (ตุลาคม)</option>
+                <option value="11">พ.ย. (พฤศจิกายน)</option>
+                <option value="12">ธ.ค. (ธันวาคม)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Single Map KPI Summary Strip -->
+      <div class="single-summary-strip">
+        <div class="single-kpi-card">
+          <span class="single-kpi-lbl">ยอดรวมทั้งประเทศ (<span id="single-horizon-label">ทุกปีรวมจนปัจจุบัน</span>)</span>
+          <div class="single-kpi-val" id="single-kpi-total">฿5.17T</div>
+          <span class="single-kpi-sub" id="single-kpi-unit">มูลค่ารวมสะสม</span>
+        </div>
+        <div class="single-kpi-card">
+          <span class="single-kpi-lbl">จังหวัดอันดับ 1 สูงสุด</span>
+          <div class="single-kpi-val highlight" id="single-kpi-top">กรุงเทพฯ ฿204.2B</div>
+          <span class="single-kpi-sub" id="single-kpi-top-share">ครองส่วนแบ่ง 39.5%</span>
+        </div>
+        <div class="single-kpi-card">
+          <span class="single-kpi-lbl">ค่าเฉลี่ยต่อจังหวัด</span>
+          <div class="single-kpi-val" id="single-kpi-avg">฿67.1B</div>
+          <span class="single-kpi-sub">เฉลี่ย 77 จังหวัดทั่วประเทศ</span>
+        </div>
+        <div class="single-kpi-card">
+          <span class="single-kpi-lbl">จังหวัดเกณฑ์สีสูงสุด (Tier 1)</span>
+          <div class="single-kpi-val gold" id="single-kpi-tier-count">4 จังหวัด</div>
+          <span class="single-kpi-sub" id="single-kpi-tier-names">กทม., ภูเก็ต, ชลบุรี, เชียงใหม่</span>
+        </div>
+      </div>
+
+      <!-- Live Hover Callout -->
+      <div class="single-live-callout" id="single-live-callout">
+        <div class="callout-province-badge">
+          <i data-lucide="mouse-pointer"></i>
+          <span id="single-callout-text">ชี้หรือคลิกที่จังหวัดใดก็ได้บนแผนที่เพื่อดูสถิติเจาะลึก</span>
+        </div>
+      </div>
+
+      <!-- Single Map Leaflet Viewport -->
+      <div class="map-leaflet-wrap single-map-wrap">
+        <div id="thailand-leaflet-single" class="thailand-leaflet-map"></div>
+        <!-- กรอบล่างขวาของแผนที่ แสดงระดับเกณฑ์สี -->
+        <div class="map-legend-overlay" id="map-legend-single"></div>
+      </div>
+
+      <div class="map-col-footer">
+        <i data-lucide="info"></i>
+        <span>คลิกที่จังหวัดเพื่อเปิดหน้าต่างสถิติเจาะลึก 5 ปีเต็ม | ใช้ล้อเมาส์เพื่อซูมและคลิกลากเพื่อเลื่อนดูพื้นที่</span>
+      </div>
+    </section>
+
     <!-- DUAL MAP YEAR-OVER-YEAR COMPARISON EXPLORER (เเสดงเเค่ประเทศไทย 2 ฝั่งเปรียบเทียบปี) -->
-    <section class="card dual-map-comparison-section" id="sec-dual-compare" data-tilt>
+    <section class="card dual-map-comparison-section" id="sec-dual-compare" style="display: none;" data-tilt>
       <div class="card-glare"></div>
 
       <!-- Comparison Header & Control Bar -->
