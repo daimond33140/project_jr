@@ -1927,6 +1927,261 @@ body.hud-is-collapsed .dock-expand-tab {
 }
 
 /* ==========================================================================
+   18.1 MAP VIEW SWITCHER & SINGLE THAILAND MAP EXPLORER
+   ========================================================================== */
+
+.map-view-switcher-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding: 0.45rem;
+  background: rgba(10, 18, 36, 0.75);
+  border: 1px solid rgba(0, 240, 255, 0.22);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.map-mode-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.8rem 1.2rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: #94a3b8;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.map-mode-tab:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.map-mode-tab.active {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(37, 99, 235, 0.35));
+  border-color: rgba(0, 240, 255, 0.5);
+  color: #00f0ff;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.25);
+}
+
+.map-mode-tab .mode-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.map-mode-tab.active .mode-badge {
+  background: rgba(0, 240, 255, 0.2);
+  color: #ffffff;
+  border-color: rgba(0, 240, 255, 0.4);
+}
+
+/* Single Map Section */
+.single-map-section {
+  background: linear-gradient(135deg, rgba(6, 14, 30, 0.88), rgba(10, 24, 48, 0.82));
+  border: 1px solid rgba(0, 240, 255, 0.28);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.8rem;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.7), inset 0 0 24px rgba(0, 240, 255, 0.04);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 5;
+  margin-bottom: 2rem;
+}
+
+.single-map-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 1.1rem;
+}
+
+.single-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.single-badge-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(37, 99, 235, 0.3));
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  color: #00f0ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.3);
+}
+
+.single-badge-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.single-main-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.single-sub-title {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  margin-top: 0.15rem;
+}
+
+.single-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.single-control-box {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.single-control-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #00f0ff;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.single-control-tag svg {
+  width: 14px;
+  height: 14px;
+}
+
+.single-inputs-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.single-dropdown {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.single-dropdown.sm {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.78rem;
+}
+
+.single-dropdown:hover, .single-dropdown:focus {
+  border-color: #00f0ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.25);
+}
+
+.custom-range-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.range-sep {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.single-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.single-kpi-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.single-kpi-lbl {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.single-kpi-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.single-kpi-val.highlight {
+  color: #00f0ff;
+}
+
+.single-kpi-val.gold {
+  color: #fbbf24;
+}
+
+.single-kpi-sub {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+.single-live-callout {
+  background: rgba(0, 240, 255, 0.05);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1rem;
+}
+
+.single-map-wrap {
+  height: 580px !important;
+}
+
+/* ==========================================================================
    18.2 DUAL THAILAND MAP YEAR-OVER-YEAR COMPARISON EXPLORER
    ========================================================================== */
 
